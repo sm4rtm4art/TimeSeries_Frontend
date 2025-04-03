@@ -30,6 +30,28 @@ if [ "$DENO_VERSION" -lt 2 ]; then
     exit 1
 fi
 
+# Check if pre-commit is installed
+if ! command -v pre-commit &> /dev/null; then
+    echo "pre-commit is not installed. Would you like to install it now? (y/n)"
+    read answer
+    if [ "$answer" = "y" ]; then
+        echo "Installing pre-commit..."
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            # macOS
+            brew install pre-commit
+        elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+            # Linux
+            pip install pre-commit
+        else
+            echo "Please install pre-commit manually: https://pre-commit.com/#installation"
+            exit 1
+        fi
+    else
+        echo "Please install pre-commit and run this script again."
+        exit 1
+    fi
+fi
+
 echo "Setting up the project..."
 
 # Install npm dependencies for Deno
@@ -48,6 +70,10 @@ cd ..
 
 echo "Caching import map..."
 deno cache --node-modules-dir=auto --reload import_map.json
+
+# Install pre-commit hooks
+echo "Setting up pre-commit hooks..."
+pre-commit install
 
 echo "Setup completed successfully!"
 echo "To start the development server, run: deno task dev" 

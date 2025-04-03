@@ -114,13 +114,17 @@ jobs:
           deno run --allow-all npm:next export || true
         continue-on-error: true
 
+      # Make out directory if it doesn't exist
+      - name: Create out directory
+        run: mkdir -p ./src/out
+
       # Upload artifact
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1
         with:
           path: "./src/out"
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v1

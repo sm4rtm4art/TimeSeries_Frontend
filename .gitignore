@@ -61,3 +61,6 @@ dist
 
 # Local development
 *.local
+
+# Custom hooks directory (using pre-commit tool instead)
+.hooks/

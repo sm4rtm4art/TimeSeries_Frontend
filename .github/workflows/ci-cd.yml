@@ -25,7 +25,7 @@ jobs:
         run: cd src && deno lint
 
       - name: Type check
-        run: deno task build
+        run: deno task build --allow-sys
 
   deploy:
     needs: test
@@ -38,8 +38,11 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Cache dependencies
+        run: deno cache --node-modules-dir=auto --reload import_map.json
+
       - name: Build
-        run: deno task build
+        run: deno task build --allow-sys
 
       # Add your deployment steps here
       # For example:

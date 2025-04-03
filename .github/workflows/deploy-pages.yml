@@ -27,18 +27,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Debug environment
-      - name: Debug Environment
-        run: |
-          echo "GitHub Runner Environment:"
-          echo "------------------------"
-          echo "GitHub workspace: $GITHUB_WORKSPACE"
-          echo "GitHub workflow: $GITHUB_WORKFLOW"
-          echo "GitHub run ID: $GITHUB_RUN_ID"
-          echo "GitHub actor: $GITHUB_ACTOR"
-          echo "------------------------"
-          echo "Directory structure:"
-          ls -la
+      # Setup Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       # Create minimal static site
       - name: Create static site
@@ -48,33 +39,11 @@ jobs:
           touch ./out/.nojekyll
           echo '<html><head><title>TimeSeries Frontend</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;"><h1>TimeSeries Frontend</h1><p>This site is currently under construction. Please check back later.</p><p>Powered by Deno and Next.js</p></body></html>' > ./out/index.html
 
-          echo "Contents of ./out directory:"
-          ls -la ./out
-
-      # Test artifact preparation - manually create artifact for debug
-      - name: Test Artifact Creation
-        run: |
-          echo "Creating test artifact..."
-          tar -cvf artifact.tar ./out
-          echo "Artifact created:"
-          ls -la artifact.tar
-          echo "Content of artifact:"
-          tar -tvf artifact.tar
-
-      # Try directly with upload artifact
-      - name: Upload artifact directly
-        uses: actions/upload-artifact@v3
-        with:
-          name: github-pages
-          path: ./out
-          retention-days: 1
-
-      # Upload the build output - use v3 as v4 is not resolved
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v3
+      # Upload the build output
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
           path: "./out"
-          name: "github-pages"
 
   # Deployment job
   deploy:
@@ -86,4 +55,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v2

@@ -1,0 +1,21 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-env --watch npm:next dev",
+    "build": "deno run --allow-net --allow-read --allow-write --allow-env npm:next build",
+    "start": "deno run --allow-net --allow-read --allow-env npm:next start",
+    "lint": "deno run --allow-read --allow-write npm:next lint"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "esnext",
+    "strict": true,
+    "allowJs": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "importMap": "../import_map.json"
+} 

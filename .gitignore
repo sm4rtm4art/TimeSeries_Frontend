@@ -38,3 +38,26 @@ typings/
 lib/*.js
 test/*.js
 *.map
+
+# Deno specific
+.deno
+deno.lock
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Next.js
+.next/
+out/
+.vercel
+build
+dist
+
+# Local development
+*.local

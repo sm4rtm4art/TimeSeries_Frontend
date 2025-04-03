@@ -1,12 +1,13 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import * as d3 from "d3"
 import { useTheme } from "next-themes"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AlertTriangle, CheckCircle, Info, XCircle } from "lucide-react"
+import { useIsMounted } from "@/hooks/use-client-only"
 
 interface DataQualityProps {
   data: {
@@ -28,9 +29,13 @@ export default function DataQualityAnalysis({ data }: DataQualityProps) {
     duplicates: 0,
     quality_score: 0,
   })
+  
+  const isMounted = useIsMounted()
 
   // Handle resize
   useEffect(() => {
+    if (!isMounted) return;
+    
     const handleResize = () => {
       if (containerRef.current) {
         const { width, height } = containerRef.current.getBoundingClientRect()
@@ -41,11 +46,11 @@ export default function DataQualityAnalysis({ data }: DataQualityProps) {
     handleResize()
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  }, [isMounted])
 
-  // Analyze data quality
-  useEffect(() => {
-    if (!data || !data.dates || !data.values || data.dates.length === 0) return
+  // Create a memoized function for data analysis
+  const analyzeData = useCallback(() => {
+    if (!data || !data.dates || !data.values || data.dates.length === 0) return;
 
     // Convert string dates to Date objects and handle missing values
     const parsedData = data.dates.map((date, i) => ({
@@ -82,16 +87,40 @@ export default function DataQualityAnalysis({ data }: DataQualityProps) {
     const total = parsedData.length
     const quality_score = Math.round(100 * (1 - (missing + outliers + duplicates) / (total * 2)))
 
-    setDataQuality({
+    return {
       total,
       missing,
       outliers,
       duplicates,
       quality_score: Math.max(0, Math.min(100, quality_score)),
-    })
+      dataWithOutliers
+    };
+  }, [data]);
 
-    // Render the visualization
-    if (dimensions.width === 0) return
+  // Analyze data quality
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    const result = analyzeData();
+    if (result) {
+      setDataQuality({
+        total: result.total,
+        missing: result.missing,
+        outliers: result.outliers,
+        duplicates: result.duplicates,
+        quality_score: result.quality_score
+      });
+    }
+  }, [data, analyzeData, isMounted]);
+
+  // Render visualization only on client
+  useEffect(() => {
+    if (!isMounted || !data || !svgRef.current || dimensions.width === 0) return;
+    
+    const result = analyzeData();
+    if (!result) return;
+    
+    const dataWithOutliers = result.dataWithOutliers;
 
     // Clear previous chart
     d3.select(svgRef.current).selectAll("*").remove()
@@ -276,16 +305,6 @@ export default function DataQualityAnalysis({ data }: DataQualityProps) {
       .duration(300)
       .attr("opacity", 1)
 
-    // Add pulsing animation to outliers
-    outlierPoints.each(function () {
-      d3.select(this)
-        .append("animate")
-        .attr("attributeName", "r")
-        .attr("values", "5;7;5")
-        .attr("dur", "1.5s")
-        .attr("repeatCount", "indefinite")
-    })
-
     // Add missing value markers
     svg
       .selectAll(".missing")
@@ -414,7 +433,7 @@ export default function DataQualityAnalysis({ data }: DataQualityProps) {
       .attr("font-size", "10px")
       .attr("fill", textColor)
       .text("Missing data")
-  }, [data, dimensions, theme])
+  }, [data, dimensions, theme, isMounted, analyzeData])
 
   // Determine quality score color
   const getQualityColor = (score) => {

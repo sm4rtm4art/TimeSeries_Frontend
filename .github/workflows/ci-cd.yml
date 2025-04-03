@@ -1,0 +1,52 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.x
+
+      - name: Cache dependencies
+        run: deno cache --reload import_map.json
+
+      - name: Format check
+        run: deno fmt --check
+
+      - name: Lint
+        run: cd src && deno lint
+
+      - name: Build check
+        run: deno task build
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.x
+
+      - name: Build
+        run: deno task build
+
+      # Add your deployment steps here
+      # For example:
+      # - name: Deploy to Deno Deploy
+      #   uses: denoland/deployctl@v1
+      #   with:
+      #     project: your-project
+      #     entrypoint: ./src/entrypoint.ts
+      #     root: .
+      #     token: ${{ secrets.DENO_DEPLOY_TOKEN }}

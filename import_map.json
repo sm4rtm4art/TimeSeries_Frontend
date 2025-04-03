@@ -1,0 +1,26 @@
+{
+  "imports": {
+    "react": "npm:react",
+    "react-dom": "npm:react-dom",
+    "next": "npm:next",
+    "@/components/": "./src/components/",
+    "@/hooks/": "./src/hooks/",
+    "@/lib/": "./src/lib/",
+    "@/styles/": "./src/styles/",
+    "@observablehq/plot": "npm:@observablehq/plot",
+    "d3": "npm:d3",
+    "recharts": "npm:recharts",
+    "tailwind-merge": "npm:tailwind-merge",
+    "tailwindcss-animate": "npm:tailwindcss-animate",
+    "class-variance-authority": "npm:class-variance-authority",
+    "clsx": "npm:clsx",
+    "lucide-react": "npm:lucide-react",
+    "next-themes": "npm:next-themes",
+    "date-fns": "npm:date-fns",
+    "react-day-picker": "npm:react-day-picker",
+    "sonner": "npm:sonner",
+    "tailwindcss": "npm:tailwindcss",
+    "postcss": "npm:postcss",
+    "autoprefixer": "npm:autoprefixer"
+  }
+} 

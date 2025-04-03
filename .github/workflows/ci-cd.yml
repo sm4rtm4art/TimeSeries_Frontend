@@ -15,11 +15,17 @@ jobs:
         with:
           deno-version: v2.x
 
-      # Set up node_modules for Next.js
-      - name: Cache dependencies
+      # Set up node_modules for Next.js and dependencies
+      - name: Cache Next.js
         run: deno cache --node-modules-dir npm:next
 
-      - name: Cache dependencies from import map
+      - name: Cache TailwindCSS and dependencies
+        run: |
+          deno cache --node-modules-dir npm:tailwindcss
+          deno cache --node-modules-dir npm:postcss
+          deno cache --node-modules-dir npm:autoprefixer
+
+      - name: Cache all dependencies from import map
         run: deno cache --node-modules-dir import_map.json
 
       - name: Format check
@@ -44,11 +50,17 @@ jobs:
         with:
           deno-version: v2.x
 
-      # Set up node_modules for Next.js
-      - name: Cache dependencies
+      # Set up node_modules for Next.js and dependencies
+      - name: Cache Next.js
         run: deno cache --node-modules-dir npm:next
 
-      - name: Cache dependencies from import map
+      - name: Cache TailwindCSS and dependencies
+        run: |
+          deno cache --node-modules-dir npm:tailwindcss
+          deno cache --node-modules-dir npm:postcss
+          deno cache --node-modules-dir npm:autoprefixer
+
+      - name: Cache all dependencies from import map
         run: deno cache --node-modules-dir import_map.json
 
       # Fix the build command with full permissions and continue-on-error

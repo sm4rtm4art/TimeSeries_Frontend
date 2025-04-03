@@ -6,7 +6,7 @@
     "start": "cd src && deno run --allow-net --allow-read --allow-env npm:next start",
     "lint": "cd src && deno run --allow-read --allow-write npm:next lint",
     "load-env:local": "deno run --allow-read --allow-env --allow-write src/lib/load-env.ts local",
-    "cache-deps": "deno cache --node-modules-dir npm:next && deno cache --node-modules-dir import_map.json"
+    "cache-deps": "deno cache --node-modules-dir npm:next && deno cache --node-modules-dir npm:tailwindcss && deno cache --node-modules-dir npm:postcss && deno cache --node-modules-dir npm:autoprefixer && deno cache --node-modules-dir import_map.json"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

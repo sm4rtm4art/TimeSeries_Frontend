@@ -177,7 +177,7 @@ export default function ModelComparisonChart({
     // Create line generator
     const line = d3
       .line()
-      .x((d, i) => xScale(parsedDates[i]))
+      .x((_d, i) => xScale(parsedDates[i]))
       .y((d) => yScale(d))
       .curve(d3.curveMonotoneX);
 
@@ -209,12 +209,12 @@ export default function ModelComparisonChart({
         .enter()
         .append("circle")
         .attr("class", `dot-${modelIndex}`)
-        .attr("cx", (d, i) => xScale(parsedDates[i]))
+        .attr("cx", (_d, i) => xScale(parsedDates[i]))
         .attr("cy", (d) => yScale(d))
         .attr("r", 0)
         .attr("fill", model.color)
         .transition()
-        .delay((d, i) => modelIndex * 300 + i * (1000 / model.values.length))
+        .delay((_d, i) => modelIndex * 300 + i * (1000 / model.values.length))
         .duration(300)
         .attr("r", 3);
     });

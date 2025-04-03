@@ -296,12 +296,12 @@ export default function DataQualityAnalysis({ data }: DataQualityProps) {
       .attr("fill", lineColor)
       .attr("opacity", 0)
       .transition()
-      .delay((d, i) => i * (1000 / dataWithOutliers.length))
+      .delay((_d, i) => i * (1000 / dataWithOutliers.length))
       .duration(300)
       .attr("opacity", 1);
 
     // Add outlier points with pulsing animation
-    const outlierPoints = svg
+    const _outlierPoints = svg
       .selectAll(".outlier")
       .data(dataWithOutliers.filter((d) => d.isOutlier))
       .enter()
@@ -315,7 +315,7 @@ export default function DataQualityAnalysis({ data }: DataQualityProps) {
       .attr("stroke-width", 1)
       .attr("opacity", 0)
       .transition()
-      .delay((d, i) => 1000 + i * 100)
+      .delay((_d, i) => 1000 + i * 100)
       .duration(300)
       .attr("opacity", 1);
 
@@ -334,7 +334,7 @@ export default function DataQualityAnalysis({ data }: DataQualityProps) {
       .attr("transform", (d) => `rotate(45, ${xScale(d.date)}, ${height / 2})`)
       .attr("opacity", 0)
       .transition()
-      .delay((d, i) => 1000 + i * 100)
+      .delay((_d, i) => 1000 + i * 100)
       .duration(300)
       .attr("opacity", 1);
 

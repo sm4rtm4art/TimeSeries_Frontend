@@ -190,7 +190,7 @@ export default function TimeSeriesChart(
       .attr("r", 0)
       .attr("fill", lineColor)
       .transition()
-      .delay((d, i) => i * (1000 / parsedData.length))
+      .delay((_d, i) => i * (1000 / parsedData.length))
       .duration(300)
       .attr("r", 3);
 

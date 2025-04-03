@@ -60,9 +60,9 @@ export default function DataPreparation() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [dataQualityScore, setDataQualityScore] = useState(78);
   const [completenessScore, setCompletenessScore] = useState(85);
-  const [consistencyScore, setConsistencyScore] = useState(92);
+  const [consistencyScore, _setConsistencyScore] = useState(92);
   const [validityScore, setValidityScore] = useState(72);
-  const [timelinessScore, setTimelinessScore] = useState(95);
+  const [_timelinessScore, _setTimelinessScore] = useState(95);
 
   // Sample data with issues for visualization
   const originalData = {

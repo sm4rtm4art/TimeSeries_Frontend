@@ -259,7 +259,7 @@ export default function ForecastChart(
       .attr("r", 0)
       .attr("fill", lineColor)
       .transition()
-      .delay((d, i) => i * (1000 / parsedHistorical.length))
+      .delay((_d, i) => i * (1000 / parsedHistorical.length))
       .duration(300)
       .attr("r", 3);
 
@@ -277,7 +277,7 @@ export default function ForecastChart(
       .attr("stroke", backgroundColor)
       .attr("stroke-width", 1)
       .transition()
-      .delay((d, i) => 1000 + i * (1000 / parsedForecast.length))
+      .delay((_d, i) => 1000 + i * (1000 / parsedForecast.length))
       .duration(300)
       .attr("r", 3);
 

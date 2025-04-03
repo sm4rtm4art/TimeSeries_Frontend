@@ -21,7 +21,7 @@ async function main() {
     console.log(`Loading environment: ${environment}`);
     await loadEnv(environment);
     console.log("Environment loaded successfully");
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load environment:", error);
   }
 }

@@ -23,7 +23,7 @@ import DataQualityAnalysis from "@/components/data-quality-analysis";
 import DataPreparation from "@/components/data-preparation";
 
 export default function DataManagement() {
-  const [dataSource, setDataSource] = useState("builtin");
+  const [_dataSource, _setDataSource] = useState("builtin");
   const [selectedDataset, setSelectedDataset] = useState("airline");
 
   const builtinDatasets = [

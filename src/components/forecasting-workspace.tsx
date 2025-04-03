@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Play, RefreshCw } from "lucide-react";
+import { Play, RefreshCw as _RefreshCw } from "lucide-react";
 import TimeSeriesChart from "@/components/charts/time-series-chart";
 import ForecastChart from "@/components/charts/forecast-chart";
 import ModelComparisonChart from "@/components/charts/model-comparison-chart";

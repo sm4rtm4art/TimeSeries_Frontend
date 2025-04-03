@@ -175,13 +175,13 @@ export default function TimeSeriesDecomposition() {
     // Create line generators
     const originalLine = d3
       .line()
-      .x((d, i) => xScale(dates[i]))
+      .x((_d, i) => xScale(dates[i]))
       .y((d) => yScaleOriginal(d))
       .curve(d3.curveMonotoneX);
 
     const transformedLine = d3
       .line()
-      .x((d, i) => xScale(dates[i]))
+      .x((_d, i) => xScale(dates[i]))
       .y((d) => yScaleTransformed(d))
       .curve(d3.curveMonotoneX);
 

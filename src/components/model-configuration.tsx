@@ -231,7 +231,7 @@ export default function ModelConfiguration() {
   );
 }
 
-function ModelCard({ id, name, description, tags, selected, onSelect }) {
+function ModelCard({ _id, name, description, tags, selected, onSelect }) {
   return (
     <Card
       className={`cursor-pointer transition-all ${

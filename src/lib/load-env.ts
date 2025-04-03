@@ -51,7 +51,7 @@ async function loadDefaultEnv() {
       Deno.env.set(key, value);
     }
     console.log("Loaded environment variables from .env");
-  } catch (error) {
+  } catch (_error) {
     console.warn("No .env file found, using default environment variables");
   }
 }

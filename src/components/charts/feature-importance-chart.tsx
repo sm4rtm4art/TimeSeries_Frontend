@@ -129,7 +129,7 @@ export default function FeatureImportanceChart({ data }) {
     bars
       .transition()
       .duration(800)
-      .delay((d, i) => i * 100)
+      .delay((_d, i) => i * 100)
       .attr("width", (d) => xScale(d.importance));
 
     // Add value labels
@@ -152,7 +152,7 @@ export default function FeatureImportanceChart({ data }) {
     labels
       .transition()
       .duration(800)
-      .delay((d, i) => i * 100 + 300)
+      .delay((_d, i) => i * 100 + 300)
       .attr("opacity", 1);
 
     // Add hover effects
@@ -160,7 +160,7 @@ export default function FeatureImportanceChart({ data }) {
       .on("mouseover", function (event, d) {
         d3.select(this).transition().duration(200).attr("fill", barHoverColor);
 
-        const tooltip = d3
+        const _tooltip = d3
           .select(tooltipRef.current)
           .style("position", "absolute")
           .style("visibility", "visible")

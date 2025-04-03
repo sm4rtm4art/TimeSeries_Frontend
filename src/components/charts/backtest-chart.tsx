@@ -241,7 +241,7 @@ export default function BacktestChart() {
       .attr("r", 0)
       .attr("fill", actualColor)
       .transition()
-      .delay((d, i) => i * (1000 / actualPoints.length))
+      .delay((_d, i) => i * (1000 / actualPoints.length))
       .duration(300)
       .attr("r", 3);
 
@@ -257,7 +257,7 @@ export default function BacktestChart() {
       .attr("r", 0)
       .attr("fill", predictedColor)
       .transition()
-      .delay((d, i) => 1000 + i * (1000 / predictedPoints.length))
+      .delay((_d, i) => 1000 + i * (1000 / predictedPoints.length))
       .duration(300)
       .attr("r", 3);
 

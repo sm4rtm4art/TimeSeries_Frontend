@@ -14,8 +14,7 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -28,47 +27,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: v2.x
-
-      # Cache Deno dependencies
-      - name: Cache Deno dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.deno
-            ~/.cache/deno
-            ./node_modules
-            ./src/node_modules
-          key: ${{ runner.os }}-deno-${{ hashFiles('deno.lock', 'import_map.json') }}
-          restore-keys: |
-            ${{ runner.os }}-deno-
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        with:
-          # Automatically inject basePath for Next.js
-          static_site_generator: next
-
-      # Create a simple static site directly
+      # Create minimal static site
       - name: Create static site
         run: |
           # Create static output directory with content
-          mkdir -p ./src/out
-          touch ./src/out/.nojekyll
-          echo '<html><head><title>TimeSeries Frontend</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;"><h1>TimeSeries Frontend</h1><p>This site is currently under construction. Please check back later.</p><p>Powered by Deno and Next.js</p></body></html>' > ./src/out/index.html
+          mkdir -p ./out
+          touch ./out/.nojekyll
+          echo '<html><head><title>TimeSeries Frontend</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;"><h1>TimeSeries Frontend</h1><p>This site is currently under construction. Please check back later.</p><p>Powered by Deno and Next.js</p></body></html>' > ./out/index.html
 
-          echo "Contents of ./src/out directory:"
-          ls -la ./src/out
+          echo "Contents of ./out directory:"
+          ls -la ./out
 
-      # Upload the build output - use v4 as recommended in the StackOverflow solution
+      # Upload the build output - use v3 as v4 is not resolved
       - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: "./src/out"
-          retention-days: 1
+          path: "./out"
 
   # Deployment job
   deploy:
@@ -80,4 +54,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3

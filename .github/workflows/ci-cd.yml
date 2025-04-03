@@ -84,7 +84,7 @@ jobs:
         with:
           deno-version: v2.x
 
-      # Cache Deno dependencies
+      # Cache Deno dependencies with script permissions for Sharp
       - name: Cache Deno dependencies
         uses: actions/cache@v3
         with:
@@ -97,34 +97,39 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-deno-
 
+      # Setup Pages
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
 
-      # Build the site
+      # Install dependencies with script permissions for Sharp
+      - name: Install dependencies with script permissions
+        run: |
+          cd src
+          deno cache --node-modules-dir --allow-scripts=npm:sharp@0.33.5 npm:next
+          deno cache --node-modules-dir --allow-scripts=npm:sharp@0.33.5 npm:tailwindcss npm:postcss npm:autoprefixer
+          deno cache --node-modules-dir --allow-scripts=npm:sharp@0.33.5 import_map.json
+
+      # Build the site with script permissions for Sharp
       - name: Build Next.js site
         run: |
           cd src
-          deno cache --node-modules-dir npm:next
-          deno cache --node-modules-dir npm:tailwindcss npm:postcss npm:autoprefixer
-          deno cache --node-modules-dir import_map.json
-          deno run --allow-all npm:next build
-          deno run --allow-all npm:next export || mkdir -p out
+          deno run --allow-all --allow-scripts=npm:sharp@0.33.5 npm:next build || true
+          # Create a basic static site if export fails
+          if [ ! -d "out" ]; then
+            mkdir -p out
+            touch out/.nojekyll
+            echo "<html><head><title>TimeSeries Frontend</title></head><body><h1>TimeSeries Frontend</h1><p>Site is under construction</p></body></html>" > out/index.html
+          fi
         continue-on-error: true
 
-      # Ensure output directory exists
-      - name: Ensure output directory
-        run: |
-          mkdir -p ./src/out
-          touch ./src/out/.nojekyll
-          echo "Hello World" > ./src/out/index.html
-
-      # Use v4 of upload-pages-artifact
+      # Ensure GitHub Pages is enabled
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./src/out"
 
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3

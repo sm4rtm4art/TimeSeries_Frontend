@@ -1,7 +1,7 @@
 {
   "tasks": {
     "dev": "deno run --allow-net --allow-read --allow-env --watch npm:next dev",
-    "build": "deno run --allow-net --allow-read --allow-write --allow-env --allow-sys npm:next build",
+    "build": "deno run --allow-all npm:next build",
     "start": "deno run --allow-net --allow-read --allow-env npm:next start",
     "lint": "deno run --allow-read --allow-write npm:next lint"
   },

@@ -28,9 +28,9 @@ jobs:
       - name: Lint
         run: cd src && deno lint
 
-      # Fix the typecheck command
+      # Fix the typecheck command with full permissions
       - name: Type check
-        run: cd src && deno run --allow-net --allow-read --allow-write --allow-env --allow-sys npm:next build
+        run: cd src && deno run --allow-all npm:next build
 
   deploy:
     needs: test
@@ -50,8 +50,9 @@ jobs:
       - name: Cache dependencies from import map
         run: deno cache --node-modules-dir import_map.json
 
+      # Fix the build command with full permissions
       - name: Build
-        run: cd src && deno run --allow-net --allow-read --allow-write --allow-env --allow-sys npm:next build
+        run: cd src && deno run --allow-all npm:next build
 
       # Add your deployment steps here
       # For example:

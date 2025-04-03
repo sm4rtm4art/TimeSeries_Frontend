@@ -2,7 +2,7 @@
   "tasks": {
     "dev": "cd src && deno run --allow-net --allow-read --allow-env --watch npm:next dev",
     "dev:local": "cd src && ENVIRONMENT=local deno run --allow-net --allow-read --allow-env --allow-write --watch npm:next dev",
-    "build": "cd src && deno run --allow-net --allow-read --allow-write --allow-env --allow-sys npm:next build",
+    "build": "cd src && deno run --allow-all npm:next build",
     "start": "cd src && deno run --allow-net --allow-read --allow-env npm:next start",
     "lint": "cd src && deno run --allow-read --allow-write npm:next lint",
     "load-env:local": "deno run --allow-read --allow-env --allow-write src/lib/load-env.ts local",

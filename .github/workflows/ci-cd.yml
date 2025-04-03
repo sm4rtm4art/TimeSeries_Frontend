@@ -1,4 +1,4 @@
-name: Deno CI/CD to GitHub Pages
+name: Deno CI/CD Pipeline
 
 on:
   push:
@@ -16,66 +16,101 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  lint:
+    name: Lint Code
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      # Step 1: Checkout repo
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Setup Deno
-      - name: Setup Deno
+      - name: Setup Deno Environment
         uses: denoland/setup-deno@v1
         with:
           deno-version: v2.x
 
-      # Step 3: Build static site (mocked here)
-      - name: Create static site
-        run: |
-          mkdir -p ./out
-          touch ./out/.nojekyll
-          echo "<!DOCTYPE html>
-          <html lang='en'>
-          <head>
-            <meta charset='UTF-8'>
-            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <title>Deno CI/CD Test</title>
-            <style>
-              body {
-                font-family: system-ui, sans-serif;
-                margin: 2rem;
-              }
-            </style>
-          </head>
-          <body>
-            <h1>Hello from Deno!</h1>
-            <p>This is a mock site deployed via GitHub Pages.</p>
-          </body>
-          </html>" > ./out/index.html
+      - name: Run Linter
+        run: deno lint
 
-      # ✅ DEBUG: Check if ./out folder contains files
-      - name: Check build output
-        run: |
-          echo "Listing ./out contents:"
-          ls -la ./out
+  format:
+    name: Check Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      # Step 4: Setup GitHub Pages
+      - name: Setup Deno Environment
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.x
+
+      - name: Check Formatting
+        run: deno fmt --check
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: [lint, format]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Deno Environment
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.x
+
+      - name: Run Tests
+        run: deno test --allow-all --coverage=coverage
+
+      - name: Generate Coverage Report
+        run: |
+          deno coverage coverage --lcov > coverage.lcov
+          genhtml -o coverage_html coverage.lcov
+        continue-on-error: true
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage_html
+        continue-on-error: true
+
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    needs: [test]
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Deno Environment
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.x
+
+      - name: Build Project
+        run: |
+          deno task build
+          # Ensure the build outputs static files to the 'dist' directory
+
+      - name: Verify Build Output
+        run: |
+          echo "Contents of dist directory:"
+          ls -la dist
+
       - name: Setup GitHub Pages
         id: pages
         uses: actions/configure-pages@v4
 
-      # ✅ Step 5: Upload artifact with correct name
-      - name: Upload pages artifact
+      - name: Upload Artifact to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
-          path: ./out
+          path: dist
 
-      # Step 6: Deploy
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v4

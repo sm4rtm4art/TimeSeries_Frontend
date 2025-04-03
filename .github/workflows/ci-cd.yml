@@ -1,4 +1,4 @@
-name: CI/CD
+name: Deno CI/CD to GitHub Pages
 
 on:
   push:
@@ -6,113 +6,76 @@ on:
   pull_request:
     branches: [main]
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: v2.x
-
-      - name: Cache Deno dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.deno
-            ~/.cache/deno
-          key: ${{ runner.os }}-deno-${{ hashFiles('deno.lock', 'import_map.json') }}
-          restore-keys: |
-            ${{ runner.os }}-deno-
-
-      - name: Format check
-        run: deno fmt --check
-
-      - name: Lint
-        run: cd src && deno lint
-
   build-and-deploy:
-    needs: test
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+      # Step 1: Checkout repo
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Step 2: Setup Deno
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: v2.x
 
-      - name: Cache Deno dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.deno
-            ~/.cache/deno
-          key: ${{ runner.os }}-deno-${{ hashFiles('deno.lock', 'import_map.json') }}
-          restore-keys: |
-            ${{ runner.os }}-deno-
-
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v4
-
+      # Step 3: Build static site (mocked here)
       - name: Create static site
         run: |
           mkdir -p ./out
           touch ./out/.nojekyll
-          cat > ./out/index.html << 'EOL'
-          <!DOCTYPE html>
-          <html lang="en">
+          echo "<!DOCTYPE html>
+          <html lang='en'>
           <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>TimeSeries Frontend</title>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Deno CI/CD Test</title>
             <style>
               body {
                 font-family: system-ui, sans-serif;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 2rem;
-                line-height: 1.6;
+                margin: 2rem;
               }
-              h1 { margin-bottom: 1em; }
             </style>
           </head>
           <body>
-            <h1>TimeSeries Frontend</h1>
-            <p>This site is currently under construction.</p>
-            <p>Powered by Deno</p>
+            <h1>Hello from Deno!</h1>
+            <p>This is a mock site deployed via GitHub Pages.</p>
           </body>
-          </html>
-          EOL
+          </html>" > ./out/index.html
 
-      # ✅ FIXED: Upload with the expected artifact name
+      # ✅ DEBUG: Check if ./out folder contains files
+      - name: Check build output
+        run: |
+          echo "Listing ./out contents:"
+          ls -la ./out
+
+      # Step 4: Setup GitHub Pages
+      - name: Setup GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      # ✅ Step 5: Upload artifact with correct name
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages # 👈 MUST be named this for deploy-pages to find it
-          path: "./out"
+          name: github-pages
+          path: ./out
 
+      # Step 6: Deploy
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3

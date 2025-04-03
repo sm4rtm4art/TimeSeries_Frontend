@@ -1,4 +1,4 @@
-name: Deploy Next.js with Deno to GitHub Pages
+name: Deploy Static Site to GitHub Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -29,21 +29,66 @@ jobs:
 
       # Setup Pages
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v3
 
-      # Create minimal static site
+      # Create pure static site without Next.js
       - name: Create static site
         run: |
           # Create static output directory with content
-          mkdir -p ./out
-          touch ./out/.nojekyll
-          echo '<html><head><title>TimeSeries Frontend</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;"><h1>TimeSeries Frontend</h1><p>This site is currently under construction. Please check back later.</p><p>Powered by Deno and Next.js</p></body></html>' > ./out/index.html
+          mkdir -p public
+          touch public/.nojekyll
 
-      # Upload the build output
+          # Create a simple index.html
+          cat > public/index.html << 'EOL'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>TimeSeries Frontend</title>
+            <style>
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 40px 20px;
+                line-height: 1.6;
+              }
+              h1 { margin-bottom: 1em; }
+            </style>
+          </head>
+          <body>
+            <h1>TimeSeries Frontend</h1>
+            <p>This site is currently under construction. Please check back later.</p>
+            <p>Powered by Deno and GitHub Pages</p>
+          </body>
+          </html>
+          EOL
+
+          # List contents to verify
+          echo "Contents of the public directory:"
+          ls -la public/
+
+      # Standard artifact upload
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          path: "./out"
+          name: github-pages
+          path: public
+          if-no-files-found: error
+
+      # List artifacts to debug
+      - name: List artifacts
+        run: |
+          echo "Listing available artifacts..."
+          ls -la $GITHUB_WORKSPACE
+          find $GITHUB_WORKSPACE -name "github-pages*" || echo "No artifacts found with this name"
+
+      # Upload Pages artifact
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: public
 
   # Deployment job
   deploy:
@@ -55,4 +100,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v1

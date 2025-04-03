@@ -76,6 +76,13 @@ jobs:
         with:
           deno-version: v2.x
 
+      # Include the specific version of upload-artifact that's causing issues
+      - name: Setup upload-artifact action
+        uses: actions/upload-artifact@v3
+        with:
+          name: dummy-artifact
+          path: ./
+
       # Cache Deno dependencies
       - name: Cache Deno dependencies
         uses: actions/cache@v3

@@ -60,24 +60,40 @@ jobs:
           deno cache --node-modules-dir --allow-scripts=npm:sharp@0.33.5 npm:tailwindcss npm:postcss npm:autoprefixer
           deno cache --node-modules-dir --allow-scripts=npm:sharp@0.33.5 import_map.json
 
-      # Build the site with script permissions for Sharp
-      - name: Build Next.js site
+      # Create static site output
+      - name: Build static site
         run: |
+          # Create static output directory
+          mkdir -p ./src/out
+          touch ./src/out/.nojekyll
+
+          # Try to build with Next.js first
           cd src
-          deno run --allow-all --allow-scripts=npm:sharp@0.33.5 npm:next build
-          # Create a basic static site if export fails
-          if [ ! -d "out" ]; then
-            mkdir -p out
-            touch out/.nojekyll
-            echo "<html><head><title>TimeSeries Frontend</title></head><body><h1>TimeSeries Frontend</h1><p>Site is under construction</p></body></html>" > out/index.html
+          echo "Attempting to build with Next.js..."
+          deno run --allow-all --allow-scripts=npm:sharp@0.33.5 npm:next build || echo "Next.js build failed, using fallback"
+
+          # Create fallback content if out directory is empty
+          if [ ! -f "out/index.html" ]; then
+            echo "Creating fallback content..."
+            echo '<html><head><title>TimeSeries Frontend</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;"><h1>TimeSeries Frontend</h1><p>This site is currently under construction. Please check back later.</p><p>Powered by Deno and Next.js</p></body></html>' > out/index.html
           fi
-        continue-on-error: true
+
+          # List contents to debug
+          echo "Contents of out directory:"
+          ls -la out/
+
+      # Debug artifact directory
+      - name: Debug artifact directory
+        run: |
+          echo "Contents of ./src/out directory:"
+          ls -la ./src/out || echo "Directory not found"
 
       # Upload the build output
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./src/out"
+          retention-days: 1
 
   # Deployment job
   deploy:

@@ -29,7 +29,6 @@ jobs:
         with:
           deno-version: v2.x
 
-      # Cache Deno dependencies
       - name: Cache Deno dependencies
         uses: actions/cache@v3
         with:
@@ -50,7 +49,6 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # Deploy to the github-pages environment
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -64,7 +62,6 @@ jobs:
         with:
           deno-version: v2.x
 
-      # Cache Deno dependencies
       - name: Cache Deno dependencies
         uses: actions/cache@v3
         with:
@@ -75,12 +72,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-deno-
 
-      # Setup Pages
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
 
-      # Create static site
       - name: Create static site
         run: |
           mkdir -p ./out
@@ -111,13 +106,13 @@ jobs:
           </html>
           EOL
 
-      # Upload artifact
+      # ✅ FIXED: Upload with the expected artifact name
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages # 👈 MUST be named this for deploy-pages to find it
           path: "./out"
 
-      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3

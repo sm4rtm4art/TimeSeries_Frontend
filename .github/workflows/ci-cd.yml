@@ -59,12 +59,12 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Run Tests (ignore if no tests)
+      - name: Run Tests (ignore if none found)
         run: |
           mkdir -p coverage
           deno test --coverage=coverage || echo "No tests found. Continuing..."
 
-      - name: Generate Coverage Report
+      - name: Generate LCOV Report
         run: |
           deno coverage coverage --lcov --output=coverage.lcov || echo "No coverage generated"
         continue-on-error: true
@@ -72,10 +72,10 @@ jobs:
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }} # Optional for public repos
           files: coverage.lcov
           flags: unittests
           name: codecov-umbrella
+          token: ${{ secrets.CODECOV_TOKEN }} # Optional if public repo
         continue-on-error: true
 
   build-and-deploy:
@@ -95,14 +95,14 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Build Project
+      - name: Build Static Site
         run: |
           deno task build
-          # Ensure build output goes to ./dist or update path below
+          # make sure your `deno.json` or `deno.jsonc` defines a "build" task that outputs to `dist`
 
       - name: Check Build Output
         run: |
-          echo "Checking contents of dist directory..."
+          echo "Build contents:"
           ls -la dist
 
       - name: Setup GitHub Pages
@@ -110,7 +110,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 

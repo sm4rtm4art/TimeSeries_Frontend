@@ -1,5 +1,7 @@
 # TimeSeries Frontend
 
+[![codecov](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend/graph/badge.svg?token=F3TO61yJUZ)](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend)
+
 A modern, interactive frontend for time series forecasting with multiple models
 and interactive visualizations, powered by Deno 2.0.
 

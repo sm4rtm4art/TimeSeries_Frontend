@@ -1,6 +1,7 @@
 # TimeSeries Frontend
 
-A modern, interactive frontend for time series forecasting with multiple models and interactive visualizations, powered by Deno 2.0.
+A modern, interactive frontend for time series forecasting with multiple models
+and interactive visualizations, powered by Deno 2.0.
 
 ## Features
 
@@ -125,7 +126,8 @@ deno task start
 
 ## Why Deno?
 
-- **Security**: Deno has a permissions system that provides greater security by default
+- **Security**: Deno has a permissions system that provides greater security by
+  default
 - **TypeScript built-in**: No need for additional TypeScript configuration
 - **Modern JavaScript**: First-class support for ESM and top-level await
 - **Built-in tooling**: Includes testing, formatting, and linting out of the box

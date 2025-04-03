@@ -1,6 +1,7 @@
 # Local Environment Setup
 
-This document provides a detailed guide on setting up and using the local development environment for the TimeSeries Frontend project.
+This document provides a detailed guide on setting up and using the local
+development environment for the TimeSeries Frontend project.
 
 ## Overview
 
@@ -15,7 +16,8 @@ The local environment is designed for:
 
 ### 1. Environment Configuration
 
-The local environment uses the `.env.local` file for configuration. This file is already included in the repository, but you can customize it:
+The local environment uses the `.env.local` file for configuration. This file is
+already included in the repository, but you can customize it:
 
 ```bash
 ENVIRONMENT=local
@@ -47,7 +49,8 @@ The application will be available at http://localhost:3000.
 
 ### 1. Mock Data
 
-In local mode, the application uses mock data instead of making real API calls. This allows for:
+In local mode, the application uses mock data instead of making real API calls.
+This allows for:
 
 - Working without an active backend
 - Testing various data scenarios
@@ -65,7 +68,8 @@ Local environment enables debug mode by default, which provides:
 
 ### 3. Hot Reloading
 
-Changes to files are immediately reflected in the browser thanks to Deno's watch mode.
+Changes to files are immediately reflected in the browser thanks to Deno's watch
+mode.
 
 ## Environment Variables
 
@@ -100,5 +104,6 @@ Here are the key environment variables used in local mode:
 ### Debugging Tips
 
 1. Check the console for environment loading messages
-2. Verify environment with: `deno run --allow-env -e "console.log(Deno.env.get('ENVIRONMENT'))"`
+2. Verify environment with:
+   `deno run --allow-env -e "console.log(Deno.env.get('ENVIRONMENT'))"`
 3. Use the browser's developer tools to see network requests and console output

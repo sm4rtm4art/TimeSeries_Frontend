@@ -1,6 +1,7 @@
 # Deno Setup Guide
 
-This document provides detailed instructions for setting up and running the TimeSeries Frontend project with Deno 2.0.
+This document provides detailed instructions for setting up and running the
+TimeSeries Frontend project with Deno 2.0.
 
 ## Installing Deno
 
@@ -80,15 +81,20 @@ The application will be available at http://localhost:3000.
 
 ### Permission Errors
 
-If you encounter permission errors, Deno's security model requires explicit permissions. The tasks in deno.json already include the necessary permissions, but if you're running custom commands, you might need to add relevant permission flags.
+If you encounter permission errors, Deno's security model requires explicit
+permissions. The tasks in deno.json already include the necessary permissions,
+but if you're running custom commands, you might need to add relevant permission
+flags.
 
 ### npm Compatibility
 
-If you encounter issues with npm modules, ensure you have the latest version of Deno, as Deno 2.0 has significantly improved npm compatibility.
+If you encounter issues with npm modules, ensure you have the latest version of
+Deno, as Deno 2.0 has significantly improved npm compatibility.
 
 ### Path Resolution Issues
 
-If you encounter module resolution issues, check the import_map.json file to ensure the paths are correctly configured.
+If you encounter module resolution issues, check the import_map.json file to
+ensure the paths are correctly configured.
 
 ## Additional Resources
 

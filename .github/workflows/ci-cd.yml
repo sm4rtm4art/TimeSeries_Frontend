@@ -15,8 +15,12 @@ jobs:
         with:
           deno-version: v2.x
 
+      # Set up node_modules for Next.js
       - name: Cache dependencies
-        run: deno cache --node-modules-dir=auto --reload import_map.json
+        run: deno cache --node-modules-dir npm:next
+
+      - name: Cache dependencies from import map
+        run: deno cache --node-modules-dir import_map.json
 
       - name: Format check
         run: deno fmt --check
@@ -24,8 +28,9 @@ jobs:
       - name: Lint
         run: cd src && deno lint
 
+      # Fix the typecheck command
       - name: Type check
-        run: deno task build --allow-sys
+        run: cd src && deno run --allow-net --allow-read --allow-write --allow-env --allow-sys npm:next build
 
   deploy:
     needs: test
@@ -38,11 +43,15 @@ jobs:
         with:
           deno-version: v2.x
 
+      # Set up node_modules for Next.js
       - name: Cache dependencies
-        run: deno cache --node-modules-dir=auto --reload import_map.json
+        run: deno cache --node-modules-dir npm:next
+
+      - name: Cache dependencies from import map
+        run: deno cache --node-modules-dir import_map.json
 
       - name: Build
-        run: deno task build --allow-sys
+        run: cd src && deno run --allow-net --allow-read --allow-write --allow-env --allow-sys npm:next build
 
       # Add your deployment steps here
       # For example:

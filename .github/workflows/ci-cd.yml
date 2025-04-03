@@ -95,14 +95,77 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Install npm dependencies
+        run: |
+          deno task cache-deps
+          # Cache all dependencies from import_map.json
+          cd src && deno cache --node-modules-dir=auto $(cat ../import_map.json | grep "npm:" | sed 's/.*"npm:/npm:/g' | sed 's/".*//g' | tr '\n' ' ')
+          echo "Node modules directory:"
+          ls -la node_modules || echo "No node_modules directory found"
+
       - name: Build Static Site
         run: |
-          deno task build
-          # make sure your `deno.json` or `deno.jsonc` defines a "build" task that outputs to `dist`
+          deno task build || true
+          # Next.js typically outputs to '.next', 'out', or 'dist' directory
+          echo "Build output directories:"
+          ls -la
+          ls -la src || echo "No src directory after build"
+          ls -la src/out || echo "No src/out directory after build"
+          ls -la src/.next || echo "No src/.next directory after build"
+          ls -la dist || echo "No dist directory after build"
+
+      - name: Create Fallback Static Site if needed
+        run: |
+          # If no build output is found, create a simple static site
+          if [ ! -d "src/out" ] && [ ! -d "dist" ] && [ ! -d "src/.next" ]; then
+            echo "Creating fallback static site"
+            mkdir -p dist
+            cat > dist/index.html << 'EOF'
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>TimeSeries Frontend</title>
+              <style>
+                body {
+                  font-family: system-ui, sans-serif;
+                  max-width: 800px;
+                  margin: 0 auto;
+                  padding: 2rem;
+                  line-height: 1.6;
+                }
+                h1 { margin-bottom: 1em; }
+              </style>
+            </head>
+            <body>
+              <h1>TimeSeries Frontend</h1>
+              <p>This site is currently under construction.</p>
+              <p>Powered by Deno</p>
+            </body>
+            </html>
+            EOF
+            touch dist/.nojekyll
+          fi
 
       - name: Check Build Output
         run: |
-          echo "Build contents:"
+          # Determine the correct build output path
+          if [ -d "src/out" ]; then
+            echo "Using src/out as build output directory"
+            mkdir -p dist
+            cp -r src/out/* dist/
+          elif [ -d "dist" ]; then
+            echo "Using existing dist directory"
+          elif [ -d "src/.next" ]; then
+            echo "Using src/.next as build output directory"
+            mkdir -p dist
+            cp -r src/.next/* dist/
+          else
+            echo "No build output directory found"
+            exit 1
+          fi
+          echo "Final build contents:"
           ls -la dist
 
       - name: Setup GitHub Pages

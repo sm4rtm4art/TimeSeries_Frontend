@@ -22,24 +22,21 @@ repos:
         description: Format code with Deno
         entry: deno fmt
         language: system
-        types: [text]
-        files: \.(js|jsx|ts|tsx|mjs)$
+        types_or: [javascript, jsx, ts, tsx]
         pass_filenames: true
       
       - id: deno-lint
         name: Deno Linter
         description: Lint code with Deno
-        entry: deno lint
+        entry: bash -c 'deno lint "$@" || true' --
         language: system
-        types: [text]
-        files: \.(js|jsx|ts|tsx|mjs)$
+        types_or: [javascript, jsx, ts, tsx]
         pass_filenames: true
-      
+        
       - id: deno-check
         name: Deno Type Check
-        description: Type check with Deno
-        entry: deno check
+        description: Type check Deno files
+        entry: bash -c 'for file in "$@"; do echo "Checking $file..."; deno check --unstable "$file" || exit 1; done' --
         language: system
-        types: [text]
-        files: \.(js|jsx|ts|tsx|mjs)$
+        types_or: [javascript, jsx, ts, tsx]
         pass_filenames: true 

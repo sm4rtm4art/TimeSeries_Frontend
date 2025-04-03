@@ -73,7 +73,9 @@ deno cache --node-modules-dir=auto --reload import_map.json
 
 # Install pre-commit hooks
 echo "Setting up pre-commit hooks..."
-pre-commit install
+pre-commit uninstall || true  # Remove any existing hooks
+pre-commit install --install-hooks  # Install hooks fresh
+pre-commit autoupdate  # Update hooks to latest versions
 
 echo "Setup completed successfully!"
 echo "To start the development server, run: deno task dev" 

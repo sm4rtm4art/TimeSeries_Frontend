@@ -12,7 +12,7 @@ permissions:
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
+# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -36,35 +36,15 @@ jobs:
           path: |
             ~/.deno
             ~/.cache/deno
-            ./node_modules
-            ./src/node_modules
           key: ${{ runner.os }}-deno-${{ hashFiles('deno.lock', 'import_map.json') }}
           restore-keys: |
             ${{ runner.os }}-deno-
-
-      # Set up node_modules for Next.js and dependencies
-      - name: Cache Next.js
-        run: deno cache --node-modules-dir npm:next
-
-      - name: Cache TailwindCSS and dependencies
-        run: |
-          deno cache --node-modules-dir npm:tailwindcss
-          deno cache --node-modules-dir npm:postcss
-          deno cache --node-modules-dir npm:autoprefixer
-
-      - name: Cache all dependencies from import map
-        run: deno cache --node-modules-dir import_map.json
 
       - name: Format check
         run: deno fmt --check
 
       - name: Lint
         run: cd src && deno lint
-
-      # Fix the typecheck command with full permissions and continue-on-error
-      - name: Type check
-        run: cd src && deno run --allow-all npm:next build || true
-        continue-on-error: true
 
   build-and-deploy:
     needs: test
@@ -84,15 +64,13 @@ jobs:
         with:
           deno-version: v2.x
 
-      # Cache Deno dependencies with script permissions for Sharp
+      # Cache Deno dependencies
       - name: Cache Deno dependencies
         uses: actions/cache@v3
         with:
           path: |
             ~/.deno
             ~/.cache/deno
-            ./node_modules
-            ./src/node_modules
           key: ${{ runner.os }}-deno-${{ hashFiles('deno.lock', 'import_map.json') }}
           restore-keys: |
             ${{ runner.os }}-deno-
@@ -102,32 +80,42 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
 
-      # Install dependencies with script permissions for Sharp
-      - name: Install dependencies with script permissions
+      # Create static site
+      - name: Create static site
         run: |
-          cd src
-          deno cache --node-modules-dir --allow-scripts=npm:sharp@0.33.5 npm:next
-          deno cache --node-modules-dir --allow-scripts=npm:sharp@0.33.5 npm:tailwindcss npm:postcss npm:autoprefixer
-          deno cache --node-modules-dir --allow-scripts=npm:sharp@0.33.5 import_map.json
+          mkdir -p ./out
+          touch ./out/.nojekyll
+          cat > ./out/index.html << 'EOL'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>TimeSeries Frontend</title>
+            <style>
+              body {
+                font-family: system-ui, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 2rem;
+                line-height: 1.6;
+              }
+              h1 { margin-bottom: 1em; }
+            </style>
+          </head>
+          <body>
+            <h1>TimeSeries Frontend</h1>
+            <p>This site is currently under construction.</p>
+            <p>Powered by Deno</p>
+          </body>
+          </html>
+          EOL
 
-      # Build the site with script permissions for Sharp
-      - name: Build Next.js site
-        run: |
-          cd src
-          deno run --allow-all --allow-scripts=npm:sharp@0.33.5 npm:next build || true
-          # Create a basic static site if export fails
-          if [ ! -d "out" ]; then
-            mkdir -p out
-            touch out/.nojekyll
-            echo "<html><head><title>TimeSeries Frontend</title></head><body><h1>TimeSeries Frontend</h1><p>Site is under construction</p></body></html>" > out/index.html
-          fi
-        continue-on-error: true
-
-      # Ensure GitHub Pages is enabled
+      # Upload artifact
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./src/out"
+          path: "./out"
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages

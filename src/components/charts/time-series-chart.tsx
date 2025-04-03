@@ -1,53 +1,58 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import * as d3 from "d3"
-import { useTheme } from "next-themes"
+import { useEffect, useRef, useState } from "react";
+import * as d3 from "d3";
+import { useTheme } from "next-themes";
 
-export default function TimeSeriesChart({ data, title = "Time Series", showLegend = false }) {
-  const svgRef = useRef(null)
-  const tooltipRef = useRef(null)
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  const containerRef = useRef(null)
-  const { theme } = useTheme()
+export default function TimeSeriesChart(
+  { data, title = "Time Series", showLegend = false },
+) {
+  const svgRef = useRef(null);
+  const tooltipRef = useRef(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const containerRef = useRef(null);
+  const { theme } = useTheme();
 
   // Handle resize
   useEffect(() => {
     const handleResize = () => {
       if (containerRef.current) {
-        const { width, height } = containerRef.current.getBoundingClientRect()
-        setDimensions({ width, height })
+        const { width, height } = containerRef.current.getBoundingClientRect();
+        setDimensions({ width, height });
       }
-    }
+    };
 
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    handleResize();
+    globalThis.addEventListener("resize", handleResize);
+    return () => globalThis.removeEventListener("resize", handleResize);
+  }, []);
 
   // Create/update chart when data or dimensions change
   useEffect(() => {
-    if (!data || !data.dates || !data.values || data.dates.length === 0 || dimensions.width === 0) return
+    if (
+      !data || !data.dates || !data.values || data.dates.length === 0 ||
+      dimensions.width === 0
+    ) return;
 
     // Convert string dates to Date objects
     const parsedData = data.dates.map((date, i) => ({
       date: new Date(date),
       value: data.values[i],
-    }))
+    }));
 
     // Clear previous chart
-    d3.select(svgRef.current).selectAll("*").remove()
+    d3.select(svgRef.current).selectAll("*").remove();
 
     // Set up margins and dimensions
-    const margin = { top: 20, right: 30, bottom: 50, left: 50 }
-    const width = dimensions.width - margin.left - margin.right
-    const height = dimensions.height - margin.top - margin.bottom
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+    const width = dimensions.width - margin.left - margin.right;
+    const height = dimensions.height - margin.top - margin.bottom;
 
     // Get colors based on theme
-    const gridColor = theme === "dark" ? "#374151" : "#e5e7eb"
-    const textColor = theme === "dark" ? "#e5e7eb" : "#374151"
-    const lineColor = "#2563eb" // blue-600
-    const backgroundColor = theme === "dark" ? "#1f2937" : "#ffffff"
+    const gridColor = theme === "dark" ? "#374151" : "#e5e7eb";
+    const textColor = theme === "dark" ? "#e5e7eb" : "#374151";
+    const lineColor = "#2563eb"; // blue-600
+    const backgroundColor = theme === "dark" ? "#1f2937" : "#ffffff";
 
     // Create SVG
     const svg = d3
@@ -55,26 +60,29 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .attr("width", dimensions.width)
       .attr("height", dimensions.height)
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`)
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Create scales
     const xScale = d3
       .scaleTime()
       .domain(d3.extent(parsedData, (d) => d.date))
-      .range([0, width])
+      .range([0, width]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([d3.min(parsedData, (d) => d.value) * 0.9, d3.max(parsedData, (d) => d.value) * 1.1])
-      .range([height, 0])
+      .domain([
+        d3.min(parsedData, (d) => d.value) * 0.9,
+        d3.max(parsedData, (d) => d.value) * 1.1,
+      ])
+      .range([height, 0]);
 
     // Create axes
     const xAxis = d3
       .axisBottom(xScale)
       .ticks(Math.min(parsedData.length, width > 600 ? 10 : 5))
-      .tickFormat(d3.timeFormat("%b %d"))
+      .tickFormat(d3.timeFormat("%b %d"));
 
-    const yAxis = d3.axisLeft(yScale).ticks(5)
+    const yAxis = d3.axisLeft(yScale).ticks(5);
 
     // Add grid lines
     svg
@@ -84,7 +92,7 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .call(xAxis.tickSize(-height).tickFormat(""))
       .selectAll("line")
       .attr("stroke", gridColor)
-      .attr("stroke-opacity", 0.5)
+      .attr("stroke-opacity", 0.5);
 
     svg
       .append("g")
@@ -92,7 +100,7 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .call(yAxis.tickSize(-width).tickFormat(""))
       .selectAll("line")
       .attr("stroke", gridColor)
-      .attr("stroke-opacity", 0.5)
+      .attr("stroke-opacity", 0.5);
 
     // Add X axis
     svg
@@ -106,10 +114,10 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .attr("dy", ".15em")
       .attr("transform", "rotate(-45)")
       .attr("font-size", "10px")
-      .attr("fill", textColor)
+      .attr("fill", textColor);
 
     // Style X axis
-    svg.selectAll(".x-axis path, .x-axis line").attr("stroke", textColor)
+    svg.selectAll(".x-axis path, .x-axis line").attr("stroke", textColor);
 
     // Add Y axis
     svg
@@ -118,10 +126,10 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .call(yAxis)
       .selectAll("text")
       .attr("font-size", "10px")
-      .attr("fill", textColor)
+      .attr("fill", textColor);
 
     // Style Y axis
-    svg.selectAll(".y-axis path, .y-axis line").attr("stroke", textColor)
+    svg.selectAll(".y-axis path, .y-axis line").attr("stroke", textColor);
 
     // Add axis labels
     svg
@@ -132,7 +140,7 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .attr("y", height + margin.bottom - 5)
       .attr("font-size", "12px")
       .attr("fill", textColor)
-      .text("Date")
+      .text("Date");
 
     svg
       .append("text")
@@ -143,14 +151,14 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .attr("y", -margin.left + 15)
       .attr("font-size", "12px")
       .attr("fill", textColor)
-      .text("Value")
+      .text("Value");
 
     // Create line generator
     const line = d3
       .line()
       .x((d) => xScale(d.date))
       .y((d) => yScale(d.value))
-      .curve(d3.curveMonotoneX)
+      .curve(d3.curveMonotoneX);
 
     // Add the line path with animation
     const path = svg
@@ -159,16 +167,16 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .attr("fill", "none")
       .attr("stroke", lineColor)
       .attr("stroke-width", 2)
-      .attr("d", line)
+      .attr("d", line);
 
     // Animate the line
-    const pathLength = path.node().getTotalLength()
+    const pathLength = path.node().getTotalLength();
     path
       .attr("stroke-dasharray", pathLength)
       .attr("stroke-dashoffset", pathLength)
       .transition()
       .duration(1000)
-      .attr("stroke-dashoffset", 0)
+      .attr("stroke-dashoffset", 0);
 
     // Add dots
     svg
@@ -184,7 +192,7 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .transition()
       .delay((d, i) => i * (1000 / parsedData.length))
       .duration(300)
-      .attr("r", 3)
+      .attr("r", 3);
 
     // Create tooltip
     const tooltip = d3
@@ -199,7 +207,7 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .style("font-size", "12px")
       .style("color", textColor)
       .style("pointer-events", "none")
-      .style("z-index", "10")
+      .style("z-index", "10");
 
     // Add hover interaction
     const hoverLine = svg
@@ -210,7 +218,7 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .style("stroke", textColor)
       .style("stroke-width", 1)
       .style("stroke-dasharray", "3,3")
-      .style("opacity", 0)
+      .style("opacity", 0);
 
     const hoverCircle = svg
       .append("circle")
@@ -219,14 +227,14 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .style("fill", lineColor)
       .style("stroke", backgroundColor)
       .style("stroke-width", 2)
-      .style("opacity", 0)
+      .style("opacity", 0);
 
     // Create Delaunay for better hover detection
     const delaunay = d3.Delaunay.from(
       parsedData,
       (d) => xScale(d.date),
       (d) => yScale(d.value),
-    )
+    );
 
     // Add invisible rect for mouse tracking
     svg
@@ -236,16 +244,20 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
       .style("fill", "none")
       .style("pointer-events", "all")
       .on("mousemove", (event) => {
-        const [mx, my] = d3.pointer(event)
+        const [mx, my] = d3.pointer(event);
 
         // Find the closest point using Delaunay triangulation
-        const index = delaunay.find(mx, my)
-        const d = parsedData[index]
+        const index = delaunay.find(mx, my);
+        const d = parsedData[index];
 
         if (d) {
-          hoverLine.attr("x1", xScale(d.date)).attr("x2", xScale(d.date)).style("opacity", 1)
+          hoverLine.attr("x1", xScale(d.date)).attr("x2", xScale(d.date)).style(
+            "opacity",
+            1,
+          );
 
-          hoverCircle.attr("cx", xScale(d.date)).attr("cy", yScale(d.value)).style("opacity", 1)
+          hoverCircle.attr("cx", xScale(d.date)).attr("cy", yScale(d.value))
+            .style("opacity", 1);
 
           tooltip
             .style("visibility", "visible")
@@ -257,15 +269,15 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
                 <br />
                 <strong>Value:</strong> ${d.value.toFixed(2)}
               </div>
-            `)
+            `);
         }
       })
       .on("mouseleave", () => {
-        hoverLine.style("opacity", 0)
-        hoverCircle.style("opacity", 0)
-        tooltip.style("visibility", "hidden")
-      })
-  }, [data, dimensions, theme])
+        hoverLine.style("opacity", 0);
+        hoverCircle.style("opacity", 0);
+        tooltip.style("visibility", "hidden");
+      });
+  }, [data, dimensions, theme]);
 
   return (
     <div className="w-full h-full">
@@ -280,11 +292,14 @@ export default function TimeSeriesChart({ data, title = "Time Series", showLegen
           </div>
         )}
       </div>
-      <div ref={containerRef} className="w-full h-[calc(100%-30px)]" style={{ minHeight: "300px" }}>
+      <div
+        ref={containerRef}
+        className="w-full h-[calc(100%-30px)]"
+        style={{ minHeight: "300px" }}
+      >
         <svg ref={svgRef} width="100%" height="100%"></svg>
         <div ref={tooltipRef}></div>
       </div>
     </div>
-  )
+  );
 }
-

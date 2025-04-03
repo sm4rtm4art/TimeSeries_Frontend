@@ -1,13 +1,20 @@
-"use client"
+"use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 export default function MetricsTable({ data }) {
   // Find the best model for each metric
-  const bestMape = Math.min(...data.map((item) => item.mape))
-  const bestRmse = Math.min(...data.map((item) => item.rmse))
-  const bestMae = Math.min(...data.map((item) => item.mae))
+  const bestMape = Math.min(...data.map((item) => item.mape));
+  const bestRmse = Math.min(...data.map((item) => item.rmse));
+  const bestMae = Math.min(...data.map((item) => item.mae));
 
   return (
     <div className="rounded-md border">
@@ -27,7 +34,10 @@ export default function MetricsTable({ data }) {
               <TableCell className="text-right">
                 {item.mape.toFixed(2)}
                 {item.mape === bestMape && (
-                  <Badge variant="outline" className="ml-2 bg-green-100 text-green-800">
+                  <Badge
+                    variant="outline"
+                    className="ml-2 bg-green-100 text-green-800"
+                  >
                     Best
                   </Badge>
                 )}
@@ -35,7 +45,10 @@ export default function MetricsTable({ data }) {
               <TableCell className="text-right">
                 {item.rmse.toFixed(2)}
                 {item.rmse === bestRmse && (
-                  <Badge variant="outline" className="ml-2 bg-green-100 text-green-800">
+                  <Badge
+                    variant="outline"
+                    className="ml-2 bg-green-100 text-green-800"
+                  >
                     Best
                   </Badge>
                 )}
@@ -43,7 +56,10 @@ export default function MetricsTable({ data }) {
               <TableCell className="text-right">
                 {item.mae.toFixed(2)}
                 {item.mae === bestMae && (
-                  <Badge variant="outline" className="ml-2 bg-green-100 text-green-800">
+                  <Badge
+                    variant="outline"
+                    className="ml-2 bg-green-100 text-green-800"
+                  >
                     Best
                   </Badge>
                 )}
@@ -53,6 +69,5 @@ export default function MetricsTable({ data }) {
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
-

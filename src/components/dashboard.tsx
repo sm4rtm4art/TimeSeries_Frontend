@@ -1,21 +1,33 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { SidebarProvider, Sidebar, SidebarContent, SidebarHeader, SidebarFooter } from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
-import { BarChart3, Database, LineChart, Settings, TrendingUp } from "lucide-react"
-import DataManagement from "@/components/data-management"
-import ModelConfiguration from "@/components/model-configuration"
-import ModelTraining from "@/components/model-training"
-import ForecastingWorkspace from "@/components/forecasting-workspace"
-import ResultsAnalysis from "@/components/results-analysis"
-import Overview from "@/components/overview"
-import SidebarControls from "@/components/sidebar-controls"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { useState } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarProvider,
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import {
+  BarChart3,
+  Database,
+  LineChart,
+  Settings,
+  TrendingUp,
+} from "lucide-react";
+import DataManagement from "@/components/data-management";
+import ModelConfiguration from "@/components/model-configuration";
+import ModelTraining from "@/components/model-training";
+import ForecastingWorkspace from "@/components/forecasting-workspace";
+import ResultsAnalysis from "@/components/results-analysis";
+import Overview from "@/components/overview";
+import SidebarControls from "@/components/sidebar-controls";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
+  const [activeTab, setActiveTab] = useState("overview");
 
   return (
     <SidebarProvider>
@@ -37,7 +49,11 @@ export default function Dashboard() {
 
         <div className="flex flex-1 flex-col overflow-hidden">
           <header className="flex h-14 items-center border-b px-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <TabsList>
                 <TabsTrigger value="overview">
                   <BarChart3 className="mr-2 h-4 w-4" />
@@ -79,6 +95,5 @@ export default function Dashboard() {
         </div>
       </div>
     </SidebarProvider>
-  )
+  );
 }
-

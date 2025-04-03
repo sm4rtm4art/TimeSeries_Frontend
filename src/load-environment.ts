@@ -1,9 +1,9 @@
 /**
  * Environment loader script
- * 
+ *
  * This script loads environment variables from .env files.
  * Can be run directly or imported in other modules.
- * 
+ *
  * Usage:
  * deno run --allow-read --allow-env --allow-write load-environment.ts [environment]
  */
@@ -16,13 +16,13 @@ async function main() {
     // Get environment from command line args or default to development
     // @ts-ignore - Deno namespace will be available at runtime
     const args = Deno.args;
-    const environment = args[0] || 'development';
-    
+    const environment = args[0] || "development";
+
     console.log(`Loading environment: ${environment}`);
     await loadEnv(environment);
-    console.log('Environment loaded successfully');
+    console.log("Environment loaded successfully");
   } catch (error) {
-    console.error('Failed to load environment:', error);
+    console.error("Failed to load environment:", error);
   }
 }
 
@@ -33,4 +33,4 @@ if (import.meta.main) {
   main().catch(console.error);
 }
 
-export { loadEnv }; 
+export { loadEnv };

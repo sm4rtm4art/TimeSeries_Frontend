@@ -1,15 +1,27 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Slider } from "@/components/ui/slider"
-import { Switch } from "@/components/ui/switch"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import {
   AlertTriangle,
   ArrowRight,
@@ -26,40 +38,50 @@ import {
   Sparkles,
   Wand2,
   XCircle,
-} from "lucide-react"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Progress } from "@/components/ui/progress"
-import TimeSeriesChart from "@/components/charts/time-series-chart"
-import DataQualityAnalysis from "@/components/data-quality-analysis"
-import TimeSeriesDecomposition from "@/components/time-series-decomposition"
+} from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Progress } from "@/components/ui/progress";
+import TimeSeriesChart from "@/components/charts/time-series-chart";
+import DataQualityAnalysis from "@/components/data-quality-analysis";
+import TimeSeriesDecomposition from "@/components/time-series-decomposition";
 
 export default function DataPreparation() {
-  const [activeTab, setActiveTab] = useState("quality")
-  const [selectedTransformation, setSelectedTransformation] = useState("differencing")
-  const [selectedImputation, setSelectedImputation] = useState("linear")
-  const [outlierThreshold, setOutlierThreshold] = useState(2.5)
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [dataQualityScore, setDataQualityScore] = useState(78)
-  const [completenessScore, setCompletenessScore] = useState(85)
-  const [consistencyScore, setConsistencyScore] = useState(92)
-  const [validityScore, setValidityScore] = useState(72)
-  const [timelinessScore, setTimelinessScore] = useState(95)
+  const [activeTab, setActiveTab] = useState("quality");
+  const [selectedTransformation, setSelectedTransformation] = useState(
+    "differencing",
+  );
+  const [selectedImputation, setSelectedImputation] = useState("linear");
+  const [outlierThreshold, setOutlierThreshold] = useState(2.5);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [dataQualityScore, setDataQualityScore] = useState(78);
+  const [completenessScore, setCompletenessScore] = useState(85);
+  const [consistencyScore, setConsistencyScore] = useState(92);
+  const [validityScore, setValidityScore] = useState(72);
+  const [timelinessScore, setTimelinessScore] = useState(95);
 
   // Sample data with issues for visualization
   const originalData = {
-    dates: Array.from({ length: 100 }, (_, i) => new Date(2020, 0, i + 1).toISOString().split("T")[0]),
+    dates: Array.from(
+      { length: 100 },
+      (_, i) => new Date(2020, 0, i + 1).toISOString().split("T")[0],
+    ),
     values: Array.from({ length: 100 }, (_, i) => {
       // Add some outliers
       if (i === 25 || i === 75) {
-        return Math.random() * 200 + 150
+        return Math.random() * 200 + 150;
       }
       // Add some missing values
       if (i === 40 || i === 41 || i === 60) {
-        return Number.NaN
+        return Number.NaN;
       }
-      return Math.sin(i / 10) * 20 + 50 + Math.random() * 5
+      return Math.sin(i / 10) * 20 + 50 + Math.random() * 5;
     }),
-  }
+  };
 
   // Processed data (simulating cleaned data)
   const processedData = {
@@ -67,58 +89,76 @@ export default function DataPreparation() {
     values: originalData.values.map((value, i) => {
       // Fix outliers
       if (i === 25 || i === 75) {
-        return Math.sin(i / 10) * 20 + 50 + Math.random() * 10
+        return Math.sin(i / 10) * 20 + 50 + Math.random() * 10;
       }
       // Fix missing values
       if (i === 40 || i === 41 || i === 60) {
-        return Math.sin(i / 10) * 20 + 50 + Math.random() * 5
+        return Math.sin(i / 10) * 20 + 50 + Math.random() * 5;
       }
-      return value
+      return value;
     }),
-  }
+  };
 
   const handleProcessData = () => {
-    setIsProcessing(true)
+    setIsProcessing(true);
     // Simulate processing delay
     setTimeout(() => {
-      setIsProcessing(false)
+      setIsProcessing(false);
       // Simulate improved data quality score
-      setDataQualityScore(94)
-      setCompletenessScore(100)
-      setValidityScore(92)
-    }, 2000)
-  }
+      setDataQualityScore(94);
+      setCompletenessScore(100);
+      setValidityScore(92);
+    }, 2000);
+  };
 
   const getQualityColor = (score) => {
-    if (score >= 90) return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
-    if (score >= 70) return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
-    if (score >= 50) return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
-    return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100"
-  }
+    if (score >= 90) {
+      return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100";
+    }
+    if (score >= 70) {
+      return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100";
+    }
+    if (score >= 50) {
+      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100";
+    }
+    return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100";
+  };
 
   const getQualityIcon = (score) => {
-    if (score >= 90) return <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-    if (score >= 70) return <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-    if (score >= 50) return <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-    return <XCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
-  }
+    if (score >= 90) {
+      return (
+        <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+      );
+    }
+    if (score >= 70) {
+      return <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />;
+    }
+    if (score >= 50) {
+      return (
+        <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+      );
+    }
+    return <XCircle className="h-5 w-5 text-red-600 dark:text-red-400" />;
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold tracking-tight">Data Preparation</h2>
         <Button onClick={handleProcessData} disabled={isProcessing}>
-          {isProcessing ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            <>
-              <Wand2 className="mr-2 h-4 w-4" />
-              Process Data
-            </>
-          )}
+          {isProcessing
+            ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            )
+            : (
+              <>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Process Data
+              </>
+            )}
         </Button>
       </div>
 
@@ -177,24 +217,36 @@ export default function DataPreparation() {
           <Card>
             <CardHeader>
               <CardTitle>Data Cleaning</CardTitle>
-              <CardDescription>Clean your time series data by handling missing values and outliers</CardDescription>
+              <CardDescription>
+                Clean your time series data by handling missing values and
+                outliers
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-6">
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Missing Value Imputation</h3>
-                    <Select value={selectedImputation} onValueChange={setSelectedImputation}>
+                    <h3 className="text-lg font-medium">
+                      Missing Value Imputation
+                    </h3>
+                    <Select
+                      value={selectedImputation}
+                      onValueChange={setSelectedImputation}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select imputation method" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="linear">Linear Interpolation</SelectItem>
+                        <SelectItem value="linear">
+                          Linear Interpolation
+                        </SelectItem>
                         <SelectItem value="ffill">Forward Fill</SelectItem>
                         <SelectItem value="bfill">Backward Fill</SelectItem>
                         <SelectItem value="mean">Mean Value</SelectItem>
                         <SelectItem value="median">Median Value</SelectItem>
-                        <SelectItem value="seasonal">Seasonal Interpolation</SelectItem>
+                        <SelectItem value="seasonal">
+                          Seasonal Interpolation
+                        </SelectItem>
                         <SelectItem value="knn">KNN Imputation</SelectItem>
                       </SelectContent>
                     </Select>
@@ -208,12 +260,14 @@ export default function DataPreparation() {
                           "Fills missing values with the last known value (carry forward)."}
                         {selectedImputation === "bfill" &&
                           "Fills missing values with the next known value (carry backward)."}
-                        {selectedImputation === "mean" && "Fills missing values with the mean of the entire series."}
+                        {selectedImputation === "mean" &&
+                          "Fills missing values with the mean of the entire series."}
                         {selectedImputation === "median" &&
                           "Fills missing values with the median of the entire series."}
                         {selectedImputation === "seasonal" &&
                           "Fills missing values using seasonal patterns from similar periods."}
-                        {selectedImputation === "knn" && "Fills missing values using K-Nearest Neighbors algorithm."}
+                        {selectedImputation === "knn" &&
+                          "Fills missing values using K-Nearest Neighbors algorithm."}
                       </p>
                     </div>
                   </div>
@@ -221,7 +275,9 @@ export default function DataPreparation() {
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Outlier Treatment</h3>
                     <div className="space-y-2">
-                      <Label>Detection Threshold (Z-score): {outlierThreshold}</Label>
+                      <Label>
+                        Detection Threshold (Z-score): {outlierThreshold}
+                      </Label>
                       <Slider
                         value={[outlierThreshold]}
                         min={1}
@@ -244,20 +300,32 @@ export default function DataPreparation() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="cap">Cap at Threshold</SelectItem>
-                          <SelectItem value="remove">Remove Outliers</SelectItem>
-                          <SelectItem value="mean">Replace with Mean</SelectItem>
-                          <SelectItem value="median">Replace with Median</SelectItem>
-                          <SelectItem value="interpolate">Interpolate</SelectItem>
+                          <SelectItem value="remove">
+                            Remove Outliers
+                          </SelectItem>
+                          <SelectItem value="mean">
+                            Replace with Mean
+                          </SelectItem>
+                          <SelectItem value="median">
+                            Replace with Median
+                          </SelectItem>
+                          <SelectItem value="interpolate">
+                            Interpolate
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Time Series Specific</h3>
+                    <h3 className="text-lg font-medium">
+                      Time Series Specific
+                    </h3>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="frequency-conversion">Frequency Conversion</Label>
+                        <Label htmlFor="frequency-conversion">
+                          Frequency Conversion
+                        </Label>
                         <Switch id="frequency-conversion" />
                       </div>
                       <Select disabled defaultValue="daily">
@@ -275,7 +343,9 @@ export default function DataPreparation() {
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="handle-duplicates">Handle Duplicate Timestamps</Label>
+                        <Label htmlFor="handle-duplicates">
+                          Handle Duplicate Timestamps
+                        </Label>
                         <Switch id="handle-duplicates" defaultChecked />
                       </div>
                     </div>
@@ -285,7 +355,10 @@ export default function DataPreparation() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Data Preview</h3>
                   <div className="flex items-center space-x-2">
-                    <Badge variant="outline" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                    <Badge
+                      variant="outline"
+                      className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+                    >
                       Original
                     </Badge>
                     <ArrowRight className="h-4 w-4 text-muted-foreground" />
@@ -298,10 +371,16 @@ export default function DataPreparation() {
                   </div>
                   <div className="h-[400px] w-full rounded-md border">
                     <div className="h-1/2 border-b">
-                      <TimeSeriesChart data={originalData} title="Original Data" />
+                      <TimeSeriesChart
+                        data={originalData}
+                        title="Original Data"
+                      />
                     </div>
                     <div className="h-1/2">
-                      <TimeSeriesChart data={processedData} title="Cleaned Data" />
+                      <TimeSeriesChart
+                        data={processedData}
+                        title="Cleaned Data"
+                      />
                     </div>
                   </div>
 
@@ -310,11 +389,18 @@ export default function DataPreparation() {
                     <ul className="space-y-1 text-sm">
                       <li className="flex items-center gap-2">
                         <CheckCircle className="h-4 w-4 text-green-600" />
-                        <span>3 missing values imputed using {selectedImputation} method</span>
+                        <span>
+                          3 missing values imputed using {selectedImputation}
+                          {" "}
+                          method
+                        </span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckCircle className="h-4 w-4 text-green-600" />
-                        <span>2 outliers detected and treated (Z-score &gt; {outlierThreshold})</span>
+                        <span>
+                          2 outliers detected and treated (Z-score &gt;{" "}
+                          {outlierThreshold})
+                        </span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckCircle className="h-4 w-4 text-green-600" />
@@ -333,29 +419,41 @@ export default function DataPreparation() {
             <CardHeader>
               <CardTitle>Time Series Transformations</CardTitle>
               <CardDescription>
-                Apply transformations to make your time series more suitable for forecasting
+                Apply transformations to make your time series more suitable for
+                forecasting
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-6">
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Stationarity Transformations</h3>
-                    <Select value={selectedTransformation} onValueChange={setSelectedTransformation}>
+                    <h3 className="text-lg font-medium">
+                      Stationarity Transformations
+                    </h3>
+                    <Select
+                      value={selectedTransformation}
+                      onValueChange={setSelectedTransformation}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select transformation" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="differencing">Differencing</SelectItem>
+                        <SelectItem value="differencing">
+                          Differencing
+                        </SelectItem>
                         <SelectItem value="log">Log Transformation</SelectItem>
-                        <SelectItem value="boxcox">Box-Cox Transformation</SelectItem>
+                        <SelectItem value="boxcox">
+                          Box-Cox Transformation
+                        </SelectItem>
                         <SelectItem value="ma">Moving Average</SelectItem>
                         <SelectItem value="detrend">Detrending</SelectItem>
                       </SelectContent>
                     </Select>
 
                     <div className="rounded-md bg-muted p-4">
-                      <h4 className="mb-2 font-medium">Transformation Description</h4>
+                      <h4 className="mb-2 font-medium">
+                        Transformation Description
+                      </h4>
                       <p className="text-sm text-muted-foreground">
                         {selectedTransformation === "differencing" &&
                           "Computes the difference between consecutive observations to remove trend and make the series stationary."}
@@ -365,7 +463,8 @@ export default function DataPreparation() {
                           "Applies Box-Cox power transformation to normalize data and stabilize variance."}
                         {selectedTransformation === "ma" &&
                           "Smooths the series using moving average to reduce noise and highlight trends."}
-                        {selectedTransformation === "detrend" && "Removes the trend component from the time series."}
+                        {selectedTransformation === "detrend" &&
+                          "Removes the trend component from the time series."}
                       </p>
                     </div>
 
@@ -395,7 +494,12 @@ export default function DataPreparation() {
                     {selectedTransformation === "boxcox" && (
                       <div className="space-y-2">
                         <Label>Lambda: 0.5</Label>
-                        <Slider defaultValue={[0.5]} min={-2} max={2} step={0.1} />
+                        <Slider
+                          defaultValue={[0.5]}
+                          min={-2}
+                          max={2}
+                          step={0.1}
+                        />
                         <div className="flex justify-between text-xs text-muted-foreground">
                           <span>-2.0</span>
                           <span>0.0 (Log)</span>
@@ -407,14 +511,18 @@ export default function DataPreparation() {
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Normalization & Scaling</h3>
+                    <h3 className="text-lg font-medium">
+                      Normalization & Scaling
+                    </h3>
                     <Select defaultValue="standard">
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="minmax">Min-Max Scaling</SelectItem>
-                        <SelectItem value="standard">Standard Scaling</SelectItem>
+                        <SelectItem value="standard">
+                          Standard Scaling
+                        </SelectItem>
                         <SelectItem value="robust">Robust Scaling</SelectItem>
                         <SelectItem value="none">No Scaling</SelectItem>
                       </SelectContent>
@@ -422,15 +530,22 @@ export default function DataPreparation() {
 
                     <div className="flex items-center space-x-2">
                       <Switch id="auto-scale" defaultChecked />
-                      <Label htmlFor="auto-scale">Auto-scale before forecasting</Label>
+                      <Label htmlFor="auto-scale">
+                        Auto-scale before forecasting
+                      </Label>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Transformation Preview</h3>
+                  <h3 className="text-lg font-medium">
+                    Transformation Preview
+                  </h3>
                   <div className="flex items-center space-x-2">
-                    <Badge variant="outline" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                    <Badge
+                      variant="outline"
+                      className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+                    >
                       Original
                     </Badge>
                     <ArrowRight className="h-4 w-4 text-muted-foreground" />
@@ -449,7 +564,9 @@ export default function DataPreparation() {
                     <h4 className="font-medium">Stationarity Test Results</h4>
                     <div className="rounded-md bg-muted p-4">
                       <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium">Augmented Dickey-Fuller Test</span>
+                        <span className="text-sm font-medium">
+                          Augmented Dickey-Fuller Test
+                        </span>
                         <Badge
                           variant="outline"
                           className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
@@ -459,15 +576,21 @@ export default function DataPreparation() {
                       </div>
                       <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">ADF Statistic:</span>
+                          <span className="text-muted-foreground">
+                            ADF Statistic:
+                          </span>
                           <span>-3.89</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">p-value:</span>
+                          <span className="text-muted-foreground">
+                            p-value:
+                          </span>
                           <span>0.002</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Critical Value (1%):</span>
+                          <span className="text-muted-foreground">
+                            Critical Value (1%):
+                          </span>
                           <span>-3.45</span>
                         </div>
                       </div>
@@ -488,7 +611,9 @@ export default function DataPreparation() {
           <Card>
             <CardHeader>
               <CardTitle>Feature Engineering</CardTitle>
-              <CardDescription>Create and manage features to improve forecasting performance</CardDescription>
+              <CardDescription>
+                Create and manage features to improve forecasting performance
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -568,7 +693,11 @@ export default function DataPreparation() {
                           <div className="space-y-2">
                             <Label>Custom lag periods</Label>
                             <div className="flex gap-2">
-                              <Input type="number" placeholder="Lag period" className="w-32" />
+                              <Input
+                                type="number"
+                                placeholder="Lag period"
+                                className="w-32"
+                              />
                               <Button variant="outline" size="sm">
                                 Add
                               </Button>
@@ -576,17 +705,28 @@ export default function DataPreparation() {
                           </div>
 
                           <div className="rounded-md bg-muted p-3">
-                            <h4 className="mb-1 text-sm font-medium">Selected Lags</h4>
+                            <h4 className="mb-1 text-sm font-medium">
+                              Selected Lags
+                            </h4>
                             <div className="flex flex-wrap gap-1">
-                              <Badge variant="secondary" className="flex items-center gap-1">
+                              <Badge
+                                variant="secondary"
+                                className="flex items-center gap-1"
+                              >
                                 Lag 1
                                 <XCircle className="h-3 w-3 cursor-pointer" />
                               </Badge>
-                              <Badge variant="secondary" className="flex items-center gap-1">
+                              <Badge
+                                variant="secondary"
+                                className="flex items-center gap-1"
+                              >
                                 Lag 7
                                 <XCircle className="h-3 w-3 cursor-pointer" />
                               </Badge>
-                              <Badge variant="secondary" className="flex items-center gap-1">
+                              <Badge
+                                variant="secondary"
+                                className="flex items-center gap-1"
+                              >
                                 Lag 14
                                 <XCircle className="h-3 w-3 cursor-pointer" />
                               </Badge>
@@ -645,12 +785,15 @@ export default function DataPreparation() {
 
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                              <Label htmlFor="expanding-window">Use Expanding Window</Label>
+                              <Label htmlFor="expanding-window">
+                                Use Expanding Window
+                              </Label>
                               <Switch id="expanding-window" />
                             </div>
 
                             <div className="text-xs text-muted-foreground">
-                              Expanding window uses all previous data points rather than a fixed window size
+                              Expanding window uses all previous data points
+                              rather than a fixed window size
                             </div>
                           </div>
                         </div>
@@ -677,17 +820,22 @@ export default function DataPreparation() {
                           </div>
 
                           <div className="rounded-md bg-muted p-3">
-                            <h4 className="mb-1 text-sm font-medium">Available Variables</h4>
+                            <h4 className="mb-1 text-sm font-medium">
+                              Available Variables
+                            </h4>
                             <div className="text-xs text-muted-foreground">
                               <code>value</code> - Current value
                               <br />
-                              <code>value.shift(n)</code> - Value from n periods ago
+                              <code>value.shift(n)</code>{" "}
+                              - Value from n periods ago
                               <br />
-                              <code>value.rolling(n).mean()</code> - Rolling mean of n periods
+                              <code>value.rolling(n).mean()</code>{" "}
+                              - Rolling mean of n periods
                               <br />
                               <code>np.log(value)</code> - Natural logarithm
                               <br />
-                              <code>date.month</code>, <code>date.day_of_week</code> - Date components
+                              <code>date.month</code>,{" "}
+                              <code>date.day_of_week</code> - Date components
                             </div>
                           </div>
 
@@ -714,9 +862,15 @@ export default function DataPreparation() {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="weather">Weather Data</SelectItem>
-                                <SelectItem value="economic">Economic Indicators</SelectItem>
-                                <SelectItem value="custom">Custom CSV Upload</SelectItem>
+                                <SelectItem value="weather">
+                                  Weather Data
+                                </SelectItem>
+                                <SelectItem value="economic">
+                                  Economic Indicators
+                                </SelectItem>
+                                <SelectItem value="custom">
+                                  Custom CSV Upload
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -735,7 +889,9 @@ export default function DataPreparation() {
                               </div>
                               <div className="flex items-center space-x-2">
                                 <Switch id="precipitation" defaultChecked />
-                                <Label htmlFor="precipitation">Precipitation</Label>
+                                <Label htmlFor="precipitation">
+                                  Precipitation
+                                </Label>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <Switch id="humidity" />
@@ -775,9 +931,13 @@ export default function DataPreparation() {
                       <table className="w-full text-sm">
                         <thead>
                           <tr className="border-b">
-                            <th className="pb-2 text-left font-medium">Feature Name</th>
+                            <th className="pb-2 text-left font-medium">
+                              Feature Name
+                            </th>
                             <th className="pb-2 text-left font-medium">Type</th>
-                            <th className="pb-2 text-right font-medium">Importance</th>
+                            <th className="pb-2 text-right font-medium">
+                              Importance
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -849,7 +1009,7 @@ export default function DataPreparation() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
 
 function QualityScoreCard({ title, score, icon, colorClass }) {
@@ -868,6 +1028,5 @@ function QualityScoreCard({ title, score, icon, colorClass }) {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-

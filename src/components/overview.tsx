@@ -1,41 +1,65 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, BarChart3, Database, Settings, TrendingUp } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  BarChart3,
+  Database,
+  Settings,
+  TrendingUp,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function Overview() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard Overview</h2>
+        <h2 className="text-3xl font-bold tracking-tight">
+          Dashboard Overview
+        </h2>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Active Models</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Active Models
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">4</div>
-            <p className="text-xs text-muted-foreground">N-BEATS, Prophet, TiDE, TSMixer</p>
+            <p className="text-xs text-muted-foreground">
+              N-BEATS, Prophet, TiDE, TSMixer
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Datasets</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Datasets
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">6</div>
-            <p className="text-xs text-muted-foreground">4 built-in, 2 custom</p>
+            <p className="text-xs text-muted-foreground">
+              4 built-in, 2 custom
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Best Model</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Best Model
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">TiDE</div>
@@ -45,11 +69,15 @@ export default function Overview() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Forecast Horizon</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Forecast Horizon
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">30 days</div>
-            <p className="text-xs text-muted-foreground">Last updated: 2 hours ago</p>
+            <p className="text-xs text-muted-foreground">
+              Last updated: 2 hours ago
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -132,14 +160,16 @@ export default function Overview() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
 
 function ActionCard({ icon, title, description, href }) {
   return (
     <Button variant="outline" className="h-auto justify-start p-4" asChild>
       <a href={href} className="flex flex-col items-start space-y-1">
-        <div className="rounded-full bg-primary/10 p-1.5 text-primary">{icon}</div>
+        <div className="rounded-full bg-primary/10 p-1.5 text-primary">
+          {icon}
+        </div>
         <div className="font-medium">{title}</div>
         <div className="text-xs text-muted-foreground">{description}</div>
         <div className="mt-1 flex items-center text-xs text-primary">
@@ -147,22 +177,22 @@ function ActionCard({ icon, title, description, href }) {
         </div>
       </a>
     </Button>
-  )
+  );
 }
 
 function ActivityItem({ title, description, time, badge }) {
   const getBadgeColor = (type) => {
     switch (type) {
       case "Model":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-100"
+        return "bg-blue-100 text-blue-800 hover:bg-blue-100";
       case "Forecast":
-        return "bg-green-100 text-green-800 hover:bg-green-100"
+        return "bg-green-100 text-green-800 hover:bg-green-100";
       case "Data":
-        return "bg-orange-100 text-orange-800 hover:bg-orange-100"
+        return "bg-orange-100 text-orange-800 hover:bg-orange-100";
       default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-100"
+        return "bg-gray-100 text-gray-800 hover:bg-gray-100";
     }
-  }
+  };
 
   return (
     <div className="flex items-start space-x-3">
@@ -175,6 +205,5 @@ function ActivityItem({ title, description, time, badge }) {
         <p className="text-xs text-muted-foreground">{time}</p>
       </div>
     </div>
-  )
+  );
 }
-

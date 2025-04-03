@@ -16,7 +16,7 @@ jobs:
           deno-version: v2.x
 
       - name: Cache dependencies
-        run: deno cache --reload import_map.json
+        run: deno cache --node-modules-dir=auto --reload import_map.json
 
       - name: Format check
         run: deno fmt --check
@@ -24,7 +24,7 @@ jobs:
       - name: Lint
         run: cd src && deno lint
 
-      - name: Build check
+      - name: Type check
         run: deno task build
 
   deploy:

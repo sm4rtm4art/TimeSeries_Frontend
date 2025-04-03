@@ -3,7 +3,7 @@
  * This prevents SSR errors when accessing browser-specific APIs
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export function useClientOnly<T>(callback: () => T, initialValue: T): T {
   const [value, setValue] = useState<T>(initialValue);
@@ -20,4 +20,4 @@ export function useIsMounted(): boolean {
   return useClientOnly(() => true, false);
 }
 
-export default useClientOnly; 
+export default useClientOnly;

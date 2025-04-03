@@ -1,26 +1,31 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import * as Plot from "@observablehq/plot"
+import { useEffect, useRef } from "react";
+import * as Plot from "@observablehq/plot";
 
 export default function ResidualAnalysisChart() {
-  const containerRef = useRef()
+  const containerRef = useRef();
 
   useEffect(() => {
     // Generate sample data for residual analysis
-    const n = 200
+    const n = 200;
 
     // Generate fitted values (predictions)
-    const fittedValues = Array.from({ length: n }, () => Math.random() * 100 + 50)
+    const fittedValues = Array.from(
+      { length: n },
+      () => Math.random() * 100 + 50,
+    );
 
     // Generate residuals with some correlation to fitted values
-    const residuals = fittedValues.map((val) => Math.random() * 20 - 10 + (val - 75) * 0.05)
+    const residuals = fittedValues.map((val) =>
+      Math.random() * 20 - 10 + (val - 75) * 0.05
+    );
 
     // Create data points for plotting
     const dataPoints = fittedValues.map((fitted, i) => ({
       fitted,
       residual: residuals[i],
-    }))
+    }));
 
     // Create the plot
     const chart = Plot.plot({
@@ -63,16 +68,16 @@ export default function ResidualAnalysisChart() {
           strokeWidth: 2,
         }),
       ],
-    })
+    });
 
     if (containerRef.current) {
       // Clear previous chart if any
-      containerRef.current.innerHTML = ""
-      containerRef.current.append(chart)
+      containerRef.current.innerHTML = "";
+      containerRef.current.append(chart);
     }
 
-    return () => chart.remove()
-  }, [])
+    return () => chart.remove();
+  }, []);
 
   return (
     <div className="w-full h-full">
@@ -89,6 +94,5 @@ export default function ResidualAnalysisChart() {
         </ul>
       </div>
     </div>
-  )
+  );
 }
-

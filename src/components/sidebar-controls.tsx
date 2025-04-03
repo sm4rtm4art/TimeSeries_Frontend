@@ -1,37 +1,43 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Slider } from "@/components/ui/slider"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Play, RefreshCw } from "lucide-react"
-import { SimpleLoadingSpinner } from "@/components/ui/loading-indicators"
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Slider } from "@/components/ui/slider";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Play, RefreshCw } from "lucide-react";
+import { SimpleLoadingSpinner } from "@/components/ui/loading-indicators";
 
 export default function SidebarControls() {
-  const [testSize, setTestSize] = useState(20)
-  const [selectedModel, setSelectedModel] = useState("all")
-  const [modelSize, setModelSize] = useState("medium")
-  const [isTraining, setIsTraining] = useState(false)
-  const [isGenerating, setIsGenerating] = useState(false)
+  const [testSize, setTestSize] = useState(20);
+  const [selectedModel, setSelectedModel] = useState("all");
+  const [modelSize, setModelSize] = useState("medium");
+  const [isTraining, setIsTraining] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleTrainModel = () => {
-    setIsTraining(true)
+    setIsTraining(true);
     // Simulate API call
     setTimeout(() => {
-      setIsTraining(false)
-    }, 3000)
-  }
+      setIsTraining(false);
+    }, 3000);
+  };
 
   const handleGenerateForecast = () => {
-    setIsGenerating(true)
+    setIsGenerating(true);
     // Simulate API call
     setTimeout(() => {
-      setIsGenerating(false)
-    }, 2000)
-  }
+      setIsGenerating(false);
+    }, 2000);
+  };
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -40,7 +46,13 @@ export default function SidebarControls() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Test Set Size: {testSize}%</Label>
-              <Slider value={[testSize]} min={10} max={40} step={1} onValueChange={(value) => setTestSize(value[0])} />
+              <Slider
+                value={[testSize]}
+                min={10}
+                max={40}
+                step={1}
+                onValueChange={(value) => setTestSize(value[0])}
+              />
             </div>
 
             <div className="space-y-2">
@@ -85,34 +97,46 @@ export default function SidebarControls() {
       </Card>
 
       <div className="flex flex-col gap-2">
-        <Button className="w-full" onClick={handleTrainModel} disabled={isTraining}>
-          {isTraining ? (
-            <>
-              <SimpleLoadingSpinner className="mr-2 h-4 w-4" />
-              Training...
-            </>
-          ) : (
-            <>
-              <Play className="mr-2 h-4 w-4" />
-              Train Model
-            </>
-          )}
+        <Button
+          className="w-full"
+          onClick={handleTrainModel}
+          disabled={isTraining}
+        >
+          {isTraining
+            ? (
+              <>
+                <SimpleLoadingSpinner className="mr-2 h-4 w-4" />
+                Training...
+              </>
+            )
+            : (
+              <>
+                <Play className="mr-2 h-4 w-4" />
+                Train Model
+              </>
+            )}
         </Button>
-        <Button variant="outline" className="w-full" onClick={handleGenerateForecast} disabled={isGenerating}>
-          {isGenerating ? (
-            <>
-              <SimpleLoadingSpinner className="mr-2 h-4 w-4" />
-              Generating...
-            </>
-          ) : (
-            <>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Generate Forecast
-            </>
-          )}
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={handleGenerateForecast}
+          disabled={isGenerating}
+        >
+          {isGenerating
+            ? (
+              <>
+                <SimpleLoadingSpinner className="mr-2 h-4 w-4" />
+                Generating...
+              </>
+            )
+            : (
+              <>
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Generate Forecast
+              </>
+            )}
         </Button>
       </div>
     </div>
-  )
+  );
 }
-

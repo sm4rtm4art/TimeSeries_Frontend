@@ -2,9 +2,9 @@
 export default {
   darkMode: ["class"],
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './lib/**/*.{js,ts,jsx,tsx,mdx}',
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     container: {
@@ -73,6 +73,6 @@ export default {
   },
   plugins: [
     // Import tailwindcss-animate statically
-    { handler: function() {} }
+    { handler: function () {} },
   ],
-} 
+};

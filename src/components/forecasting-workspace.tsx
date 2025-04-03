@@ -1,38 +1,76 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Slider } from "@/components/ui/slider"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { Play, RefreshCw } from 'lucide-react'
-import TimeSeriesChart from "@/components/charts/time-series-chart"
-import ForecastChart from "@/components/charts/forecast-chart"
-import ModelComparisonChart from "@/components/charts/model-comparison-chart"
-import { ForecastLoadingIndicator, SimpleLoadingSpinner } from "@/components/ui/loading-indicators"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Play, RefreshCw } from "lucide-react";
+import TimeSeriesChart from "@/components/charts/time-series-chart";
+import ForecastChart from "@/components/charts/forecast-chart";
+import ModelComparisonChart from "@/components/charts/model-comparison-chart";
+import {
+  ForecastLoadingIndicator,
+  SimpleLoadingSpinner,
+} from "@/components/ui/loading-indicators";
 
 export default function ForecastingWorkspace() {
-  const [forecastHorizon, setForecastHorizon] = useState(30)
-  const [confidenceInterval, setConfidenceInterval] = useState(95)
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [activeModels, setActiveModels] = useState(["N-BEATS", "Prophet", "TiDE", "TSMixer"])
+  const [forecastHorizon, setForecastHorizon] = useState(30);
+  const [confidenceInterval, setConfidenceInterval] = useState(95);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [activeModels, setActiveModels] = useState([
+    "N-BEATS",
+    "Prophet",
+    "TiDE",
+    "TSMixer",
+  ]);
 
   // Sample data for visualization
   const historicalData = {
-    dates: Array.from({ length: 100 }, (_, i) => new Date(2020, 0, i + 1).toISOString().split("T")[0]),
-    values: Array.from({ length: 100 }, (_, i) => Math.sin(i / 10) * 20 + 50 + Math.random() * 5),
-  }
+    dates: Array.from(
+      { length: 100 },
+      (_, i) => new Date(2020, 0, i + 1).toISOString().split("T")[0],
+    ),
+    values: Array.from(
+      { length: 100 },
+      (_, i) => Math.sin(i / 10) * 20 + 50 + Math.random() * 5,
+    ),
+  };
 
   const forecastData = {
-    dates: Array.from({ length: forecastHorizon }, (_, i) => new Date(2020, 0, 101 + i).toISOString().split("T")[0]),
-    values: Array.from({ length: forecastHorizon }, (_, i) => Math.sin((100 + i) / 10) * 20 + 50 + Math.random() * 10),
-    upper: Array.from({ length: forecastHorizon }, (_, i) => Math.sin((100 + i) / 10) * 20 + 50 + 15),
-    lower: Array.from({ length: forecastHorizon }, (_, i) => Math.sin((100 + i) / 10) * 20 + 50 - 15),
-  }
+    dates: Array.from(
+      { length: forecastHorizon },
+      (_, i) => new Date(2020, 0, 101 + i).toISOString().split("T")[0],
+    ),
+    values: Array.from(
+      { length: forecastHorizon },
+      (_, i) => Math.sin((100 + i) / 10) * 20 + 50 + Math.random() * 10,
+    ),
+    upper: Array.from(
+      { length: forecastHorizon },
+      (_, i) => Math.sin((100 + i) / 10) * 20 + 50 + 15,
+    ),
+    lower: Array.from(
+      { length: forecastHorizon },
+      (_, i) => Math.sin((100 + i) / 10) * 20 + 50 - 15,
+    ),
+  };
 
   // Sample model comparison data
   const modelComparisonData = {
@@ -43,98 +81,106 @@ export default function ForecastingWorkspace() {
         color: "#2563eb", // blue-600
         values: [
           ...historicalData.values,
-          ...Array.from({ length: forecastHorizon }, (_, i) => 
-            Math.sin((100 + i) / 10) * 20 + 50 + Math.random() * 8
-          )
-        ]
+          ...Array.from(
+            { length: forecastHorizon },
+            (_, i) => Math.sin((100 + i) / 10) * 20 + 50 + Math.random() * 8,
+          ),
+        ],
       },
       {
         name: "Prophet",
         color: "#16a34a", // green-600
         values: [
           ...historicalData.values,
-          ...Array.from({ length: forecastHorizon }, (_, i) => 
-            Math.sin((100 + i) / 10) * 20 + 52 + Math.random() * 8
-          )
-        ]
+          ...Array.from(
+            { length: forecastHorizon },
+            (_, i) => Math.sin((100 + i) / 10) * 20 + 52 + Math.random() * 8,
+          ),
+        ],
       },
       {
         name: "TiDE",
         color: "#ea580c", // orange-600
         values: [
           ...historicalData.values,
-          ...Array.from({ length: forecastHorizon }, (_, i) => 
-            Math.sin((100 + i) / 10) * 20 + 48 + Math.random() * 8
-          )
-        ]
+          ...Array.from(
+            { length: forecastHorizon },
+            (_, i) => Math.sin((100 + i) / 10) * 20 + 48 + Math.random() * 8,
+          ),
+        ],
       },
       {
         name: "TSMixer",
         color: "#9333ea", // purple-600
         values: [
           ...historicalData.values,
-          ...Array.from({ length: forecastHorizon }, (_, i) => 
-            Math.sin((100 + i) / 10) * 20 + 46 + Math.random() * 8
-          )
-        ]
-      }
-    ]
-  }
+          ...Array.from(
+            { length: forecastHorizon },
+            (_, i) => Math.sin((100 + i) / 10) * 20 + 46 + Math.random() * 8,
+          ),
+        ],
+      },
+    ],
+  };
 
   const handleGenerateForecast = () => {
-    setIsGenerating(true)
+    setIsGenerating(true);
     // Simulate API call
     setTimeout(() => {
-      setIsGenerating(false)
-    }, 3000)
-  }
+      setIsGenerating(false);
+    }, 3000);
+  };
 
   const toggleModel = (modelName) => {
-    setActiveModels(prev => 
-      prev.includes(modelName) 
-        ? prev.filter(m => m !== modelName) 
+    setActiveModels((prev) =>
+      prev.includes(modelName)
+        ? prev.filter((m) => m !== modelName)
         : [...prev, modelName]
-    )
-  }
+    );
+  };
 
   const getModelBadgeClass = (modelName) => {
-    const isActive = activeModels.includes(modelName)
-    
-    switch(modelName) {
+    const isActive = activeModels.includes(modelName);
+
+    switch (modelName) {
       case "N-BEATS":
-        return isActive 
-          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 border-blue-300 dark:border-blue-700" 
-          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50"
+        return isActive
+          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 border-blue-300 dark:border-blue-700"
+          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50";
       case "Prophet":
-        return isActive 
-          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 border-green-300 dark:border-green-700" 
-          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50"
+        return isActive
+          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 border-green-300 dark:border-green-700"
+          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50";
       case "TiDE":
-        return isActive 
-          ? "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100 border-orange-300 dark:border-orange-700" 
-          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50"
+        return isActive
+          ? "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100 border-orange-300 dark:border-orange-700"
+          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50";
       case "TSMixer":
-        return isActive 
-          ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100 border-purple-300 dark:border-purple-700" 
-          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50"
+        return isActive
+          ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100 border-purple-300 dark:border-purple-700"
+          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50";
       default:
-        return isActive 
-          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100" 
-          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50"
+        return isActive
+          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 opacity-50";
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">Forecasting Workspace</h2>
+        <h2 className="text-3xl font-bold tracking-tight">
+          Forecasting Workspace
+        </h2>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <Card className="md:col-span-1">
           <CardHeader>
             <CardTitle>Forecast Settings</CardTitle>
-            <CardDescription>Configure your forecast parameters</CardDescription>
+            <CardDescription>
+              Configure your forecast parameters
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
@@ -167,7 +213,9 @@ export default function ForecastingWorkspace() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="point">Point Forecast</SelectItem>
-                  <SelectItem value="probabilistic">Probabilistic Forecast</SelectItem>
+                  <SelectItem value="probabilistic">
+                    Probabilistic Forecast
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -189,18 +237,24 @@ export default function ForecastingWorkspace() {
               </Select>
             </div>
 
-            <Button className="w-full" onClick={handleGenerateForecast} disabled={isGenerating}>
-              {isGenerating ? (
-                <>
-                  <SimpleLoadingSpinner className="mr-2 h-4 w-4" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Play className="mr-2 h-4 w-4" />
-                  Generate Forecast
-                </>
-              )}
+            <Button
+              className="w-full"
+              onClick={handleGenerateForecast}
+              disabled={isGenerating}
+            >
+              {isGenerating
+                ? (
+                  <>
+                    <SimpleLoadingSpinner className="mr-2 h-4 w-4" />
+                    Generating...
+                  </>
+                )
+                : (
+                  <>
+                    <Play className="mr-2 h-4 w-4" />
+                    Generate Forecast
+                  </>
+                )}
             </Button>
           </CardContent>
         </Card>
@@ -209,22 +263,25 @@ export default function ForecastingWorkspace() {
           <CardHeader>
             <CardTitle>Forecast Visualization</CardTitle>
             <CardDescription>
-              Historical data and forecast with {confidenceInterval}% confidence interval
+              Historical data and forecast with{" "}
+              {confidenceInterval}% confidence interval
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[400px] w-full">
-              {isGenerating ? (
-                <div className="flex h-full items-center justify-center">
-                  <ForecastLoadingIndicator />
-                </div>
-              ) : (
-                <ForecastChart
-                  historicalData={historicalData}
-                  forecastData={forecastData}
-                  confidenceInterval={confidenceInterval}
-                />
-              )}
+              {isGenerating
+                ? (
+                  <div className="flex h-full items-center justify-center">
+                    <ForecastLoadingIndicator />
+                  </div>
+                )
+                : (
+                  <ForecastChart
+                    historicalData={historicalData}
+                    forecastData={forecastData}
+                    confidenceInterval={confidenceInterval}
+                  />
+                )}
             </div>
           </CardContent>
         </Card>
@@ -241,34 +298,39 @@ export default function ForecastingWorkspace() {
           <Card>
             <CardHeader>
               <CardTitle>Model Comparison</CardTitle>
-              <CardDescription>Compare forecasts from different models</CardDescription>
+              <CardDescription>
+                Compare forecasts from different models
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-4 flex flex-wrap gap-2">
-                {modelComparisonData.models.map(model => (
-                  <Badge 
+                {modelComparisonData.models.map((model) => (
+                  <Badge
                     key={model.name}
-                    variant="outline" 
-                    className={`cursor-pointer ${getModelBadgeClass(model.name)}`}
+                    variant="outline"
+                    className={`cursor-pointer ${
+                      getModelBadgeClass(model.name)
+                    }`}
                     onClick={() => toggleModel(model.name)}
                   >
-                    <span 
-                      className="mr-1.5 inline-block h-2 w-2 rounded-full" 
+                    <span
+                      className="mr-1.5 inline-block h-2 w-2 rounded-full"
                       style={{ backgroundColor: model.color }}
-                    ></span>
+                    >
+                    </span>
                     {model.name}
                   </Badge>
                 ))}
               </div>
               <div className="h-[300px] w-full">
-                <ModelComparisonChart 
+                <ModelComparisonChart
                   dates={modelComparisonData.dates}
                   models={modelComparisonData.models}
                   activeModels={activeModels}
                   onToggleModel={toggleModel}
                 />
               </div>
-              
+
               <div className="mt-6 rounded-md border p-4">
                 <h4 className="mb-3 font-medium">Model Performance Metrics</h4>
                 <div className="overflow-x-auto">
@@ -282,10 +344,15 @@ export default function ForecastingWorkspace() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className={`border-b ${!activeModels.includes("N-BEATS") ? "opacity-50" : ""}`}>
+                      <tr
+                        className={`border-b ${
+                          !activeModels.includes("N-BEATS") ? "opacity-50" : ""
+                        }`}
+                      >
                         <td className="py-2">
                           <div className="flex items-center">
-                            <span className="mr-2 h-2 w-2 rounded-full bg-blue-600"></span>
+                            <span className="mr-2 h-2 w-2 rounded-full bg-blue-600">
+                            </span>
                             N-BEATS
                           </div>
                         </td>
@@ -293,10 +360,15 @@ export default function ForecastingWorkspace() {
                         <td className="py-2 text-right">12.45</td>
                         <td className="py-2 text-right">9.87</td>
                       </tr>
-                      <tr className={`border-b ${!activeModels.includes("Prophet") ? "opacity-50" : ""}`}>
+                      <tr
+                        className={`border-b ${
+                          !activeModels.includes("Prophet") ? "opacity-50" : ""
+                        }`}
+                      >
                         <td className="py-2">
                           <div className="flex items-center">
-                            <span className="mr-2 h-2 w-2 rounded-full bg-green-600"></span>
+                            <span className="mr-2 h-2 w-2 rounded-full bg-green-600">
+                            </span>
                             Prophet
                           </div>
                         </td>
@@ -304,10 +376,15 @@ export default function ForecastingWorkspace() {
                         <td className="py-2 text-right">15.21</td>
                         <td className="py-2 text-right">11.34</td>
                       </tr>
-                      <tr className={`border-b ${!activeModels.includes("TiDE") ? "opacity-50" : ""}`}>
+                      <tr
+                        className={`border-b ${
+                          !activeModels.includes("TiDE") ? "opacity-50" : ""
+                        }`}
+                      >
                         <td className="py-2">
                           <div className="flex items-center">
-                            <span className="mr-2 h-2 w-2 rounded-full bg-orange-600"></span>
+                            <span className="mr-2 h-2 w-2 rounded-full bg-orange-600">
+                            </span>
                             TiDE
                           </div>
                         </td>
@@ -315,10 +392,15 @@ export default function ForecastingWorkspace() {
                         <td className="py-2 text-right">11.76</td>
                         <td className="py-2 text-right">8.92</td>
                       </tr>
-                      <tr className={`${!activeModels.includes("TSMixer") ? "opacity-50" : ""}`}>
+                      <tr
+                        className={`${
+                          !activeModels.includes("TSMixer") ? "opacity-50" : ""
+                        }`}
+                      >
                         <td className="py-2">
                           <div className="flex items-center">
-                            <span className="mr-2 h-2 w-2 rounded-full bg-purple-600"></span>
+                            <span className="mr-2 h-2 w-2 rounded-full bg-purple-600">
+                            </span>
                             TSMixer
                           </div>
                         </td>
@@ -338,7 +420,9 @@ export default function ForecastingWorkspace() {
           <Card>
             <CardHeader>
               <CardTitle>What-If Scenarios</CardTitle>
-              <CardDescription>Explore different forecast scenarios</CardDescription>
+              <CardDescription>
+                Explore different forecast scenarios
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -378,7 +462,7 @@ export default function ForecastingWorkspace() {
                       values: historicalData.values.concat(forecastData.values),
                     }}
                     title="Scenario Comparison"
-                    showLegend={true}
+                    showLegend
                   />
                 </div>
               </div>
@@ -507,6 +591,5 @@ export default function ForecastingWorkspace() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
-

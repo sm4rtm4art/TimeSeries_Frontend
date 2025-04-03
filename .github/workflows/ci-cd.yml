@@ -6,6 +6,17 @@ on:
   pull_request:
     branches: [main]
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -91,17 +102,25 @@ jobs:
       - name: Cache all dependencies from import map
         run: deno cache --node-modules-dir import_map.json
 
-      # Fix the build command with full permissions and continue-on-error
-      - name: Build
-        run: cd src && deno run --allow-all npm:next build || true
+      # Setup Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      # Build with Next.js export
+      - name: Build with export
+        run: |
+          cd src
+          deno run --allow-all npm:next build || true
+          deno run --allow-all npm:next export || true
         continue-on-error: true
 
-      # Add your deployment steps here
-      # For example:
-      # - name: Deploy to Deno Deploy
-      #   uses: denoland/deployctl@v1
-      #   with:
-      #     project: your-project
-      #     entrypoint: ./src/entrypoint.ts
-      #     root: .
-      #     token: ${{ secrets.DENO_DEPLOY_TOKEN }}
+      # Upload artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: "./src/out"
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

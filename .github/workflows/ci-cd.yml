@@ -11,9 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v2.x
+
+      # Cache Deno dependencies
+      - name: Cache Deno dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.deno
+            ~/.cache/deno
+            ./node_modules
+            ./src/node_modules
+          key: ${{ runner.os }}-deno-${{ hashFiles('deno.lock', 'import_map.json') }}
+          restore-keys: |
+            ${{ runner.os }}-deno-
 
       # Set up node_modules for Next.js and dependencies
       - name: Cache Next.js
@@ -46,9 +60,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v2.x
+
+      # Cache Deno dependencies
+      - name: Cache Deno dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.deno
+            ~/.cache/deno
+            ./node_modules
+            ./src/node_modules
+          key: ${{ runner.os }}-deno-${{ hashFiles('deno.lock', 'import_map.json') }}
+          restore-keys: |
+            ${{ runner.os }}-deno-
 
       # Set up node_modules for Next.js and dependencies
       - name: Cache Next.js

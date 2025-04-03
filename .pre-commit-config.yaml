@@ -1,3 +1,6 @@
+default_stages: [pre-commit, pre-push]
+fail_fast: true
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -5,15 +8,18 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
       - id: check-added-large-files
       - id: check-case-conflict
       - id: check-merge-conflict
+      - id: detect-private-key
+        stages: [pre-commit, pre-push]
 
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.3.3'
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.2
     hooks:
-      - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
+      - id: gitleaks
+        stages: [pre-commit, pre-push]
 
   - repo: local
     hooks:
@@ -24,7 +30,8 @@ repos:
         language: system
         types_or: [javascript, jsx, ts, tsx]
         pass_filenames: true
-      
+        stages: [pre-commit]
+
       - id: deno-lint
         name: Deno Linter
         description: Lint code with Deno
@@ -32,11 +39,13 @@ repos:
         language: system
         types_or: [javascript, jsx, ts, tsx]
         pass_filenames: true
-        
+        stages: [pre-commit]
+
       - id: deno-check
         name: Deno Type Check
         description: Type check Deno files
         entry: bash -c 'for file in "$@"; do echo "Checking $file..."; deno check --unstable "$file" || exit 1; done' --
         language: system
         types_or: [javascript, jsx, ts, tsx]
-        pass_filenames: true 
+        pass_filenames: true
+        stages: [pre-commit]

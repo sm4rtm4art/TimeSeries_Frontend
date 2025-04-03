@@ -27,6 +27,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Debug environment
+      - name: Debug Environment
+        run: |
+          echo "GitHub Runner Environment:"
+          echo "------------------------"
+          echo "GitHub workspace: $GITHUB_WORKSPACE"
+          echo "GitHub workflow: $GITHUB_WORKFLOW"
+          echo "GitHub run ID: $GITHUB_RUN_ID"
+          echo "GitHub actor: $GITHUB_ACTOR"
+          echo "------------------------"
+          echo "Directory structure:"
+          ls -la
+
       # Create minimal static site
       - name: Create static site
         run: |
@@ -38,11 +51,30 @@ jobs:
           echo "Contents of ./out directory:"
           ls -la ./out
 
+      # Test artifact preparation - manually create artifact for debug
+      - name: Test Artifact Creation
+        run: |
+          echo "Creating test artifact..."
+          tar -cvf artifact.tar ./out
+          echo "Artifact created:"
+          ls -la artifact.tar
+          echo "Content of artifact:"
+          tar -tvf artifact.tar
+
+      # Try directly with upload artifact
+      - name: Upload artifact directly
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-pages
+          path: ./out
+          retention-days: 1
+
       # Upload the build output - use v3 as v4 is not resolved
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./out"
+          name: "github-pages"
 
   # Deployment job
   deploy:

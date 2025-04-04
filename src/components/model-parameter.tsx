@@ -23,8 +23,8 @@ import { Info } from "lucide-react";
 
 interface ModelParameterProps {
   parameter: ModelParameter;
-  value: any;
-  onChange: (value: any) => void;
+  value: string | number | boolean | null | undefined;
+  onChange: (value: string | number | boolean) => void;
 }
 
 export default function ModelParameterComponent({
@@ -33,16 +33,22 @@ export default function ModelParameterComponent({
   onChange,
 }: ModelParameterProps) {
   // Use parameter's default value if no value is provided
-  const paramValue = value !== undefined ? value : parameter.defaultValue;
+  const paramValue = value !== undefined && value !== null
+    ? value
+    : parameter.defaultValue;
 
   const renderParameterInput = () => {
     switch (parameter.type) {
       case "boolean":
+        // Ensure boolean type
+        const boolValue = typeof paramValue === "boolean"
+          ? paramValue
+          : Boolean(paramValue);
         return (
           <div className="flex items-center space-x-2">
             <Switch
               id={parameter.id}
-              checked={paramValue}
+              checked={boolValue}
               onCheckedChange={onChange}
             />
             <Label htmlFor={parameter.id}>{parameter.name}</Label>
@@ -50,6 +56,10 @@ export default function ModelParameterComponent({
         );
 
       case "number":
+        // Ensure number type
+        const numValue = typeof paramValue === "number"
+          ? paramValue
+          : Number(paramValue) || 0;
         return (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -73,32 +83,48 @@ export default function ModelParameterComponent({
               min={parameter.min}
               max={parameter.max}
               step={parameter.step}
-              value={paramValue}
+              value={numValue}
               onChange={(e) => onChange(parseFloat(e.target.value))}
             />
           </div>
         );
 
       case "string":
+        // Ensure string type
+        const strValue = typeof paramValue === "string"
+          ? paramValue
+          : String(paramValue || "");
         return (
           <div className="space-y-2">
             <Label htmlFor={parameter.id}>{parameter.name}</Label>
             <Input
               id={parameter.id}
               type="text"
-              value={paramValue}
+              value={strValue}
               onChange={(e) => onChange(e.target.value)}
             />
           </div>
         );
 
       case "select":
+        // Ensure string type for select value
+        const selectValue = paramValue !== null ? String(paramValue) : "";
         return (
           <div className="space-y-2">
             <Label htmlFor={parameter.id}>{parameter.name}</Label>
             <Select
-              value={paramValue.toString()}
-              onValueChange={onChange}
+              value={selectValue}
+              onValueChange={(val) => {
+                // Convert to appropriate type based on options
+                const option = parameter.options?.find((opt) =>
+                  String(opt.value) === val
+                );
+                if (option) {
+                  onChange(option.value);
+                } else {
+                  onChange(val);
+                }
+              }}
             >
               <SelectTrigger id={parameter.id}>
                 <SelectValue />
@@ -106,8 +132,8 @@ export default function ModelParameterComponent({
               <SelectContent>
                 {parameter.options?.map((option) => (
                   <SelectItem
-                    key={option.value}
-                    value={option.value.toString()}
+                    key={String(option.value)}
+                    value={String(option.value)}
                   >
                     {option.label}
                   </SelectItem>
@@ -118,12 +144,16 @@ export default function ModelParameterComponent({
         );
 
       case "slider":
+        // Ensure number type for slider
+        const sliderValue = typeof paramValue === "number"
+          ? paramValue
+          : Number(paramValue) || 0;
         return (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor={parameter.id}>{parameter.name}</Label>
               <span className="text-sm text-muted-foreground">
-                {paramValue}
+                {sliderValue}
               </span>
             </div>
             <Slider
@@ -131,7 +161,7 @@ export default function ModelParameterComponent({
               min={parameter.min}
               max={parameter.max}
               step={parameter.step}
-              value={[paramValue]}
+              value={[sliderValue]}
               onValueChange={(values) => onChange(values[0])}
             />
             {parameter.min !== undefined && parameter.max !== undefined && (

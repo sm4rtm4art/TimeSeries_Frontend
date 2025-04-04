@@ -4,6 +4,7 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 echo -e "${YELLOW}Fixing linting issues in the project${NC}"
@@ -47,6 +48,31 @@ if [ $LINT_EXIT_CODE -ne 0 ]; then
   echo -e "1. Replace 'any' types with more specific types"
   echo -e "2. Add 'await' statements to async functions or remove 'async'"
   echo -e "3. Add type='button' attributes to button elements"
+
+  echo -e "\n${YELLOW}Example approaches for fixing 'any' type issues:${NC}"
+  echo -e "${BLUE}Example 1: Instead of:${NC}"
+  echo -e "  value: any;"
+  echo -e "${BLUE}Use:${NC}"
+  echo -e "  value: string | number | boolean | null | undefined;"
+
+  echo -e "\n${BLUE}Example 2: Instead of:${NC}"
+  echo -e "  function processData(data: any): any { ... }"
+  echo -e "${BLUE}Use:${NC}"
+  echo -e "  function processData(data: Record<string, unknown>): { result: string; status: number } { ... }"
+
+  echo -e "\n${BLUE}Example 3: For API responses, create proper interfaces:${NC}"
+  echo -e "  interface ApiResponse<T> {"
+  echo -e "    data: T;"
+  echo -e "    status: number;"
+  echo -e "    message: string;"
+  echo -e "  }"
+
+  echo -e "\n${BLUE}Example 4: For React onChange handlers:${NC}"
+  echo -e "  Instead of: onChange: (value: any) => void;"
+  echo -e "  Use: onChange: (value: string | number | boolean) => void;"
+
+  echo -e "\n${BLUE}Example 5: For component value handling, use type guards:${NC}"
+  echo -e "  const numValue = typeof paramValue === 'number' ? paramValue : Number(paramValue) || 0;"
 
   echo -e "\n${YELLOW}Specific files requiring manual attention:${NC}"
   FILES_WITH_ANY=$(echo "$LINT_OUTPUT" | grep "no-explicit-any" | awk -F '"filename": "' '{print $2}' | awk -F '",' '{print $1}' | sort | uniq | sed 's|file:///||')

@@ -1,7 +1,7 @@
 # Time Series Forecasting Platform Refactoring Plan
 
-> **👋 GOOD MORNING PROMPT:**
-> Today, focus on implementing the highest priority tasks:
+> **👋 GOOD MORNING PROMPT:** Today, focus on implementing the highest priority
+> tasks:
 >
 > 1. Start with defining core TypeScript interfaces for models and parameters
 > 2. Implement the model registry using the Factory pattern
@@ -18,16 +18,22 @@
 
 ## Overview
 
-This document outlines the refactoring plan for transforming the current time series forecasting platform from hardcoded components to a flexible, extensible architecture. The goal is to enable easy addition of new models, parameters, and visualizations while maintaining a consistent UI and user experience.
+This document outlines the refactoring plan for transforming the current time
+series forecasting platform from hardcoded components to a flexible, extensible
+architecture. The goal is to enable easy addition of new models, parameters, and
+visualizations while maintaining a consistent UI and user experience.
 
 ## Current Issues
 
-1. **Hardcoded Models**: Models like N-BEATS, Prophet, TiDE are hardcoded in components
+1. **Hardcoded Models**: Models like N-BEATS, Prophet, TiDE are hardcoded in
+   components
 2. **Inflexible UI**: Parameter forms are specific to each model
 3. **Poor Reusability**: Components are tightly coupled and difficult to extend
 4. **Large Component Files**: Some components are over 1000 lines long
-5. **Type Safety Issues**: Insufficient TypeScript typing for props and data structures
-6. **Collaboration Barriers**: Code structure makes it difficult for new contributors to understand and extend the codebase
+5. **Type Safety Issues**: Insufficient TypeScript typing for props and data
+   structures
+6. **Collaboration Barriers**: Code structure makes it difficult for new
+   contributors to understand and extend the codebase
 
 ## Project Goals
 
@@ -41,7 +47,9 @@ This document outlines the refactoring plan for transforming the current time se
 
 ## Collaborative Development Principles
 
-This project places high priority on collaborative coding practices. These principles should be treated as **essential requirements** rather than optional guidelines:
+This project places high priority on collaborative coding practices. These
+principles should be treated as **essential requirements** rather than optional
+guidelines:
 
 ### Clean Code Principles (High Priority)
 
@@ -53,10 +61,12 @@ This project places high priority on collaborative coding practices. These princ
 
 ### SOLID Principles (High Priority)
 
-- **Single Responsibility**: Each class/component should have only one reason to change
+- **Single Responsibility**: Each class/component should have only one reason to
+  change
 - **Open/Closed**: Code should be open for extension but closed for modification
 - **Liskov Substitution**: Subtypes must be substitutable for their base types
-- **Interface Segregation**: Clients shouldn't depend on interfaces they don't use
+- **Interface Segregation**: Clients shouldn't depend on interfaces they don't
+  use
 - **Dependency Inversion**: Depend on abstractions, not concretions
 
 ### Design Patterns (Medium-High Priority)
@@ -86,7 +96,8 @@ This project places high priority on collaborative coding practices. These princ
 
 ## Deno 2.0 as Runtime
 
-This project uses Deno 2.0 as the runtime environment, which offers several advantages for our time series forecasting platform.
+This project uses Deno 2.0 as the runtime environment, which offers several
+advantages for our time series forecasting platform.
 
 ### Benefits of Deno 2.0
 
@@ -121,7 +132,8 @@ This project uses Deno 2.0 as the runtime environment, which offers several adva
 
 ### Deno-Python Backend Integration Considerations
 
-Special attention is needed for seamless integration between Deno 2.0 frontend and our Python backend:
+Special attention is needed for seamless integration between Deno 2.0 frontend
+and our Python backend:
 
 1. **API Client Patterns**
 
@@ -135,7 +147,8 @@ Special attention is needed for seamless integration between Deno 2.0 frontend a
    - Handle reconnection and error scenarios properly on both sides
 3. **Authentication Compatibility**
 
-   - Ensure JWT or cookie-based auth works correctly with Deno's fetch implementation
+   - Ensure JWT or cookie-based auth works correctly with Deno's fetch
+     implementation
    - Verify secure header handling in cross-environment requests
    - Test token refresh mechanisms across the stack
 
@@ -163,13 +176,19 @@ Special attention is needed for seamless integration between Deno 2.0 frontend a
 
 ## Frontend-Backend Integration
 
-Connecting the React/Next.js frontend with the existing Python backend at https://github.com/sm4rtm4art/TimeSeries/tree/main/backend requires careful planning to ensure smooth integration. This section outlines the integration strategy.
+Connecting the React/Next.js frontend with the existing Python backend at
+https://github.com/sm4rtm4art/TimeSeries/tree/main/backend requires careful
+planning to ensure smooth integration. This section outlines the integration
+strategy.
 
 ### Integration Challenges
 
-1. **API Consistency**: Ensuring frontend expectations match backend capabilities
-2. **Type Safety Across Boundaries**: Maintaining type safety between TypeScript and Python
-3. **Authentication & Authorization**: Consistent auth model across frontend and backend
+1. **API Consistency**: Ensuring frontend expectations match backend
+   capabilities
+2. **Type Safety Across Boundaries**: Maintaining type safety between TypeScript
+   and Python
+3. **Authentication & Authorization**: Consistent auth model across frontend and
+   backend
 4. **Error Handling**: Consistent error handling strategy
 5. **Real-time Updates**: Managing real-time training updates and notifications
 
@@ -179,9 +198,12 @@ Connecting the React/Next.js frontend with the existing Python backend at https:
 
 Implement a comprehensive API client that follows these principles:
 
-- **Domain-Driven Design**: Mirror the backend's domain structure in the API client organization
-- **Type Safety**: Define TypeScript interfaces that match backend response structures
-- **Error Consistency**: Implement consistent error handling across all API calls
+- **Domain-Driven Design**: Mirror the backend's domain structure in the API
+  client organization
+- **Type Safety**: Define TypeScript interfaces that match backend response
+  structures
+- **Error Consistency**: Implement consistent error handling across all API
+  calls
 - **Abstraction**: Hide backend implementation details behind clean interfaces
 - **Testability**: Make API client easily mockable for testing
 
@@ -193,7 +215,7 @@ export const ModelAPI = {
   trainModel: (
     modelId: string,
     params: Record<string, any>,
-    datasetId: string
+    datasetId: string,
   ) =>
     apiRequest("/api/train", {
       method: "POST",
@@ -209,7 +231,8 @@ export const ModelAPI = {
 #### 2. Backend Communication
 
 - **REST API**: Use REST for primary CRUD operations
-- **Polling vs WebSockets**: Implement polling for training status with option to upgrade to WebSockets
+- **Polling vs WebSockets**: Implement polling for training status with option
+  to upgrade to WebSockets
 - **Error Handling**: Implement consistent error handling and reporting
 - **Authentication**: Use token-based authentication (JWT) if required
 
@@ -248,7 +271,8 @@ export function useModels() {
 
 #### 4. Type Synchronization
 
-Create a type synchronization strategy to ensure frontend types match backend models:
+Create a type synchronization strategy to ensure frontend types match backend
+models:
 
 1. **Shared Type Definitions**: Define core type interfaces in the frontend
 2. **Response Validation**: Validate API responses against expected types
@@ -273,8 +297,10 @@ NEXT_PUBLIC_API_BASE_URL=https://api.timeseries-forecasting.com
 Add a dedicated section to Phase 1 of the implementation plan:
 
 1. **Define API Types**: Create TypeScript interfaces matching backend responses
-2. **Implement Core API Client**: Build the primary API request function with error handling
-3. **Create Domain-Specific Clients**: Implement model, dataset, and training API modules
+2. **Implement Core API Client**: Build the primary API request function with
+   error handling
+3. **Create Domain-Specific Clients**: Implement model, dataset, and training
+   API modules
 4. **Add Authorization**: Implement authentication if required
 5. **Develop Custom Hooks**: Create React hooks for each API domain
 
@@ -300,7 +326,8 @@ Add a dedicated section to Phase 1 of the implementation plan:
 
    - Add proper typing to components like `ModelCard` and helper functions
    - Enable strict type checking across the codebase
-   - **Use TypeScript's discriminated unions and type guards for robust type safety**
+   - **Use TypeScript's discriminated unions and type guards for robust type
+     safety**
 
 4. **Split Large Components (applying SOLID)**
 
@@ -366,7 +393,8 @@ Add a dedicated section to Phase 1 of the implementation plan:
 
 ### Development Tools
 
-- **TypeScript ESLint** - For enforcing coding standards and catching type errors
+- **TypeScript ESLint** - For enforcing coding standards and catching type
+  errors
 - **Prettier** - For consistent code formatting
 - **Husky & lint-staged** - For pre-commit hooks to ensure code quality
 - **Storybook** - For building and testing UI components in isolation
@@ -686,6 +714,14 @@ All pull requests must meet these requirements before being merged:
 
 ## Conclusion
 
-This refactoring will transform the platform into a flexible, maintainable system that can easily incorporate new models and features. By following this plan, the codebase will become more modular, type-safe, and extensible, resulting in a better developer experience and faster feature delivery.
+This refactoring will transform the platform into a flexible, maintainable
+system that can easily incorporate new models and features. By following this
+plan, the codebase will become more modular, type-safe, and extensible,
+resulting in a better developer experience and faster feature delivery.
 
-More importantly, by prioritizing clean code, SOLID principles, design patterns, documentation, and testing, we're creating a codebase that encourages collaboration, makes onboarding new team members easier, and prevents the deterioration of code quality over time. This investment in quality and structure will pay dividends in team productivity, product stability, and the ability to quickly respond to changing requirements.
+More importantly, by prioritizing clean code, SOLID principles, design patterns,
+documentation, and testing, we're creating a codebase that encourages
+collaboration, makes onboarding new team members easier, and prevents the
+deterioration of code quality over time. This investment in quality and
+structure will pay dividends in team productivity, product stability, and the
+ability to quickly respond to changing requirements.

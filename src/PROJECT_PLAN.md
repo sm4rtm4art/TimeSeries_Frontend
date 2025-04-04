@@ -1,12 +1,23 @@
 # Time Series Forecasting Platform Refactoring Plan
 
-> **👋 GOOD MORNING PROMPT:** Today, focus on implementing the highest priority
-> tasks:
+> **👋 PROGRESS UPDATE:** Successfully implemented several critical
+> improvements:
 >
-> 1. Start with defining core TypeScript interfaces for models and parameters
-> 2. Implement the model registry using the Factory pattern
-> 3. Fix TypeScript issues in existing components
-> 4. Begin breaking down large components into smaller, focused ones
+> 1. ✅ Fixed circular dependency issues that were causing runtime errors in the
+>    Model Training section
+> 2. ✅ Refactored the model registry to support dynamic model registration
+> 3. ✅ Added new models (TsMixer, Transformer) to the registry following the
+>    Factory pattern
+> 4. ✅ Enhanced model comparison functionality with multiple models
+> 5. ✅ Improved development experience by adding Turbopack support
+>
+> Next focus areas:
+>
+> 1. Continue breaking down large components into smaller, focused ones
+> 2. Implement WebSocket connection for real-time training updates
+> 3. Further enhance TypeScript type safety across components
+> 4. Implement comprehensive testing strategy across all layers
+> 5. Set up CI/CD pipeline for automated testing
 >
 > Remember to:
 >
@@ -15,6 +26,42 @@
 > - Write tests alongside implementation
 > - Keep code clean and maintainable
 > - Commit your work frequently with descriptive messages
+
+## 🚀 Next Session Prompt
+
+**Focus for next coding session:**
+
+1. Begin implementing our testing strategy:
+
+   - Set up unit testing structure for the model registry
+   - Create initial test utilities and helpers
+   - Write first tests for model registration and retrieval
+
+2. Start implementing WebSocket client for real-time training progress:
+
+   - Create a WebSocket client wrapper
+   - Implement connection handling with retry logic
+   - Design a message protocol for training updates
+
+3. Continue component breakdown:
+   - Further refactor the training workflow components
+   - Extract common patterns into reusable hooks
+   - Improve error handling across components
+
+**Specific tasks:**
+
+- [ ] Create basic test setup in `src/tests` directory
+- [ ] Write unit tests for `model-registry.ts`
+- [ ] Implement WebSocket connection in `src/lib/websocket-client.ts`
+- [ ] Create custom hook for WebSocket training updates
+- [ ] Extract training progress logic into reusable hook
+- [ ] Add proper error boundaries around training components
+
+**Resources needed:**
+
+- Deno testing documentation
+- WebSocket protocol documentation
+- React hooks testing best practices
 
 ## Overview
 
@@ -304,6 +351,65 @@ Add a dedicated section to Phase 1 of the implementation plan:
 4. **Add Authorization**: Implement authentication if required
 5. **Develop Custom Hooks**: Create React hooks for each API domain
 
+## Recent Improvements
+
+### Circular Dependency Bug Fix
+
+We identified and resolved a critical issue with circular dependencies in the
+model training components:
+
+1. **Problem**: The application would crash when hovering over the training tab
+   due to a circular dependency between `src/components/model-training.tsx` and
+   `src/components/model-training/index.tsx`.
+
+2. **Solution**:
+
+   - Renamed `src/components/model-training.tsx` to
+     `src/components/model-training-wrapper.tsx`
+   - Created a new `src/components/training-module.tsx` to break the circular
+     dependency
+   - Fixed import paths to use absolute imports (`@/components/...`) instead of
+     relative imports
+   - Updated component props to match expected interfaces
+
+3. **Benefits**:
+   - Eliminated runtime errors when hovering over the training tab
+   - Improved code organization with clearer component responsibilities
+   - Enhanced type safety with proper interface implementations
+   - Better adherence to the Single Responsibility Principle
+
+### Model Registry Enhancements
+
+The model registry has been expanded to include new forecasting models:
+
+1. **TsMixer Model**: Added a state-of-the-art mixer-based architecture for time
+   series forecasting
+
+   - Configured with appropriate parameters for hidden size, layers, sequence
+     length
+   - Tagged with "Deep Learning", "Mixer", "State-of-the-art"
+   - Characterized for multiscale patterns and channel mixing
+
+2. **Transformer Model**: Added an attention-based architecture for capturing
+   temporal dependencies
+
+   - Configured with attention heads, model dimension, and layer parameters
+   - Tagged with "Deep Learning", "Attention", "Sequence-to-Sequence"
+   - Optimized for complex temporal dependencies and long-range interactions
+
+3. **Model Comparison**: Enhanced the model comparison functionality to display
+   multiple models side by side
+   - Shows performance metrics (MAPE, RMSE, MAE) for easy comparison
+   - Displays training times to help users evaluate efficiency
+   - Provides a consistent experience between model selection and results
+
+### Development Experience Improvements
+
+1. **Turbopack Integration**: Added Turbopack support to speed up development
+   - Configured Deno tasks to use Turbopack for faster refresh rates
+   - Improved developer experience with faster startup times
+   - Enhanced memory efficiency during development
+
 ## Implementation Priorities
 
 ### High Priority
@@ -433,116 +539,51 @@ Add a dedicated section to Phase 1 of the implementation plan:
 
 ## Implementation Plan
 
-### Phase 1: Foundation (Core Types and Registry)
+### Phase 1: Foundation (✅ Completed)
 
-1. **Define Core Types**
+- ✅ Created core types and interfaces
+- ✅ Implemented model registry with Factory pattern
+- ✅ Fixed circular dependencies in the component structure
+- ✅ Added new models (TsMixer, Transformer) to the registry
+- ✅ Enhanced development experience with Turbopack
 
-   - Create model parameter interface
-   - Define model definition structure
-   - Establish training result types
-   - **Add comprehensive type documentation**
-   - **Create tests for type validation**
+### Phase 2: Model Configuration (🔄 In Progress)
 
-2. **Implement Model Registry**
+- ✅ Created model selection components
+- ✅ Fixed model comparison functionality
+- 🔄 Implement dynamic configuration forms
+- 🔄 Refactor model-configuration.tsx
+- 🔄 Add unit tests for registry and components
+- 🔄 Document component API
+- 🔄 Create API hooks
 
-   - Create a registry for models
-   - Add functions to register/retrieve models
-   - Pre-register default models (N-BEATS, Prophet, TiDE)
-   - **Implement with Factory pattern**
-   - **Add unit tests for registry**
+### Phase 3: Training Workflow (⏳ Planned)
 
-3. **Create Generic Parameter Components**
+- ⏳ Refactor training components
+- ⏳ Implement generic progress tracking
+- ⏳ Create training result types
+- ⏳ Apply Strategy pattern for training
+- ⏳ Add integration tests
+- ⏳ Connect to backend API endpoints
+- ⏳ Implement WebSocket functionality for real-time updates
 
-   - Implement components for different parameter types
-   - Create unified parameter rendering system
-   - **Apply Interface Segregation Principle**
-   - **Document component API and examples**
+### Phase 4: Results and Analysis (⏳ Planned)
 
-4. **Implement API Client**
-   - Create base API request function
-   - Implement model API client
-   - Implement dataset API client
-   - Add custom hooks for API state
-   - **Document API interfaces**
-   - **Create mock service for testing**
-   - **Test compatibility with Python backend**
+- ⏳ Implement flexible visualization components
+- ⏳ Create model comparison features
+- ⏳ Add results export functionality
+- ⏳ Document visualization APIs
+- ⏳ Optimize API performance
 
-### Phase 2: Component Refactoring
+### Phase 5: Testing and Documentation (⏳ Planned)
 
-1. **Model Selection Component**
-
-   - Create reusable model card component
-   - Implement flexible model selection grid
-   - **Apply Single Responsibility Principle**
-   - **Add component tests**
-
-2. **Model Configuration Component**
-
-   - Replace hardcoded forms with dynamic parameter forms
-   - Add ability to save/load configurations
-   - **Apply Open/Closed Principle for extensibility**
-   - **Document extension points**
-
-3. **Training Component**
-
-   - Refactor training workflow for any model
-   - Implement generic training progress tracking
-   - **Use Strategy pattern for different training approaches**
-   - **Add integration tests**
-
-4. **Results Analysis Component**
-   - Create model-agnostic visualization components
-   - Implement generic metrics display
-   - **Document component architecture**
-
-### Phase 3: Advanced Features
-
-1. **Custom Model Creation**
-
-   - Allow users to create custom models from components
-   - Implement parameter validation
-   - **Document extension process**
-
-2. **Model Comparison**
-
-   - Add ability to compare different models
-   - Create visualization components for comparison
-   - **Test with various model combinations**
-
-3. **Configuration Presets**
-
-   - Implement preset management
-   - Add import/export functionality
-   - **Document preset format**
-
-4. **API Integration**
-   - Create abstraction layer for model API calls
-   - Implement model-specific API adapters
-   - **Apply Adapter pattern**
-   - **Mock API for testing**
-
-### Phase 4: Testing and Optimization
-
-1. **Unit Tests**
-
-   - Test model registry functionality
-   - Test parameter components
-   - Test configuration forms
-   - **Aim for 80%+ test coverage**
-
-2. **Integration Tests**
-
-   - Test full model configuration workflow
-   - Test training process
-   - Test results visualization
-   - **Document test scenarios**
-   - **Test Deno-Python integration thoroughly**
-
-3. **Performance Optimization**
-   - Analyze and optimize rendering performance
-   - Implement virtualization for large datasets
-   - Add code splitting for lazy loading
-   - **Document performance benchmarks**
+- ⏳ Write unit and integration tests
+- ⏳ Create documentation
+- ⏳ Optimize performance
+- ⏳ Finalize contributor guidelines
+- ⏳ Create interactive examples
+- ⏳ Test full end-to-end workflows
+- ⏳ Validate Deno-Python integration in all environments
 
 ## Directory Structure
 
@@ -590,52 +631,221 @@ src/
 
 ## Implementation Timeline
 
-### Week 1: Foundation
+### Week 1: Foundation (✅ Completed)
 
-- Create core types and interfaces
-- Implement model registry
-- Develop basic parameter components
-- **Set up ESLint and Prettier configurations**
-- **Create initial documentation structure**
-- **Implement core API client**
-- **Test Deno-Python API integration**
+- ✅ Created core types and interfaces
+- ✅ Implemented model registry with Factory pattern
+- ✅ Fixed circular dependencies in the component structure
+- ✅ Added new models (TsMixer, Transformer) to the registry
+- ✅ Enhanced development experience with Turbopack
 
-### Week 2: Model Configuration
+### Week 2: Model Configuration (🔄 In Progress)
 
-- Create model selection components
-- Implement dynamic configuration forms
-- Refactor model-configuration.tsx
-- **Add unit tests for registry and components**
-- **Document component API**
-- **Create API hooks**
+- ✅ Created model selection components
+- ✅ Fixed model comparison functionality
+- 🔄 Implement dynamic configuration forms
+- 🔄 Refactor model-configuration.tsx
+- 🔄 Add unit tests for registry and components
+- 🔄 Document component API
+- 🔄 Create API hooks
 
-### Week 3: Training Workflow
+### Week 3: Training Workflow (⏳ Planned)
 
-- Refactor training components
-- Implement generic progress tracking
-- Create training result types
-- **Apply Strategy pattern for training**
-- **Add integration tests**
-- **Connect to backend API endpoints**
-- **Test WebSocket functionality if needed**
+- ⏳ Refactor training components
+- ⏳ Implement generic progress tracking
+- ⏳ Create training result types
+- ⏳ Apply Strategy pattern for training
+- ⏳ Add integration tests
+- ⏳ Connect to backend API endpoints
+- ⏳ Implement WebSocket functionality for real-time updates
 
-### Week 4: Results and Analysis
+### Week 4: Results and Analysis (⏳ Planned)
 
-- Implement flexible visualization components
-- Create model comparison features
-- Add results export functionality
-- **Document visualization APIs**
-- **Optimize API performance**
+- ⏳ Implement flexible visualization components
+- ⏳ Create model comparison features
+- ⏳ Add results export functionality
+- ⏳ Document visualization APIs
+- ⏳ Optimize API performance
 
-### Week 5: Testing and Documentation
+### Week 5: Testing and Documentation (⏳ Planned)
 
-- Write unit and integration tests
-- Create documentation
-- Optimize performance
-- **Finalize contributor guidelines**
-- **Create interactive examples**
-- **Test full end-to-end workflows**
-- **Validate Deno-Python integration in all environments**
+- ⏳ Write unit and integration tests
+- ⏳ Create documentation
+- ⏳ Optimize performance
+- ⏳ Finalize contributor guidelines
+- ⏳ Create interactive examples
+- ⏳ Test full end-to-end workflows
+- ⏳ Validate Deno-Python integration in all environments
+
+## Testing Strategy
+
+A comprehensive testing approach is essential for maintaining code quality and
+enabling confident refactoring. This project will implement a multi-layered
+testing strategy to ensure reliability at all levels.
+
+### 1. Unit Testing
+
+Unit tests focus on testing individual functions, classes, and components in
+isolation:
+
+- **Model Registry Tests**
+
+  - Test registration of models
+  - Test retrieval of models by ID and by tags
+  - Test factory methods for creating model definitions
+  - Verify error handling for duplicate registrations
+
+- **Component Unit Tests**
+
+  - Test individual UI components with mock props
+  - Verify component rendering and state management
+  - Test event handlers and user interactions
+  - Use component snapshots for regression detection
+
+- **Utility Function Tests**
+  - Test helper functions with various inputs
+  - Test edge cases and error conditions
+  - Verify type guards and type predicates
+  - Ensure data transformation functions work correctly
+
+### 2. Integration Testing
+
+Integration tests verify that multiple units work together correctly:
+
+- **Component Integration**
+
+  - Test interactions between parent and child components
+  - Verify prop passing and event bubbling
+  - Test form submissions and data flow
+  - Verify context providers and consumers
+
+- **API Integration**
+
+  - Test API client with mock server responses
+  - Verify error handling and retry logic
+  - Test authentication flows
+  - Verify WebSocket connection and message handling
+
+- **State Management**
+  - Test state transitions across components
+  - Verify state updates propagate correctly
+  - Test side effects from state changes
+  - Ensure context providers update consumers properly
+
+### 3. End-to-End Testing
+
+E2E tests validate complete user workflows:
+
+- **Critical User Flows**
+
+  - Model selection and configuration workflow
+  - Training initiation and monitoring
+  - Results visualization and comparison
+  - Dataset selection and preprocessing
+
+- **Backend Integration**
+  - Test communication with Python backend
+  - Verify data consistency between frontend and backend
+  - Test authentication and authorization
+  - Verify WebSocket real-time updates
+
+### 4. Type Testing
+
+Leverage TypeScript's type system for static verification:
+
+- **Interface Compliance Tests**
+
+  - Verify components implement required interfaces
+  - Test generic type constraints
+  - Ensure type guards properly narrow types
+  - Test discriminated unions behave correctly
+
+- **API Type Safety**
+  - Verify API responses match expected types
+  - Test serialization and deserialization
+  - Ensure backend types map correctly to frontend types
+
+### 5. Performance Testing
+
+Verify the application meets performance requirements:
+
+- **Rendering Performance**
+
+  - Measure and optimize component render times
+  - Test virtualization with large datasets
+  - Monitor React rendering cycles
+  - Test memoization effectiveness
+
+- **Network Performance**
+  - Measure API request times
+  - Test caching strategies
+  - Optimize payload sizes
+  - Test WebSocket message throughput
+
+### 6. Accessibility Testing
+
+Ensure the application is accessible to all users:
+
+- **Automated Accessibility Tests**
+  - Verify ARIA attributes
+  - Test keyboard navigation
+  - Check color contrast
+  - Ensure screen reader compatibility
+
+### Testing Tools & Infrastructure
+
+1. **Test Runners & Frameworks**
+
+   - Deno's built-in testing capabilities
+   - Vitest for fast unit testing
+   - Playwright for E2E testing
+
+2. **UI Component Testing**
+
+   - React Testing Library for component tests
+   - jsdom for browser API simulation
+   - Mock Service Worker for API mocking
+
+3. **Type Testing**
+
+   - TypeScript compiler for static type checking
+   - Custom type assertion utilities
+   - dtslint for type definition testing
+
+4. **CI Integration**
+   - Automated test runs on pull requests
+   - Test coverage reports
+   - Performance regression detection
+   - Accessibility compliance checks
+
+### Test Implementation Plan
+
+1. **Phase 1: Core Testing Infrastructure (Week 2-3)**
+
+   - Set up testing framework and configurations
+   - Create initial test utilities and helpers
+   - Implement model registry tests
+   - Begin component unit tests
+
+2. **Phase 2: Component Test Coverage (Week 3-4)**
+
+   - Expand test coverage for all components
+   - Implement integration tests for key workflows
+   - Add mock API server for testing
+   - Create type tests for critical interfaces
+
+3. **Phase 3: E2E and Performance (Week 4-5)**
+
+   - Implement end-to-end tests for critical flows
+   - Add performance measurement and benchmarks
+   - Test WebSocket functionality
+   - Implement accessibility tests
+
+4. **Phase 4: CI Integration (Week 5)**
+   - Configure CI pipeline for automated testing
+   - Set up test coverage reporting
+   - Implement performance regression detection
+   - Create test documentation
 
 ## Best Practices to Follow
 

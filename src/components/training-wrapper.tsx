@@ -1,7 +1,7 @@
 "use client";
 
 import _React from "react";
-import ModelTraining from "./model-training";
+import ModelTraining from "./model-training/index.tsx";
 
 /**
  * Main model training component that wraps the refactored components

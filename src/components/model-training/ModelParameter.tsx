@@ -27,9 +27,9 @@ interface ModelParameterProps {
   /** The parameter definition */
   parameter: IModelParameter;
   /** Current value of the parameter */
-  value: any;
+  value: string | number | boolean | null | undefined;
   /** Callback when the parameter value changes */
-  onChange: (paramId: string, value: any) => void;
+  onChange: (paramId: string, value: string | number | boolean) => void;
   /** Whether the parameter is disabled */
   disabled?: boolean;
 }

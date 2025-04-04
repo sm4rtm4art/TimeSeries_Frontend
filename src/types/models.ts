@@ -26,7 +26,10 @@ export interface ModelParameter {
 /**
  * Type for storing model configuration parameters
  */
-export type ModelConfig = Record<string, any>;
+export type ModelConfig = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
 
 /**
  * Defines model performance characteristics on a 1-5 scale
@@ -119,7 +122,7 @@ export interface TrainingResult {
   /** When the model was trained */
   timestamp: string;
   /** Parameters used for this training run */
-  parameters: Record<string, any>;
+  parameters: Record<string, string | number | boolean | null | undefined>;
 }
 
 /**
@@ -145,5 +148,5 @@ export interface TrainingConfig {
   /** Optimization strategy for tuning */
   tuningStrategy?: "bayesian" | "random" | "grid";
   /** Additional model-specific options */
-  [key: string]: any;
+  [key: string]: unknown;
 }

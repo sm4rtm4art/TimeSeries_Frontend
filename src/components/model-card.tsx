@@ -1,5 +1,5 @@
 import React from "react";
-import { ModelDefinition, ModelTag } from "@/types/models";
+import { ModelDefinition, ModelTag as _ModelTag } from "@/types/models";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -69,6 +69,7 @@ export default function ModelCard({
             variant="outline"
             className="mt-4 w-full"
             onClick={handleConfigureClick}
+            type="button"
           >
             {selected ? "Configure" : "Select"}
           </Button>

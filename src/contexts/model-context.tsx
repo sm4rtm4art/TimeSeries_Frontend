@@ -8,10 +8,10 @@ import {
   useState,
 } from "react";
 import { ModelDefinition, ModelTag } from "@/types/models";
-import modelRegistry, {
+import _modelRegistry, {
   getAllModels,
   getModel,
-  getModelsByTag,
+  getModelsByTag as _getModelsByTag,
 } from "@/lib/model-registry";
 
 interface ModelContextType {

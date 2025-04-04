@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState as _useState } from "react";
 import { ModelParameter } from "@/types/models";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,7 +39,7 @@ export default function ModelParameterComponent({
 
   const renderParameterInput = () => {
     switch (parameter.type) {
-      case "boolean":
+      case "boolean": {
         // Ensure boolean type
         const boolValue = typeof paramValue === "boolean"
           ? paramValue
@@ -54,8 +54,9 @@ export default function ModelParameterComponent({
             <Label htmlFor={parameter.id}>{parameter.name}</Label>
           </div>
         );
+      }
 
-      case "number":
+      case "number": {
         // Ensure number type
         const numValue = typeof paramValue === "number"
           ? paramValue
@@ -88,8 +89,9 @@ export default function ModelParameterComponent({
             />
           </div>
         );
+      }
 
-      case "string":
+      case "string": {
         // Ensure string type
         const strValue = typeof paramValue === "string"
           ? paramValue
@@ -105,8 +107,9 @@ export default function ModelParameterComponent({
             />
           </div>
         );
+      }
 
-      case "select":
+      case "select": {
         // Ensure string type for select value
         const selectValue = paramValue !== null ? String(paramValue) : "";
         return (
@@ -142,8 +145,9 @@ export default function ModelParameterComponent({
             </Select>
           </div>
         );
+      }
 
-      case "slider":
+      case "slider": {
         // Ensure number type for slider
         const sliderValue = typeof paramValue === "number"
           ? paramValue
@@ -172,6 +176,7 @@ export default function ModelParameterComponent({
             )}
           </div>
         );
+      }
 
       default:
         return <div>Unsupported parameter type</div>;

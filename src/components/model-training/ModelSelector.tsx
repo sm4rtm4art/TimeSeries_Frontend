@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getAllModels, getModelsByTag } from "@/lib/model-registry";
+import {
+  getAllModels,
+  getModelsByTag as _getModelsByTag,
+} from "@/lib/model-registry";
 import { ModelDefinition, ModelTag } from "@/types/models";
 import ModelCard from "./ModelCard";
 import { Input } from "@/components/ui/input";
@@ -32,31 +35,30 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
   const [filteredModels, setFilteredModels] = useState<ModelDefinition[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTags, setActiveTags] = useState<ModelTag[]>([]);
-
-  // Get all available tags from models
-  const allTags = React.useMemo(() => {
-    const tagSet = new Set<ModelTag>();
-    models.forEach((model) => {
-      model.tags.forEach((tag) => tagSet.add(tag));
-    });
-    return Array.from(tagSet);
-  }, [models]);
+  const [allTags, setAllTags] = useState<ModelTag[]>([]);
 
   // Load models on component mount
   useEffect(() => {
-    const allModels = getAllModels();
-    setModels(allModels);
-    setFilteredModels(allModels);
+    const availableModels = getAllModels();
+    setModels(availableModels);
+    setFilteredModels(availableModels);
+
+    // Extract all unique tags
+    const tags = new Set<ModelTag>();
+    availableModels.forEach((model) => {
+      model.tags.forEach((tag) => tags.add(tag));
+    });
+    setAllTags(Array.from(tags));
   }, []);
 
   // Filter models when search query or tags change
   useEffect(() => {
-    let result = models;
+    let filtered = models;
 
     // Filter by search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(
+      filtered = filtered.filter(
         (model) =>
           model.name.toLowerCase().includes(query) ||
           model.description.toLowerCase().includes(query) ||
@@ -67,12 +69,12 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
 
     // Filter by active tags
     if (activeTags.length > 0) {
-      result = result.filter((model) =>
+      filtered = filtered.filter((model) =>
         activeTags.some((tag) => model.tags.includes(tag))
       );
     }
 
-    setFilteredModels(result);
+    setFilteredModels(filtered);
   }, [searchQuery, activeTags, models]);
 
   /**
@@ -127,6 +129,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
               <button
                 className="absolute right-2.5 top-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 onClick={() => setSearchQuery("")}
+                type="button"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -139,6 +142,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
             size="sm"
             onClick={handleClearFilters}
             disabled={!searchQuery && activeTags.length === 0}
+            type="button"
           >
             <Filter className="mr-2 h-4 w-4" />
             Clear Filters
@@ -172,6 +176,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
               size="sm"
               onClick={handleClearFilters}
               className="mt-2"
+              type="button"
             >
               Clear filters
             </Button>

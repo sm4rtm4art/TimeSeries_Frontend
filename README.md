@@ -1,18 +1,22 @@
-# TimeSeries Frontend
+# Time Series Forecasting Platform
 
 [![codecov](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend/graph/badge.svg?token=F3TO61yJUZ)](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend)
 
-A modern, interactive frontend for time series forecasting with multiple models
-and interactive visualizations, powered by Deno 2.0.
+## Overview
+
+This frontend application provides an interface for time series forecasting with
+support for multiple forecasting models like N-BEATS, Prophet, and TiDE. The
+application follows SOLID principles and uses a flexible component architecture
+to allow easy addition of new models.
 
 ## Features
 
-- Interactive dashboard for time series data visualization and forecasting
-- Support for multiple forecasting models (N-BEATS, Prophet, TiDE, TSMixer)
-- Data management with quality analysis and preparation tools
-- Model configuration and training interface
-- Forecasting workspace with customizable parameters
-- Results analysis with performance metrics and visualizations
+- Flexible model registry system for adding new forecasting models
+- Dynamic parameter configuration for each model type
+- Model training workflow with real-time progress tracking
+- Dataset selection and management
+- Clean, modern UI with dark mode support
+- TypeScript for improved type safety
 
 ## Requirements
 
@@ -143,3 +147,37 @@ deno task start
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+## Development Notes
+
+### Linting Issues
+
+The codebase currently has some linting issues that are being addressed
+gradually:
+
+1. **'any' type usage**: We're working on replacing `any` types with more
+   specific types
+2. **Unused variables**: Some variables are unused and should be prefixed with
+   underscores
+3. **Async functions without await**: Some async functions need await statements
+   or should have the async keyword removed
+
+To help fix these issues, run:
+
+```bash
+./fix-linting-issues.sh
+```
+
+During development, we've temporarily configured the pre-commit hooks to be more
+lenient with these specific issues.
+
+### Pre-commit configuration
+
+The pre-commit hooks are configured in `.pre-commit-config.yaml`. We're
+currently ignoring:
+
+- `no-explicit-any`: allows `any` type for now
+- `require-await`: allows async functions without await
+- `no-unused-vars`: allows unused variables
+
+In production code, these issues should be properly addressed.

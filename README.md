@@ -29,12 +29,14 @@ to allow easy addition of new models.
 
 The application uses WebSockets for real-time updates during model training:
 
-- **Live Training Progress**: Watch training progress in real-time with detailed metrics
+- **Live Training Progress**: Watch training progress in real-time with detailed
+  metrics
 - **Resource Monitoring**: Monitor CPU and memory usage during training
 - **Automatic Reconnection**: Handles connection issues with smart retry logic
 - **Efficient Updates**: Optimized message protocol minimizes bandwidth usage
 
-This real-time capability enables a responsive user experience when training complex models that might take significant time to complete.
+This real-time capability enables a responsive user experience when training
+complex models that might take significant time to complete.
 
 ## Requirements
 
@@ -184,11 +186,13 @@ deno task test
 
 ## Architecture
 
-The application follows SOLID principles and uses several design patterns to ensure maintainability and extensibility:
+The application follows SOLID principles and uses several design patterns to
+ensure maintainability and extensibility:
 
 ### Model Registry
 
-The core of the application is a flexible model registry system that implements the Factory pattern:
+The core of the application is a flexible model registry system that implements
+the Factory pattern:
 
 - **Dynamic Registration**: Models can be registered at runtime
 - **Type Safety**: Strong TypeScript typing for all model definitions
@@ -206,7 +210,8 @@ The core of the application is a flexible model registry system that implements 
 ### Component Architecture
 
 - **Single Responsibility**: Each component has a clear, focused purpose
-- **Composition over Inheritance**: Components are composed of smaller, reusable parts
+- **Composition over Inheritance**: Components are composed of smaller, reusable
+  parts
 - **Container/Presenter Pattern**: Separation of logic and presentation
 - **Custom Hooks**: Encapsulation of reusable logic
 

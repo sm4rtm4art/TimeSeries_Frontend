@@ -1,6 +1,13 @@
 # Time Series Forecasting Platform
 
 [![codecov](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend/graph/badge.svg?token=F3TO61yJUZ)](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend)
+[![GitHub license](https://img.shields.io/github/license/sm4rtm4art/TimeSeries_Frontend)](https://github.com/sm4rtm4art/TimeSeries_Frontend/blob/main/LICENSE)
+[![Deno](https://img.shields.io/badge/deno-v2.0-blue.svg)](https://deno.land)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![CI](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml)
 
 ## Overview
 
@@ -17,6 +24,17 @@ to allow easy addition of new models.
 - Dataset selection and management
 - Clean, modern UI with dark mode support
 - TypeScript for improved type safety
+
+## Real-time Updates
+
+The application uses WebSockets for real-time updates during model training:
+
+- **Live Training Progress**: Watch training progress in real-time with detailed metrics
+- **Resource Monitoring**: Monitor CPU and memory usage during training
+- **Automatic Reconnection**: Handles connection issues with smart retry logic
+- **Efficient Updates**: Optimized message protocol minimizes bandwidth usage
+
+This real-time capability enables a responsive user experience when training complex models that might take significant time to complete.
 
 ## Requirements
 
@@ -120,6 +138,40 @@ deno task start
   - `/public` - Static assets
   - `/styles` - Global styles
 
+## Testing Strategy
+
+The project implements a comprehensive testing approach across multiple layers:
+
+### Unit Testing
+
+- Component testing with React Testing Library
+- Model registry and utility function tests
+- Type validation tests
+
+### Integration Testing
+
+- Component interaction testing
+- API client testing with mock servers
+- State management testing
+
+### End-to-End Testing
+
+- Critical user flow validation
+- Backend integration testing
+- WebSocket communication testing
+
+### Performance Testing
+
+- Rendering performance measurements
+- Network operation optimizations
+- Memory usage monitoring
+
+Run tests with:
+
+```bash
+deno task test
+```
+
 ## Technology Stack
 
 - Deno 2.0 as the runtime
@@ -129,6 +181,34 @@ deno task start
 - Radix UI Components
 - Recharts for data visualization
 - D3.js and Observable Plot for advanced visualizations
+
+## Architecture
+
+The application follows SOLID principles and uses several design patterns to ensure maintainability and extensibility:
+
+### Model Registry
+
+The core of the application is a flexible model registry system that implements the Factory pattern:
+
+- **Dynamic Registration**: Models can be registered at runtime
+- **Type Safety**: Strong TypeScript typing for all model definitions
+- **Parameter Validation**: Automatic validation of model parameters
+- **Extensibility**: New models can be added without modifying existing code
+
+### Design Patterns
+
+- **Factory Pattern**: Used for creating model instances
+- **Strategy Pattern**: Applied for interchangeable forecasting algorithms
+- **Observer Pattern**: Implemented for reactive UI updates
+- **Adapter Pattern**: Used for backend API communication
+- **Repository Pattern**: Applied for data access abstraction
+
+### Component Architecture
+
+- **Single Responsibility**: Each component has a clear, focused purpose
+- **Composition over Inheritance**: Components are composed of smaller, reusable parts
+- **Container/Presenter Pattern**: Separation of logic and presentation
+- **Custom Hooks**: Encapsulation of reusable logic
 
 ## Why Deno?
 

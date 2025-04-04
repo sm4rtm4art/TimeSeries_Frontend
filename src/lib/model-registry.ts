@@ -1,4 +1,4 @@
-import { ModelDefinition, ModelParameter, ModelTag } from "@/types/models";
+import { ModelDefinition, ModelParameter, ModelTag } from "../types/models.ts";
 
 /**
  * Model Registry that implements the Factory pattern for creating and managing forecasting models.
@@ -494,6 +494,9 @@ modelRegistry.registerModels([
     ],
   },
 ]);
+
+// Export the ModelRegistry class for testing
+export { ModelRegistry };
 
 // Export the function interfaces
 export const {

@@ -73,23 +73,26 @@ export const assertThrows = (
   }
   if (errorType && !(error instanceof errorType)) {
     // Improved error reporting for non-Error types thrown
-    let thrownTypeName = typeof thrownValue;
+    let finalTypeName: string;
     // Safely check for constructor and name property before accessing
-    // Use Object.prototype.hasOwnProperty.call for safety
     if (
       thrownValue !== null &&
       typeof thrownValue === "object" &&
-      Object.prototype.hasOwnProperty.call(thrownValue, "constructor") && // Use safe hasOwnProperty check
+      Object.prototype.hasOwnProperty.call(thrownValue, "constructor") &&
       typeof (thrownValue as { constructor: unknown }).constructor ===
-        "function" && // Check if constructor is a function
+        "function" &&
       typeof (thrownValue as { constructor: { name?: string } }).constructor
-          .name === "string"
+          .name === "string" &&
+      (thrownValue as { constructor: { name: string } }).constructor.name // Ensure name is not empty
     ) {
-      thrownTypeName =
+      finalTypeName =
         (thrownValue as { constructor: { name: string } }).constructor.name;
+    } else {
+      // Fallback to typeof if we can't get a meaningful constructor name
+      finalTypeName = typeof thrownValue;
     }
     throw new Error(
-      `Expected error to be of type ${errorType.name}, but got ${thrownTypeName}`,
+      `Expected error to be of type ${errorType.name}, but got ${finalTypeName}`,
     );
   }
   if (messageIncludes && !error.message.includes(messageIncludes)) {

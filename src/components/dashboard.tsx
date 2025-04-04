@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import DataManagement from "@/components/data-management";
 import ModelConfiguration from "@/components/model-configuration";
-import ModelTraining from "@/components/model-training";
+import ModelTraining from "@/components/model-training-wrapper";
 import ForecastingWorkspace from "@/components/forecasting-workspace";
 import ResultsAnalysis from "@/components/results-analysis";
 import Overview from "@/components/overview";

@@ -16,7 +16,7 @@ interface ModelResultsProps {
   /** Metrics by model ID */
   metrics: Record<string, ModelMetrics>;
   /** Raw forecast data by model ID */
-  forecastData?: Record<
+  _forecastData?: Record<
     string,
     { actual: number[]; predicted: number[]; timestamps: string[] }
   >;
@@ -33,7 +33,7 @@ const ModelResults: React.FC<ModelResultsProps> = ({
   modelIds,
   modelNames,
   metrics,
-  forecastData,
+  _forecastData,
   trainingTimes,
 }) => {
   // For this implementation, we'll create a placeholder component

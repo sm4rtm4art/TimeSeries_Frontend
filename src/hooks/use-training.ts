@@ -40,7 +40,7 @@ export function useTraining() {
   const startTraining = useCallback((
     model: ModelDefinition,
     parameters: ModelConfig,
-    datasetId: string,
+    _datasetId: string,
   ) => {
     // In a real app, this would make an API call to the backend
     const newJob: TrainingJob = {

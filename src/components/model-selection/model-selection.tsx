@@ -2,7 +2,7 @@
  * Component for browsing and selecting models
  */
 import { useState } from "react";
-import { ModelDefinition, ModelTag } from "@/types/models";
+import { ModelDefinition, ModelTag as _ModelTag } from "@/types/models";
 import { useModels } from "@/hooks/use-models";
 import ModelCard from "@/components/model-card";
 import { Badge } from "@/components/ui/badge";

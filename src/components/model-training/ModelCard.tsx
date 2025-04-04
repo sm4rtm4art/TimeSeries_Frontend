@@ -14,7 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Brain, HelpCircle, Info } from "lucide-react";
+import { Brain as _Brain, HelpCircle as _HelpCircle, Info } from "lucide-react";
 import { ModelDefinition } from "@/types/models";
 
 /**

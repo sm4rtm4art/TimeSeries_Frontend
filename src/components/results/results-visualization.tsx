@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ModelMetrics, TrainingResult } from "@/types/models";
+import { ModelMetrics as _ModelMetrics, TrainingResult } from "@/types/models";
 import {
   Card,
   CardContent,

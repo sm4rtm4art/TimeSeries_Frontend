@@ -1,67 +1,54 @@
 # Time Series Forecasting Platform Refactoring Plan
 
-> **👋 PROGRESS UPDATE:** Successfully implemented several critical
-> improvements:
+> **👋 PROGRESS UPDATE:** Successfully implemented several critical improvements:
 >
-> 1. ✅ Fixed circular dependency issues that were causing runtime errors in the
->    Model Training section
-> 2. ✅ Refactored the model registry to support dynamic model registration
-> 3. ✅ Added new models (TsMixer, Transformer) to the registry following the
->    Factory pattern
-> 4. ✅ Enhanced model comparison functionality with multiple models
-> 5. ✅ Improved development experience by adding Turbopack support
+> 1. ✅ Fixed circular dependency issues in Model Training
+> 2. ✅ Refactored the model registry & added TsMixer/Transformer
+> 3. ✅ Enhanced model comparison functionality
+> 4. ✅ Added Turbopack support for faster DX
+> 5. ✅ Set up initial testing infrastructure (dirs, utils, basic tests)
+> 6. ✅ Added `deno task test` command
+> 7. ✅ Configured tsconfig/linting for better Deno compatibility
 >
 > Next focus areas:
 >
-> 1. Continue breaking down large components into smaller, focused ones
+> 1. Resolve remaining Deno type/linting issues in `model-registry.test.ts`
 > 2. Implement WebSocket connection for real-time training updates
-> 3. Further enhance TypeScript type safety across components
-> 4. Implement comprehensive testing strategy across all layers
-> 5. Set up CI/CD pipeline for automated testing
->
-> Remember to:
->
-> - Follow SOLID principles, especially Single Responsibility
-> - Document all interfaces and functions with JSDoc
-> - Write tests alongside implementation
-> - Keep code clean and maintainable
-> - Commit your work frequently with descriptive messages
+> 3. Continue breaking down large components (Training Workflow)
+> 4. Expand test coverage (unit & integration)
 
 ## 🚀 Next Session Prompt
 
 **Focus for next coding session:**
 
-1. Begin implementing our testing strategy:
+1.  **Resolve Test File Issues:**
 
-   - Set up unit testing structure for the model registry
-   - Create initial test utilities and helpers
-   - Write first tests for model registration and retrieval
+    - Fix Deno type errors in `src/tests/unit/model-registry.test.ts` (e.g., `Deno not found`, std lib module, argument types). This likely involves ensuring the test runner environment correctly recognizes Deno types or adjusting imports/assertions further.
+    - Ensure `deno task test` runs cleanly without type errors.
 
-2. Start implementing WebSocket client for real-time training progress:
+2.  **Start WebSocket Implementation:**
 
-   - Create a WebSocket client wrapper
-   - Implement connection handling with retry logic
-   - Design a message protocol for training updates
+    - Create `src/lib/websocket-client.ts`.
+    - Implement basic WebSocket connection logic (connect, close, error handling).
 
-3. Continue component breakdown:
-   - Further refactor the training workflow components
-   - Extract common patterns into reusable hooks
-   - Improve error handling across components
+3.  **Continue Component Refactoring / Test Expansion:**
+    - _If time permits after fixing tests & starting WebSocket:_ Begin writing unit tests for a UI component (e.g., `ModelCard.tsx`) or refactor a small part of the `training-module.tsx`.
 
 **Specific tasks:**
 
-- [ ] Create basic test setup in `src/tests` directory
-- [ ] Write unit tests for `model-registry.ts`
-- [ ] Implement WebSocket connection in `src/lib/websocket-client.ts`
-- [ ] Create custom hook for WebSocket training updates
-- [ ] Extract training progress logic into reusable hook
-- [ ] Add proper error boundaries around training components
+- [ ] Fix type errors (`Deno not found`, `std module`, argument types) in `model-registry.test.ts`.
+- [ ] Verify `deno task test` runs without errors.
+- [ ] Create `src/lib/websocket-client.ts` with initial connection logic.
+- [ ] _(Stretch Goal)_ Write basic unit tests for `ModelCard.tsx`.
+- [ ] _(Stretch Goal)_ Extract a small piece of state logic from `training-module.tsx` into a custom hook.
 
 **Resources needed:**
 
-- Deno testing documentation
-- WebSocket protocol documentation
-- React hooks testing best practices
+- Deno Manual: Testing (https://deno.land/manual@v1.42.4/basics/testing)
+- Deno Standard Library: Assertions (https://deno.land/std@0.208.0/assert/mod.ts)
+- TypeScript Triple-Slash Directives (https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html)
+- WebSocket API (MDN) (https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+- React Testing Library (if testing components)
 
 ## Overview
 
@@ -262,7 +249,7 @@ export const ModelAPI = {
   trainModel: (
     modelId: string,
     params: Record<string, any>,
-    datasetId: string,
+    datasetId: string
   ) =>
     apiRequest("/api/train", {
       method: "POST",
@@ -575,9 +562,15 @@ The model registry has been expanded to include new forecasting models:
 - ⏳ Document visualization APIs
 - ⏳ Optimize API performance
 
-### Phase 5: Testing and Documentation (⏳ Planned)
+### Phase 5: Testing and Documentation (🔄 In Progress)
 
-- ⏳ Write unit and integration tests
+- ✅ Set up testing directory structure
+- ✅ Created initial test utilities (`test-utils.ts`)
+- ✅ Implemented initial unit tests (`model-registry.test.ts`)
+- ✅ Added `deno task test` runner
+- 🔄 Resolve Deno-specific type errors in tests
+- ⏳ Expand unit tests for all components
+- ⏳ Write integration tests for critical user flows
 - ⏳ Create documentation
 - ⏳ Optimize performance
 - ⏳ Finalize contributor guidelines
@@ -667,9 +660,15 @@ src/
 - ⏳ Document visualization APIs
 - ⏳ Optimize API performance
 
-### Week 5: Testing and Documentation (⏳ Planned)
+### Week 5: Testing and Documentation (🔄 In Progress)
 
-- ⏳ Write unit and integration tests
+- ✅ Set up testing directory structure
+- ✅ Created initial test utilities (`test-utils.ts`)
+- ✅ Implemented initial unit tests (`model-registry.test.ts`)
+- ✅ Added `deno task test` runner
+- 🔄 Resolve Deno-specific type errors in tests
+- ⏳ Expand unit tests for all components
+- ⏳ Write integration tests for critical user flows
 - ⏳ Create documentation
 - ⏳ Optimize performance
 - ⏳ Finalize contributor guidelines

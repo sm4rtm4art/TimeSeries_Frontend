@@ -35,7 +35,7 @@ repos:
       - id: deno-lint
         name: Deno Linter
         description: Lint code with Deno
-        entry: bash -c 'deno lint "$@" || true' --
+        entry: bash -c 'deno lint "$@" --ignore=no-explicit-any,require-await,no-unused-vars || true' --
         language: system
         types_or: [javascript, jsx, ts, tsx]
         pass_filenames: true

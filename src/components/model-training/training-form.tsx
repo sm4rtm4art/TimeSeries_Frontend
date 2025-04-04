@@ -2,7 +2,7 @@
  * Model training form component
  */
 import { useState } from "react";
-import { ModelConfig, ModelDefinition } from "@/types/models";
+import { ModelConfig, ModelDefinition, ModelMetrics } from "@/types/models";
 import {
   Card,
   CardContent,
@@ -25,6 +25,18 @@ import { ChevronRight, Play, Settings } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import ModelConfigForm from "@/components/model-config-form";
 import { ResultsVisualization } from "@/components/results";
+
+// Interface for training result
+interface TrainingResult {
+  id: string;
+  modelId: string;
+  modelName: string;
+  experimentName: string;
+  metrics: ModelMetrics;
+  runtime: string;
+  timestamp: string;
+  parameters: ModelConfig;
+}
 
 interface TrainingFormProps {
   model: ModelDefinition;
@@ -50,7 +62,7 @@ export default function TrainingForm({
     isTraining: false,
     progress: 0,
     isComplete: false,
-    result: null as any,
+    result: null as TrainingResult | null,
   });
 
   // Handle config updates
@@ -96,7 +108,7 @@ export default function TrainingForm({
 
         // Simulate results after completion
         setTimeout(() => {
-          const result = {
+          const result: TrainingResult = {
             id: `result-${Date.now()}`,
             modelId: model.id,
             modelName: model.name,

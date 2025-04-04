@@ -7,6 +7,10 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Save, Settings, Wand2 } from "lucide-react";
 import ModelParameter from "./ModelParameter";
 
+// Define parameter value types
+type ParameterValue = string | number | boolean | null | undefined;
+type ParameterRecord = Record<string, ParameterValue>;
+
 /**
  * Props for the ModelConfigurationForm component
  * @interface ModelConfigurationFormProps
@@ -15,9 +19,9 @@ interface ModelConfigurationFormProps {
   /** The ID of the model to configure */
   modelId: string;
   /** Callback when the configuration is saved */
-  onSave?: (modelId: string, configuration: Record<string, any>) => void;
+  onSave?: (modelId: string, configuration: ParameterRecord) => void;
   /** Initial parameter values */
-  initialValues?: Record<string, any>;
+  initialValues?: ParameterRecord;
   /** Whether the form is in loading state */
   isLoading?: boolean;
   /** Whether auto-tuning is enabled */
@@ -43,7 +47,7 @@ export const ModelConfigurationForm: React.FC<ModelConfigurationFormProps> = ({
   onBack,
 }) => {
   const [model, setModel] = useState<ModelDefinition | null>(null);
-  const [paramValues, setParamValues] = useState<Record<string, any>>(
+  const [paramValues, setParamValues] = useState<ParameterRecord>(
     initialValues,
   );
   const [error, setError] = useState<string | null>(null);
@@ -74,7 +78,7 @@ export const ModelConfigurationForm: React.FC<ModelConfigurationFormProps> = ({
    * @param paramId The parameter ID
    * @param value The new value
    */
-  const handleParameterChange = (paramId: string, value: any) => {
+  const handleParameterChange = (paramId: string, value: ParameterValue) => {
     setParamValues((prev) => ({
       ...prev,
       [paramId]: value,
@@ -97,7 +101,7 @@ export const ModelConfigurationForm: React.FC<ModelConfigurationFormProps> = ({
    */
   const handleReset = () => {
     if (model) {
-      const defaultValues = model.parameters.reduce(
+      const defaultValues = model.parameters.reduce<ParameterRecord>(
         (acc, param) => ({
           ...acc,
           [param.id]: param.defaultValue,

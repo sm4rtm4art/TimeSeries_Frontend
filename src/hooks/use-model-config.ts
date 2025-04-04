@@ -2,12 +2,32 @@
  * React hook for managing model configuration state
  */
 import { useCallback, useEffect, useState } from "react";
-import { ModelDefinition, ModelParameter } from "@/types/models";
+import {
+  ModelDefinition,
+  ModelParameter as _ModelParameter,
+} from "@/types/models";
+
+/**
+ * Type for parameter values
+ */
+export type ParameterValue = string | number | boolean | null | undefined;
 
 /**
  * Type for model configuration
  */
-export type ModelConfig = Record<string, any>;
+export type ModelConfig = Record<string, ParameterValue>;
+
+/**
+ * Interface for saved configuration
+ */
+export interface SavedConfiguration {
+  id: string;
+  name: string;
+  modelId: string;
+  modelName: string;
+  parameters: ModelConfig;
+  createdAt: string;
+}
 
 /**
  * Hook for managing model configuration state
@@ -37,12 +57,15 @@ export function useModelConfig(model: ModelDefinition | null) {
    * @param paramId The parameter ID to update
    * @param value The new value
    */
-  const updateParameter = useCallback((paramId: string, value: any) => {
-    setConfig((current) => ({
-      ...current,
-      [paramId]: value,
-    }));
-  }, []);
+  const updateParameter = useCallback(
+    (paramId: string, value: ParameterValue) => {
+      setConfig((current) => ({
+        ...current,
+        [paramId]: value,
+      }));
+    },
+    [],
+  );
 
   /**
    * Reset configuration to default values
@@ -70,7 +93,7 @@ export function useModelConfig(model: ModelDefinition | null) {
   const saveConfiguration = useCallback((name: string) => {
     if (!model) return null;
 
-    const savedConfig = {
+    const savedConfig: SavedConfiguration = {
       id: `${model.id}-${Date.now()}`,
       name,
       modelId: model.id,
@@ -88,7 +111,7 @@ export function useModelConfig(model: ModelDefinition | null) {
    * Load a saved configuration
    * @param savedConfig The saved configuration to load
    */
-  const loadConfiguration = useCallback((savedConfig: any) => {
+  const loadConfiguration = useCallback((savedConfig: SavedConfiguration) => {
     if (savedConfig && savedConfig.parameters) {
       setConfig(savedConfig.parameters);
     }

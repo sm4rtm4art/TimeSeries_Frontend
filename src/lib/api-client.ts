@@ -3,8 +3,21 @@
  */
 
 // Default API configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "http://localhost:8000";
+// Use Deno's environment variables if available, fallback to default
+let API_BASE_URL = "http://localhost:8000";
+try {
+  // @ts-ignore - Handle both Deno and Node.js environments
+  if (typeof Deno !== "undefined" && Deno.env && Deno.env.get) {
+    const envUrl = Deno.env.get("NEXT_PUBLIC_API_BASE_URL");
+    if (envUrl) {
+      API_BASE_URL = envUrl;
+    }
+  }
+  // We'll let the default stay if we can't read environment variables
+} catch (_error) {
+  // Ignore errors when checking environment - will use default
+}
+
 const API_TIMEOUT = 30000; // 30 seconds default timeout
 
 // Types for API responses
@@ -26,31 +39,44 @@ export interface TrainingStatusResponse {
   model_id: string;
   status: "queued" | "running" | "completed" | "failed";
   progress: number;
-  metrics?: {
-    [key: string]: number;
-  };
+  metrics?: Record<string, number>;
   message?: string;
 }
 
+// Define ForecastResponse type
 export interface ForecastResponse {
   forecast: number[];
-  confidence_intervals?: {
+  confidence_intervals: {
     lower: number[];
     upper: number[];
   };
   timestamps: string[];
-  metrics?: {
+  metrics: {
+    mape: number;
+    rmse: number;
+    mae: number;
     [key: string]: number;
   };
 }
 
+// Define ModelListResponse type
 export interface ModelListResponse {
-  models: {
+  models: Array<{
     id: string;
     name: string;
-    description: string;
-    tags: string[];
-  }[];
+    description?: string;
+    tags?: string[];
+  }>;
+}
+
+// Define Dataset type
+export interface Dataset {
+  id: string;
+  name: string;
+  description?: string;
+  rows: number;
+  columns: number;
+  created_at: string;
 }
 
 // Error class for API errors
@@ -129,11 +155,11 @@ async function apiRequest<T>(
 }
 
 // Model Training API
-export async function trainModel(
+export function trainModel(
   modelId: string,
-  modelParams: Record<string, any>,
+  modelParams: Record<string, unknown>,
   datasetId: string,
-  trainingConfig: Record<string, any> = {},
+  trainingConfig: Record<string, unknown> = {},
 ): Promise<TrainingResponse> {
   return apiRequest<TrainingResponse>("/api/train", {
     method: "POST",
@@ -147,14 +173,14 @@ export async function trainModel(
 }
 
 // Get training status
-export async function getTrainingStatus(
+export function getTrainingStatus(
   jobId: string,
 ): Promise<TrainingStatusResponse> {
   return apiRequest<TrainingStatusResponse>(`/api/train/status/${jobId}`);
 }
 
 // Get trained model forecast
-export async function getForecast(
+export function getForecast(
   modelId: string,
   parameters: {
     horizon: number;
@@ -168,47 +194,42 @@ export async function getForecast(
   });
 }
 
-// Get available models from backend
-export async function getAvailableModels(): Promise<ModelListResponse> {
+// Get available models
+export function getAvailableModels(): Promise<ModelListResponse> {
   return apiRequest<ModelListResponse>("/api/models");
 }
 
-// Upload a dataset
-export async function uploadDataset(
+// Upload dataset
+export function uploadDataset(
   file: File,
   config: {
     name: string;
     description?: string;
-    frequency?: string;
-    date_column?: string;
-    target_column?: string;
   },
 ): Promise<{ dataset_id: string }> {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("config", JSON.stringify(config));
+  formData.append("name", config.name);
+
+  if (config.description) {
+    formData.append("description", config.description);
+  }
 
   return apiRequest<{ dataset_id: string }>("/api/datasets/upload", {
     method: "POST",
     body: formData,
     headers: {
-      // Don't set Content-Type with FormData, browser will set it with boundary
+      // Remove content-type header to let browser set it with boundary
+      "Content-Type": undefined as unknown as string,
     },
   });
 }
 
 // Get dataset list
-export async function getDatasets(): Promise<{
-  datasets: Array<{
-    id: string;
-    name: string;
-    description?: string;
-    rows: number;
-    columns: number;
-    created_at: string;
-  }>;
+export function getDatasets(): Promise<{
+  datasets: Dataset[];
 }> {
-  return apiRequest<{ datasets: Array<any> }>("/api/datasets");
+  return apiRequest<{ datasets: Dataset[] }>("/api/datasets");
 }
 
 export default {

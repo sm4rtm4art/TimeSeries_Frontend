@@ -23,7 +23,7 @@ export function shouldUseMockData(): boolean {
 
     // Default to false for production and other environments
     return false;
-  } catch (_error) {
+  } catch (error) {
     // In case Deno.env is not available or there's another error
     // Default to local development behavior
     console.warn(

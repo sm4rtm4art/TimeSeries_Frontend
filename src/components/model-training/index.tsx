@@ -9,7 +9,22 @@ import ModelSelector from "./ModelSelector";
 import ModelConfigurationForm from "./ModelConfigurationForm";
 import TrainingProgress from "./TrainingProgress";
 import ModelResults from "./ModelResults";
-import { trainModel } from "@/lib/api-client";
+// Unused in this file but kept for future implementation
+import { trainModel as _trainModel } from "@/lib/api-client";
+
+// Define result types
+interface TrainingMetrics {
+  mape: number;
+  rmse: number;
+  mae: number;
+  [key: string]: number;
+}
+
+interface TrainingResult {
+  bestModel: string;
+  metrics: TrainingMetrics;
+  runtime: number;
+}
 
 /**
  * Main component for model training workflow
@@ -23,7 +38,7 @@ const ModelTraining: React.FC = () => {
   // State for selected models and their configurations
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
   const [modelConfigurations, setModelConfigurations] = useState<
-    Record<string, Record<string, any>>
+    Record<string, Record<string, unknown>>
   >({});
 
   // State for training workflow
@@ -37,7 +52,7 @@ const ModelTraining: React.FC = () => {
 
   // State for auto-tuning
   const [autoTuneEnabled, setAutoTuneEnabled] = useState<boolean>(false);
-  const [trainingConfig, setTrainingConfig] = useState<TrainingConfig>({
+  const [_trainingConfig, setTrainingConfig] = useState<TrainingConfig>({
     epochs: 10,
     validationSplit: 0.2,
     autoTune: false,
@@ -53,15 +68,15 @@ const ModelTraining: React.FC = () => {
   );
 
   // State for training results
-  const [trainingResults, setTrainingResults] = useState<Record<string, any>>(
-    {},
+  const [trainingResults, setTrainingResults] = useState<TrainingResult | null>(
+    null,
   );
 
   /**
    * Handle model selection changes
    * @param modelIds Array of selected model IDs
    */
-  const handleSelectionChange = (modelIds: string[]) => {
+  const handleSelectionChange = (modelIds: string[]): void => {
     setSelectedModels(modelIds);
   };
 
@@ -72,8 +87,8 @@ const ModelTraining: React.FC = () => {
    */
   const handleConfigurationSave = (
     modelId: string,
-    configuration: Record<string, any>,
-  ) => {
+    configuration: Record<string, unknown>,
+  ): void => {
     setModelConfigurations((prev) => ({
       ...prev,
       [modelId]: configuration,
@@ -92,7 +107,7 @@ const ModelTraining: React.FC = () => {
   /**
    * Start the configuration workflow
    */
-  const handleStartConfiguration = () => {
+  const handleStartConfiguration = (): void => {
     if (selectedModels.length > 0) {
       setActiveModelId(selectedModels[0]);
       setActiveTab("configuration");
@@ -103,7 +118,7 @@ const ModelTraining: React.FC = () => {
    * Handle auto-tune toggle
    * @param enabled Whether auto-tune is enabled
    */
-  const handleAutoTuneToggle = (enabled: boolean) => {
+  const handleAutoTuneToggle = (enabled: boolean): void => {
     setAutoTuneEnabled(enabled);
     setTrainingConfig((prev) => ({
       ...prev,
@@ -114,7 +129,7 @@ const ModelTraining: React.FC = () => {
   /**
    * Start the training process
    */
-  const handleStartTraining = async () => {
+  const handleStartTraining = (): void => {
     setIsTraining(true);
     setTrainingStatus("running");
     setTrainingProgress(0);
@@ -126,8 +141,8 @@ const ModelTraining: React.FC = () => {
 
     // Simulate API call to start training
     try {
-      // In a real app, this would be an API call
-      // const response = await trainModel(modelId, parameters, datasetId, trainingConfig);
+      // In a real app, we would call the API here
+      // const response = await _trainModel(modelId, parameters, datasetId, _trainingConfig);
 
       // Simulate training progress
       const interval = setInterval(() => {
@@ -176,7 +191,7 @@ const ModelTraining: React.FC = () => {
   /**
    * Navigate to results tab
    */
-  const handleViewResults = () => {
+  const handleViewResults = (): void => {
     setActiveTab("results");
   };
 
@@ -189,6 +204,7 @@ const ModelTraining: React.FC = () => {
             variant="outline"
             disabled={isTraining}
             onClick={() => setActiveTab("configuration")}
+            type="button"
           >
             <Settings className="mr-2 h-4 w-4" />
             Training Settings
@@ -204,6 +220,7 @@ const ModelTraining: React.FC = () => {
                 selectedModels.length === 0) ||
                 (activeTab === "training" && trainingStatus !== "completed") ||
                 isTraining}
+              type="button"
             >
               {isTraining
                 ? (
@@ -276,7 +293,7 @@ const ModelTraining: React.FC = () => {
             : (
               <div className="text-center">
                 <p className="mb-4">Please select a model to configure.</p>
-                <Button onClick={() => setActiveTab("selection")}>
+                <Button onClick={() => setActiveTab("selection")} type="button">
                   Go to Model Selection
                 </Button>
               </div>
@@ -285,30 +302,18 @@ const ModelTraining: React.FC = () => {
 
         <TabsContent value="training" className="mt-6">
           <TrainingProgress
+            isTraining={isTraining}
+            status={trainingStatus}
             progress={trainingProgress}
             step={trainingStep}
-            status={trainingStatus}
             cpuUsage={cpuUsage}
             memoryUsage={memoryUsage}
             estimatedTimeRemaining={estimatedTimeRemaining}
-            bestModel={trainingResults.bestModel}
-            bestMetric={trainingResults.metrics
-              ? { name: "MAPE", value: trainingResults.metrics.mape }
-              : undefined}
-            totalTrainingTime={trainingResults.runtime}
-            onViewResults={handleViewResults}
           />
         </TabsContent>
 
         <TabsContent value="results" className="mt-6">
-          {/* ModelResults component would go here */}
-          <div className="rounded-md border p-6">
-            <h3 className="mb-4 text-lg font-medium">Training Results</h3>
-            <p className="text-muted-foreground">
-              Results component would display metrics, charts, and model
-              comparison.
-            </p>
-          </div>
+          {trainingResults && <ModelResults results={trainingResults} />}
         </TabsContent>
       </Tabs>
     </div>

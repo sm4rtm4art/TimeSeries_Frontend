@@ -1,18 +1,19 @@
-# TimeSeries Frontend
+# Time Series Forecasting Platform
 
 [![codecov](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend/graph/badge.svg?token=F3TO61yJUZ)](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend)
 
-A modern, interactive frontend for time series forecasting with multiple models
-and interactive visualizations, powered by Deno 2.0.
+## Overview
+
+This frontend application provides an interface for time series forecasting with support for multiple forecasting models like N-BEATS, Prophet, and TiDE. The application follows SOLID principles and uses a flexible component architecture to allow easy addition of new models.
 
 ## Features
 
-- Interactive dashboard for time series data visualization and forecasting
-- Support for multiple forecasting models (N-BEATS, Prophet, TiDE, TSMixer)
-- Data management with quality analysis and preparation tools
-- Model configuration and training interface
-- Forecasting workspace with customizable parameters
-- Results analysis with performance metrics and visualizations
+- Flexible model registry system for adding new forecasting models
+- Dynamic parameter configuration for each model type
+- Model training workflow with real-time progress tracking
+- Dataset selection and management
+- Clean, modern UI with dark mode support
+- TypeScript for improved type safety
 
 ## Requirements
 

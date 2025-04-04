@@ -1,10 +1,13 @@
 # Time Series Forecasting Platform Refactoring Plan
 
-> **👋 PROGRESS UPDATE:** Successfully implemented several critical improvements:
+> **👋 PROGRESS UPDATE:** Successfully implemented several critical
+> improvements:
 >
-> 1. ✅ Fixed circular dependency issues that were causing runtime errors in the Model Training section
+> 1. ✅ Fixed circular dependency issues that were causing runtime errors in the
+>    Model Training section
 > 2. ✅ Refactored the model registry to support dynamic model registration
-> 3. ✅ Added new models (TsMixer, Transformer) to the registry following the Factory pattern
+> 3. ✅ Added new models (TsMixer, Transformer) to the registry following the
+>    Factory pattern
 > 4. ✅ Enhanced model comparison functionality with multiple models
 > 5. ✅ Improved development experience by adding Turbopack support
 >
@@ -259,7 +262,7 @@ export const ModelAPI = {
   trainModel: (
     modelId: string,
     params: Record<string, any>,
-    datasetId: string
+    datasetId: string,
   ) =>
     apiRequest("/api/train", {
       method: "POST",
@@ -352,15 +355,21 @@ Add a dedicated section to Phase 1 of the implementation plan:
 
 ### Circular Dependency Bug Fix
 
-We identified and resolved a critical issue with circular dependencies in the model training components:
+We identified and resolved a critical issue with circular dependencies in the
+model training components:
 
-1. **Problem**: The application would crash when hovering over the training tab due to a circular dependency between `src/components/model-training.tsx` and `src/components/model-training/index.tsx`.
+1. **Problem**: The application would crash when hovering over the training tab
+   due to a circular dependency between `src/components/model-training.tsx` and
+   `src/components/model-training/index.tsx`.
 
 2. **Solution**:
 
-   - Renamed `src/components/model-training.tsx` to `src/components/model-training-wrapper.tsx`
-   - Created a new `src/components/training-module.tsx` to break the circular dependency
-   - Fixed import paths to use absolute imports (`@/components/...`) instead of relative imports
+   - Renamed `src/components/model-training.tsx` to
+     `src/components/model-training-wrapper.tsx`
+   - Created a new `src/components/training-module.tsx` to break the circular
+     dependency
+   - Fixed import paths to use absolute imports (`@/components/...`) instead of
+     relative imports
    - Updated component props to match expected interfaces
 
 3. **Benefits**:
@@ -373,19 +382,23 @@ We identified and resolved a critical issue with circular dependencies in the mo
 
 The model registry has been expanded to include new forecasting models:
 
-1. **TsMixer Model**: Added a state-of-the-art mixer-based architecture for time series forecasting
+1. **TsMixer Model**: Added a state-of-the-art mixer-based architecture for time
+   series forecasting
 
-   - Configured with appropriate parameters for hidden size, layers, sequence length
+   - Configured with appropriate parameters for hidden size, layers, sequence
+     length
    - Tagged with "Deep Learning", "Mixer", "State-of-the-art"
    - Characterized for multiscale patterns and channel mixing
 
-2. **Transformer Model**: Added an attention-based architecture for capturing temporal dependencies
+2. **Transformer Model**: Added an attention-based architecture for capturing
+   temporal dependencies
 
    - Configured with attention heads, model dimension, and layer parameters
    - Tagged with "Deep Learning", "Attention", "Sequence-to-Sequence"
    - Optimized for complex temporal dependencies and long-range interactions
 
-3. **Model Comparison**: Enhanced the model comparison functionality to display multiple models side by side
+3. **Model Comparison**: Enhanced the model comparison functionality to display
+   multiple models side by side
    - Shows performance metrics (MAPE, RMSE, MAE) for easy comparison
    - Displays training times to help users evaluate efficiency
    - Provides a consistent experience between model selection and results
@@ -666,11 +679,14 @@ src/
 
 ## Testing Strategy
 
-A comprehensive testing approach is essential for maintaining code quality and enabling confident refactoring. This project will implement a multi-layered testing strategy to ensure reliability at all levels.
+A comprehensive testing approach is essential for maintaining code quality and
+enabling confident refactoring. This project will implement a multi-layered
+testing strategy to ensure reliability at all levels.
 
 ### 1. Unit Testing
 
-Unit tests focus on testing individual functions, classes, and components in isolation:
+Unit tests focus on testing individual functions, classes, and components in
+isolation:
 
 - **Model Registry Tests**
 

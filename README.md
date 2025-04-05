@@ -7,13 +7,8 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![CI](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml)
+<!-- [![CI](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml)  -->
 
-![image]({(https://img.shields.io/badge/d3%20js-F9A03C?style=for-the-badge&logo=d3.js&logoColor=white)})
-
-![image]({(https://img.shields.io/badge/Deno-464647?style=for-the-badge&logo=deno&logoColor=white)})
-
-![image]({https://img.shields.io/badge/fastapi-109989?style=for-the-badge&logo=FASTAPI&logoColor=white})
 
 ## Overview
 

@@ -28,7 +28,7 @@ repos:
         description: Format code with Deno
         entry: deno fmt
         language: system
-        types_or: [javascript, jsx, ts, tsx]
+        types_or: [javascript, jsx, ts, tsx, markdown, yaml]
         pass_filenames: true
         stages: [pre-commit]
 

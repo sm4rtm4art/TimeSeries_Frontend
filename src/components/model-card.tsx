@@ -1,8 +1,15 @@
+/// <reference path="../types/jsx.d.ts" />
+/// <reference path="../types/jsx-runtime.d.ts" />
 import React from "react";
-import { ModelDefinition, ModelTag as _ModelTag } from "@/types/models";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { ModelDefinition, ModelTag as _ModelTag } from "@/types/models.ts";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
+import { Button } from "@/components/ui/button.tsx";
 
 interface ModelCardProps {
   /** The model definition to display */

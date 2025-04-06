@@ -1,3 +1,5 @@
+/// <reference lib="deno.ns" />
+
 import {
   assertEquals,
   assertExists,
@@ -23,8 +25,11 @@ Deno.test("ModelRegistry - Register and Get Model", () => {
   assertExists(retrievedModel, "Model should exist after registration");
 
   // Now that assertExists passed, retrievedModel is known to be ModelDefinition
-  customAssert.isValidModelDefinition(retrievedModel);
-  customAssert.modelEquals(retrievedModel, testModel);
+  // Adding an explicit check to help TypeScript narrow the type
+  if (retrievedModel) {
+    customAssert.isValidModelDefinition(retrievedModel);
+    customAssert.modelEquals(retrievedModel, testModel);
+  }
 });
 
 Deno.test("ModelRegistry - Register Duplicate Model", () => {

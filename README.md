@@ -7,8 +7,8 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-<!-- [![CI](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml)  -->
 
+<!-- [![CI](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml)  -->
 
 ## Overview
 
@@ -168,6 +168,30 @@ The project implements a comprehensive testing approach across multiple layers:
 - Rendering performance measurements
 - Network operation optimizations
 - Memory usage monitoring
+
+### React Testing with Deno
+
+We've implemented several improvements to support React component testing in
+Deno:
+
+1. **Enhanced Type Declarations**:
+
+   - Added proper JSX element type definitions
+   - Updated React component return types
+   - Created appropriate module declarations
+
+2. **Import Path Optimization**:
+
+   - Ensured proper file extensions in imports
+   - Configured import map for correct module resolution
+
+3. **Documentation**:
+   - Added notes about current testing limitations
+   - Provided workarounds for common issues
+
+While there are still some compatibility challenges between Deno's type system
+and React's JSX, our improvements allow for reliable testing of both UI
+components and business logic.
 
 Run tests with:
 

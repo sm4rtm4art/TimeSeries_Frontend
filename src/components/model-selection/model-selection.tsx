@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { ModelDefinition, ModelTag as _ModelTag } from "@/types/models";
 import { useModels } from "@/hooks/use-models";
-import ModelCard from "@/components/model-card";
+import { ModelCard } from "@/components/model-training/ModelCard";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -106,8 +106,8 @@ export default function ModelSelection({ onModelSelect }: ModelSelectionProps) {
               <ModelCard
                 key={model.id}
                 model={model}
-                selected={selectedModel?.id === model.id}
-                onSelect={handleModelSelect}
+                isSelected={selectedModel?.id === model.id}
+                onToggleSelection={handleModelSelect}
               />
             ))
           )

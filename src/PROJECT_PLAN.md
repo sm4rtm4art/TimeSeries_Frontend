@@ -73,6 +73,7 @@ trigger low-level Deno errors when imported in tests.
       handling.
 - [ ] Define basic WebSocket message types (e.g., `TrainingUpdateMessage`,
       `TrainingCompleteMessage`).
+- [ ] Decide on `ModelCard` usage strategy (consistent detailed view vs. simpler view variant).
 - [ ] _(Stretch Goal)_ Extract a state update function from
       `training-module.tsx` into `src/hooks/useTrainingWorkflow.ts` and write a
       unit test for it.
@@ -282,7 +283,7 @@ export const ModelAPI = {
   trainModel: (
     modelId: string,
     params: Record<string, any>,
-    datasetId: string,
+    datasetId: string
   ) =>
     apiRequest("/api/train", {
       method: "POST",
@@ -995,6 +996,12 @@ These improvements allow tests to run successfully while maintaining type safety
 for the majority of the codebase. As Deno and React library compatibility
 continues to improve, we expect these issues to be resolved more completely in
 future updates.
+
+### 2. Duplicate `ModelCard` Investigation
+
+Identified two `ModelCard` components (`src/components/model-card.tsx` and `src/components/model-training/ModelCard.tsx`). The former appeared unused and was likely a refactoring artifact. It was deleted after confirming the component using it (`model-selection.tsx`) was updated to use the detailed card from `model-training` (`src/components/model-training/ModelCard.tsx`).
+
+**Decision Pending:** Need to verify if a simpler card view is actually desired in some contexts (e.g., initial browsing vs. selected model review) or if using the detailed card consistently is preferred. Currently, both selection views use the detailed card.
 
 ## Conclusion
 

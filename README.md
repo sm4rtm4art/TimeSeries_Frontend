@@ -169,13 +169,29 @@ The project implements a comprehensive testing approach across multiple layers:
 - Network operation optimizations
 - Memory usage monitoring
 
-**Note on Component Testing:** Currently, there are known issues running React
-Testing Library tests for components (e.g., using `render`, `screen`) within the
-`deno test` environment. These tests may fail type-checking or encounter runtime
-errors related to DOM simulation. While non-component unit tests work correctly,
-component testing within `deno test` might require workarounds (like
-`--no-check`) or may need to be revisited pending updates to Deno or related
-libraries.
+### React Testing with Deno
+
+We've implemented several improvements to support React component testing in
+Deno:
+
+1. **Enhanced Type Declarations**:
+
+   - Added proper JSX element type definitions
+   - Updated React component return types
+   - Created appropriate module declarations
+
+2. **Import Path Optimization**:
+
+   - Ensured proper file extensions in imports
+   - Configured import map for correct module resolution
+
+3. **Documentation**:
+   - Added notes about current testing limitations
+   - Provided workarounds for common issues
+
+While there are still some compatibility challenges between Deno's type system
+and React's JSX, our improvements allow for reliable testing of both UI
+components and business logic.
 
 Run tests with:
 

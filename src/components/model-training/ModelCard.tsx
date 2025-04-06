@@ -1,4 +1,6 @@
-import React from "react";
+/// <reference path="../../types/jsx.d.ts" />
+/// <reference path="../../types/jsx-runtime.d.ts" />
+import * as React from "react";
 import {
   Card,
   CardContent,
@@ -35,11 +37,11 @@ interface ModelCardProps {
  *
  * @component ModelCard
  */
-export const ModelCard: React.FC<ModelCardProps> = ({
+export const ModelCard = ({
   model,
   isSelected,
   onToggleSelection,
-}) => {
+}: ModelCardProps): React.ReactElement => {
   /**
    * Get the appropriate color class for a characteristic value
    * @param value The characteristic value (1-5)
@@ -57,10 +59,10 @@ export const ModelCard: React.FC<ModelCardProps> = ({
    * @param value The characteristic value (1-5)
    * @returns JSX for the bar indicators
    */
-  const renderCharacteristicBars = (value: number) => {
+  const renderCharacteristicBars = (value: number): React.ReactElement => {
     return (
       <div className="flex items-center gap-0.5">
-        {[1, 2, 3, 4, 5].map((i) => (
+        {[1, 2, 3, 4, 5].map((i: number) => (
           <div
             key={i}
             className={`h-1.5 w-3 rounded-sm ${
@@ -99,7 +101,7 @@ export const ModelCard: React.FC<ModelCardProps> = ({
                       href={model.documentationUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e: React.MouseEvent) => e.stopPropagation()}
                       className="ml-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                     >
                       <Info className="h-4 w-4" />
@@ -114,7 +116,7 @@ export const ModelCard: React.FC<ModelCardProps> = ({
           </div>
           <div>
             {model.version && (
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline">
                 v{model.version}
               </Badge>
             )}
@@ -124,8 +126,8 @@ export const ModelCard: React.FC<ModelCardProps> = ({
       </CardHeader>
       <CardContent className="pb-2">
         <div className="mb-2 flex flex-wrap gap-1">
-          {model.tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+          {model.tags.map((tag: string) => (
+            <Badge key={tag} variant="secondary">
               {tag}
             </Badge>
           ))}

@@ -6,16 +6,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/ui/card.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/components/ui/tooltip.tsx";
 import { Brain as _Brain, HelpCircle as _HelpCircle, Info } from "lucide-react";
-import { ModelDefinition } from "@/types/models";
+import { ModelDefinition } from "@/types/models.ts";
 
 /**
  * Props for the ModelCard component

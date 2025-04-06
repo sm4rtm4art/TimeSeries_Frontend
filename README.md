@@ -7,8 +7,8 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-<!-- [![CI](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml)  -->
 
+<!-- [![CI](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml)  -->
 
 ## Overview
 
@@ -168,6 +168,14 @@ The project implements a comprehensive testing approach across multiple layers:
 - Rendering performance measurements
 - Network operation optimizations
 - Memory usage monitoring
+
+**Note on Component Testing:** Currently, there are known issues running React
+Testing Library tests for components (e.g., using `render`, `screen`) within the
+`deno test` environment. These tests may fail type-checking or encounter runtime
+errors related to DOM simulation. While non-component unit tests work correctly,
+component testing within `deno test` might require workarounds (like
+`--no-check`) or may need to be revisited pending updates to Deno or related
+libraries.
 
 Run tests with:
 

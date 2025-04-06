@@ -8,6 +8,7 @@
     "@/hooks/": "./src/hooks/",
     "@/lib/": "./src/lib/",
     "@/styles/": "./src/styles/",
+    "@/types/": "./src/types/",
     "@observablehq/plot": "npm:@observablehq/plot",
     "d3": "npm:d3",
     "recharts": "npm:recharts",
@@ -57,6 +58,9 @@
     "cmdk": "npm:cmdk",
     "embla-carousel-react": "npm:embla-carousel-react",
     "input-otp": "npm:input-otp",
-    "vaul": "npm:vaul"
+    "vaul": "npm:vaul",
+    "@testing-library/react": "npm:@testing-library/react",
+    "@testing-library/dom": "npm:@testing-library/dom",
+    "deno_dom": "https://deno.land/x/deno_dom@v0.1.47/deno-dom-wasm.ts"
   }
 }

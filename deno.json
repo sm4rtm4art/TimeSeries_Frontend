@@ -20,5 +20,11 @@
     "types": ["./src/types/jsx.d.ts", "./src/types/jsx-runtime.d.ts"]
   },
   "importMap": "./import_map.json",
-  "nodeModulesDir": "auto"
+  "nodeModulesDir": "auto",
+  "fmt": {
+    "exclude": ["src/public/"]
+  },
+  "lint": {
+    "exclude": ["src/public/"]
+  }
 }

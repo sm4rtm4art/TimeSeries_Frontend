@@ -120,31 +120,7 @@ jobs:
           if [ ! -d "src/out" ] && [ ! -d "dist" ] && [ ! -d "src/.next" ]; then
             echo "Creating fallback static site"
             mkdir -p dist
-            cat > dist/index.html << 'EOF'
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>TimeSeries Frontend</title>
-              <style>
-                body {
-                  font-family: system-ui, sans-serif;
-                  max-width: 800px;
-                  margin: 0 auto;
-                  padding: 2rem;
-                  line-height: 1.6;
-                }
-                h1 { margin-bottom: 1em; }
-              </style>
-            </head>
-            <body>
-              <h1>TimeSeries Frontend</h1>
-              <p>This site is currently under construction.</p>
-              <p>Powered by Deno</p>
-            </body>
-            </html>
-            EOF
+            echo "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>TimeSeries Frontend</title></head><body><h1>TimeSeries Frontend</h1><p>This site is currently under construction.</p></body></html>" > dist/index.html
             touch dist/.nojekyll
           fi
 

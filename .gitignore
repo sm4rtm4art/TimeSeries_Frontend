@@ -41,7 +41,6 @@ test/*.js
 
 # Deno specific
 .deno
-deno.lock
 
 # Environment files
 .env

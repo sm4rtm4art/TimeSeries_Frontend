@@ -1,7 +1,7 @@
 {
   "tasks": {
     "dev": "cd src && deno run --allow-net --allow-read --allow-env --allow-write --watch npm:next dev --turbopack",
-    "dev:local": "cd src && ENVIRONMENT=local deno run --allow-net --allow-read --allow-env --allow-write --watch npm:next dev --turbopack",
+    "dev:local": "cd src && ENVIRONMENT=local deno run --allow-net --allow-read --allow-env --allow-write --allow-sys --watch npm:next dev --turbopack",
     "build": "cd src && deno run --allow-all npm:next build && (deno run --allow-all npm:next export || echo 'Next.js export not available, using standalone build')",
     "start": "cd src && deno run --allow-net --allow-read --allow-env npm:next start",
     "lint": "cd src && deno run --allow-read --allow-write npm:next lint",

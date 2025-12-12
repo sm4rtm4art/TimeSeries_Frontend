@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.220.1/http/server.ts";
+import { serve } from "std/http/server.ts";
 
 // Function to handle requests
 async function handler(req: Request): Promise<Response> {

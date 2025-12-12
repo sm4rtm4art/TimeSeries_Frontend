@@ -1,10 +1,6 @@
 /// <reference lib="deno.ns" />
 
-import {
-  assertEquals,
-  assertExists,
-  assertThrows,
-} from "https://deno.land/std@0.208.0/assert/mod.ts";
+import { assertEquals, assertExists, assertThrows } from "std/assert";
 import { ModelRegistry } from "../../lib/model-registry.ts";
 import { createMockModel, customAssert } from "../test-utils.ts";
 import { ModelDefinition } from "../../types/models.ts";

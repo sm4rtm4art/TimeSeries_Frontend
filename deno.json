@@ -16,16 +16,8 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "strict": true,
-    "allowJs": true,
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
     "lib": ["deno.window", "dom", "dom.iterable", "esnext"],
-    "types": [
-      "./src/types/jsx.d.ts",
-      "./src/types/jsx-runtime.d.ts"
-    ],
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "types": ["./src/types/jsx.d.ts", "./src/types/jsx-runtime.d.ts"]
   },
   "importMap": "./import_map.json",
   "nodeModulesDir": "auto"

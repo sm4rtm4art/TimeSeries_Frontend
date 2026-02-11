@@ -4,7 +4,7 @@
 [![GitHub license](https://img.shields.io/github/license/sm4rtm4art/TimeSeries_Frontend)](https://github.com/sm4rtm4art/TimeSeries_Frontend/blob/main/LICENSE)
 [![Deno](https://img.shields.io/badge/deno-v2.0-blue.svg)](https://deno.land)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
+![Deno JS](https://img.shields.io/badge/deno%20js-000000?style=for-the-badge&logo=deno&logoColor=white)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 

@@ -28,15 +28,6 @@ declare global {
   }
 }
 
-// Fix BadgeProps type
-declare module "@/components/ui/badge.tsx" {
-  interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-    key?: string | number;
-    variant?: "default" | "secondary" | "destructive" | "outline";
-    className?: string;
-  }
-}
-
 // Make sure Deno types are available for tests
 declare namespace Deno {
   function test(name: string, fn: () => void | Promise<void>): void;

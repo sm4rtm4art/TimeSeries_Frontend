@@ -26,7 +26,7 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.x
+          deno-version: v2.7.14
 
       - name: Run Linter
         run: deno lint
@@ -41,7 +41,7 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.x
+          deno-version: v2.7.14
 
       - name: Check Formatting
         run: deno fmt --check
@@ -57,7 +57,7 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.x
+          deno-version: v2.7.14
 
       - name: Run Tests (ignore if none found)
         run: |
@@ -93,7 +93,7 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.x
+          deno-version: v2.7.14
 
       - name: Install npm dependencies
         run: |
@@ -105,7 +105,7 @@ jobs:
 
       - name: Build Static Site
         run: |
-          deno task build || true
+          deno task build
           # Next.js typically outputs to '.next', 'out', or 'dist' directory
           echo "Build output directories:"
           ls -la

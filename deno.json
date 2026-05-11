@@ -2,7 +2,7 @@
   "tasks": {
     "dev": "cd src && deno run --allow-net --allow-read --allow-env --allow-write --watch npm:next dev --turbopack",
     "dev:local": "cd src && ENVIRONMENT=local deno run --allow-net --allow-read --allow-env --allow-write --allow-sys --watch npm:next dev --turbopack",
-    "build": "cd src && deno run --allow-all npm:next build && (deno run --allow-all npm:next export || echo 'Next.js export not available, using standalone build')",
+    "build": "cd src && deno run --allow-all npm:next build",
     "start": "cd src && deno run --allow-net --allow-read --allow-env npm:next start",
     "lint": "cd src && deno run --allow-read --allow-write npm:next lint",
     "test": "deno test --allow-read --allow-net --import-map ./import_map.json src/tests",
@@ -17,7 +17,7 @@
     "jsxImportSource": "react",
     "strict": true,
     "lib": ["deno.window", "dom", "dom.iterable", "esnext"],
-    "types": ["./src/types/jsx.d.ts", "./src/types/jsx-runtime.d.ts"]
+    "types": ["npm:@types/react", "npm:@types/react-dom"]
   },
   "importMap": "./import_map.json",
   "nodeModulesDir": "auto",

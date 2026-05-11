@@ -83,14 +83,4 @@ declare global {
   }
 }
 
-// Specific badge component props to handle key
-declare module "@/components/ui/badge.tsx" {
-  export interface BadgeProps {
-    key?: string | number;
-    variant?: string;
-    className?: string;
-    children?: React.ReactNode;
-  }
-}
-
 export {};

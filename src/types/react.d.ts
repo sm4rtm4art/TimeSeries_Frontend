@@ -189,12 +189,3 @@ declare namespace JSX {
 declare namespace Deno {
   function test(name: string, fn: () => void | Promise<void>): void;
 }
-
-// Declare BadgeProps to include key property
-declare module "@/components/ui/badge.tsx" {
-  interface BadgeProps {
-    key?: string | number;
-    variant?: "default" | "secondary" | "destructive" | "outline";
-    className?: string;
-  }
-}

@@ -10,6 +10,11 @@
 
 <!-- [![CI](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/sm4rtm4art/TimeSeries_Frontend/actions/workflows/ci.yml)  -->
 
+## Live Demo
+
+Try the production deployment on Vercel:
+[v0-timeseries-five.vercel.app](https://v0-timeseries-five.vercel.app/)
+
 ## Overview
 
 This frontend application provides an interface for time series forecasting with

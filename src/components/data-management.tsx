@@ -7,20 +7,26 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/card.tsx";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/select.tsx";
 import { Upload } from "lucide-react";
-import TimeSeriesChart from "@/components/charts/time-series-chart";
-import DataQualityAnalysis from "@/components/data-quality-analysis";
-import DataPreparation from "@/components/data-preparation";
+import TimeSeriesChart from "@/components/charts/time-series-chart.tsx";
+import DataQualityAnalysis from "@/components/data-quality-analysis.tsx";
+import DataPreparation from "@/components/data-preparation.tsx";
 
 export default function DataManagement() {
   const [_dataSource, _setDataSource] = useState("builtin");
@@ -167,6 +173,26 @@ export default function DataManagement() {
                   <li>Additional columns will be treated as features</li>
                   <li>Header row is required</li>
                 </ul>
+
+                <div className="mt-4 rounded-md border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950/30">
+                  <div className="flex items-center gap-2">
+                    <Badge
+                      variant="secondary"
+                      className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+                    >
+                      Target Column
+                    </Badge>
+                    <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
+                      Put your prediction target in column 2
+                    </p>
+                  </div>
+                  <p className="mt-2 text-xs text-blue-700 dark:text-blue-300">
+                    Example: date,{" "}
+                    <span className="rounded bg-blue-200 px-1 py-0.5 font-semibold dark:bg-blue-800">
+                      sales_target
+                    </span>, feature_1, feature_2
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>

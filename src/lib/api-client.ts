@@ -3,20 +3,34 @@
  */
 
 // Default API configuration
-// Use Deno's environment variables if available, fallback to default
-let API_BASE_URL = "http://localhost:8000";
-try {
-  // @ts-ignore - Handle both Deno and Node.js environments
-  if (typeof Deno !== "undefined" && Deno.env && Deno.env.get) {
-    const envUrl = Deno.env.get("NEXT_PUBLIC_API_BASE_URL");
-    if (envUrl) {
-      API_BASE_URL = envUrl;
-    }
+// Support browser/Next.js env first, then Deno env, then localhost fallback.
+function resolveApiBaseUrl(): string {
+  const processEnv = (globalThis as {
+    process?: { env?: Record<string, string | undefined> };
+  }).process?.env;
+  const browserEnvUrl = processEnv?.NEXT_PUBLIC_API_BASE_URL;
+  if (browserEnvUrl) {
+    return browserEnvUrl;
   }
-  // We'll let the default stay if we can't read environment variables
-} catch (_error) {
-  // Ignore errors when checking environment - will use default
+
+  try {
+    const denoEnv = (globalThis as {
+      Deno?: { env?: { get: (name: string) => string | undefined } };
+    }).Deno?.env;
+    if (denoEnv?.get) {
+      const denoEnvUrl = denoEnv.get("NEXT_PUBLIC_API_BASE_URL");
+      if (denoEnvUrl) {
+        return denoEnvUrl;
+      }
+    }
+  } catch (_error) {
+    // Ignore env read errors and fall back to localhost.
+  }
+
+  return "http://localhost:8000";
 }
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 const API_TIMEOUT = 30000; // 30 seconds default timeout
 

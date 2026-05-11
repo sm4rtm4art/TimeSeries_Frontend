@@ -117,6 +117,18 @@ To create custom environment configurations:
 1. Copy `.env.example` to `.env.{environment}` (e.g., `.env.local`)
 2. Modify the variables as needed
 
+### Deploying to Vercel
+
+1. Import this repository in Vercel.
+2. In project settings, set **Root Directory** to `src`.
+3. In **Environment Variables**, add:
+   - `NEXT_PUBLIC_API_BASE_URL` = your backend API URL
+4. Deploy from `main` (or your release branch) and use the generated domain.
+
+If the app shows API access errors in production, verify that
+`NEXT_PUBLIC_API_BASE_URL` is set for the **Production** environment and points
+to a reachable backend with CORS enabled for your Vercel domain.
+
 ## Building for Production
 
 Build the application for production:

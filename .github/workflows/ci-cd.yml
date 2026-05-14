@@ -78,10 +78,32 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }} # Optional if public repo
         continue-on-error: true
 
+  security-audit:
+    name: Audit Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: src/pnpm-lock.yaml
+
+      - name: Run Production Dependency Audit
+        run: cd src && pnpm audit --prod --audit-level high
+
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [test, security-audit]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -69,6 +69,7 @@
   },
   "optionalDependencies": {},
   "engines": {
-    "node": ">=20"
+    "node": ">=20",
+    "pnpm": ">=11"
   }
 }

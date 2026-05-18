@@ -61,7 +61,7 @@
 deno task test --no-check
 
 # Verify application functionality
-./scripts/verify-types.sh
+make verify-types
 
 # Run test for specific component
 deno task test:model-card

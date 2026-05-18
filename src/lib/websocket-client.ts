@@ -68,7 +68,7 @@ class WebSocketClient {
 
     this.ws.onclose = (event) => {
       console.log(
-        `WebSocket connection closed. Code: ${event.code}, Reason: ${event.reason}, Clean: ${event.wasClean}`,
+        `WebSocket connection closed. Code: ${event.code}, Clean: ${event.wasClean}`,
       );
       this.ws = null; // Ensure the instance is nullified
       // TODO: Implement more sophisticated close handling (e.g., notify UI)

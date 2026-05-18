@@ -31,10 +31,10 @@ MAX_DATA_POINTS=5000
 
 You can start the local environment in two ways:
 
-**Using the helper script:**
+**Using the Makefile target:**
 
 ```bash
-./start-local.sh
+make dev-local
 ```
 
 **Using Deno tasks:**
@@ -90,7 +90,8 @@ Here are the key environment variables used in local mode:
 1. **Deno Not Found**
 
    - Make sure Deno is installed: `deno --version`
-   - If not installed, run ./setup.sh
+   - If not installed, install Deno first: https://deno.com/
+   - After Deno and pre-commit are installed, run `make setup`
 
 2. **Permission Errors**
 
@@ -99,7 +100,7 @@ Here are the key environment variables used in local mode:
 
 3. **Environment Not Loading**
    - Check if .env.local exists
-   - Make sure start-local.sh is executable: `chmod +x start-local.sh`
+   - Start with `make dev-local` or `deno task dev:local`
 
 ### Debugging Tips
 

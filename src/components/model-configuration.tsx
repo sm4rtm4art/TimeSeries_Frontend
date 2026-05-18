@@ -26,6 +26,7 @@ export default function ModelConfiguration() {
   };
 
   const handleStartTraining = () => {
+    setIsTraining(true);
     setActiveTab("train");
   };
 
@@ -40,10 +41,10 @@ export default function ModelConfiguration() {
         <h2 className="text-3xl font-bold tracking-tight">
           Model Configuration
         </h2>
-        {selectedModel && !isTraining && (
+        {selectedModel && (
           <Button
             onClick={handleStartTraining}
-            disabled={!selectedModel || isTraining}
+            disabled={isTraining}
           >
             {isTraining
               ? (

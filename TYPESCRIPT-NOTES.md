@@ -118,11 +118,10 @@ Future improvement should consider:
 
 ## Verification
 
-Use the `scripts/verify-types.sh` script to check if the application is working
-correctly:
+Use the Makefile command to check if the application is working correctly:
 
 ```bash
-./scripts/verify-types.sh
+make verify-types
 ```
 
 This script:

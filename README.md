@@ -47,6 +47,9 @@ complex models that might take significant time to complete.
 ## Requirements
 
 - Deno 2.0 or higher
+- Make
+- pre-commit
+- pnpm 11 or higher, only for local dependency audits with `make audit`
 
 ## Installation
 
@@ -59,10 +62,20 @@ git clone https://github.com/your-username/TimeSeries_Frontend.git
 cd TimeSeries_Frontend
 ```
 
-2. Run the setup script:
+2. Install required tooling:
 
 ```bash
-./setup.sh
+# For macOS
+brew install deno pre-commit pnpm
+```
+
+For other platforms, install Deno from https://deno.com/, pre-commit from
+https://pre-commit.com/, and pnpm from https://pnpm.io/.
+
+3. Run the setup command:
+
+```bash
+make setup
 ```
 
 ### Manual Setup
@@ -74,20 +87,21 @@ git clone https://github.com/your-username/TimeSeries_Frontend.git
 cd TimeSeries_Frontend
 ```
 
-2. Install Deno (if not already installed):
+2. Install Deno and pre-commit (if not already installed):
 
 ```bash
 # For macOS
-brew install deno
+brew install deno pre-commit
 
 # For Linux
 curl -fsSL https://deno.land/x/install/install.sh | sh
+python -m pip install pre-commit
 ```
 
-3. Cache dependencies:
+3. Initialize project tooling:
 
 ```bash
-deno cache --reload import_map.json
+make setup
 ```
 
 ## Running the Application
@@ -97,13 +111,13 @@ deno cache --reload import_map.json
 Start the regular development server:
 
 ```bash
-deno task dev
+make dev
 ```
 
 Start the local environment development server (with mocked data):
 
 ```bash
-deno task dev:local
+make dev-local
 ```
 
 The application will be available at http://localhost:3000.
@@ -139,13 +153,13 @@ to a reachable backend with CORS enabled for your Vercel domain.
 Build the application for production:
 
 ```bash
-deno task build
+make build
 ```
 
 Start the production server:
 
 ```bash
-deno task start
+make start
 ```
 
 ## Project Structure
@@ -213,7 +227,7 @@ components and business logic.
 Run tests with:
 
 ```bash
-deno task test
+make test
 ```
 
 ## Technology Stack
@@ -289,14 +303,14 @@ gradually:
 3. **Async functions without await**: Some async functions need await statements
    or should have the async keyword removed
 
-To help fix these issues, run:
+To keep linting and formatting clean during development, run:
 
 ```bash
-./fix-linting-issues.sh
+make fmt
+make lint
 ```
 
-During development, we've temporarily configured the pre-commit hooks to be more
-lenient with these specific issues.
+Then address any remaining issues manually in the reported files.
 
 ### Pre-commit configuration
 
@@ -308,3 +322,9 @@ currently ignoring:
 - `no-unused-vars`: allows unused variables
 
 In production code, these issues should be properly addressed.
+
+To run all pre-commit hooks locally:
+
+```bash
+make pre-commit
+```

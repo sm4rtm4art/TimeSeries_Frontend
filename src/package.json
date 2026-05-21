@@ -58,7 +58,7 @@
     "zod": "^3.24.1",
     "@observablehq/plot": "latest",
     "d3": "latest",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^4.3.0",
     "postcss": "^8.4.38"
   },
   "devDependencies": {

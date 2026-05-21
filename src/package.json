@@ -44,12 +44,12 @@
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "1.0.4",
-    "embla-carousel-react": "8.5.1",
-    "input-otp": "1.4.1",
+    "cmdk": "1.1.1",
+    "embla-carousel-react": "8.6.0",
+    "input-otp": "1.4.2",
     "lucide-react": "^0.454.0",
     "next-themes": "latest",
-    "react-hook-form": "^7.54.1",
+    "react-hook-form": "^7.76.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.0",
     "sonner": "^1.7.1",
@@ -59,7 +59,7 @@
     "@observablehq/plot": "latest",
     "d3": "latest",
     "tailwindcss": "^3.4.17",
-    "postcss": "^8.4.38"
+    "postcss": "^8.5.15"
   },
   "devDependencies": {
     "@types/node": "^22",

@@ -2,6 +2,8 @@
  * @fileoverview WebSocket client for real-time communication with the backend.
  */
 
+import { sanitizeForLog } from "./sanitize-log.ts";
+
 // TODO: Replace with actual environment variable or configuration
 const WEBSOCKET_URL = "ws://localhost:8000/ws"; // Example URL
 
@@ -15,7 +17,7 @@ class WebSocketClient {
   constructor(url: string = WEBSOCKET_URL) {
     this.url = url;
     console.log(
-      `WebSocketClient initialized for URL: ${this.sanitizeLogValue(this.url)}`,
+      `WebSocketClient initialized for URL: ${sanitizeForLog(this.url)}`,
     );
   }
 
@@ -25,9 +27,7 @@ class WebSocketClient {
       return;
     }
 
-    console.log(
-      `Attempting to connect to ${this.sanitizeLogValue(this.url)}...`,
-    );
+    console.log(`Attempting to connect to ${sanitizeForLog(this.url)}...`);
     try {
       this.ws = new WebSocket(this.url);
       this.setupEventListeners();
@@ -48,10 +48,9 @@ class WebSocketClient {
     };
 
     this.ws.onmessage = (event) => {
-      console.log(
-        "WebSocket message received:",
-        this.sanitizeLogValue(event.data),
-      );
+      // Do not log the raw payload: it is remote-controlled and would allow
+      // log injection. Log only that a message arrived.
+      console.log("WebSocket message received.");
       try {
         const message = JSON.parse(event.data);
         // TODO: Implement message handling logic based on message type/content
@@ -76,11 +75,12 @@ class WebSocketClient {
     };
   }
 
-  private handleIncomingMessage(message: unknown): void {
-    console.log("Received raw message:", this.sanitizeLogValue(message));
+  private handleIncomingMessage(_message: unknown): void {
+    // The payload is remote-controlled; log status only, never its content.
+    console.log("Received WebSocket message.");
     try {
       // Placeholder for actual message processing
-      console.log("Processing message:", this.sanitizeLogValue(message));
+      console.log("Processing WebSocket message.");
       // Example:
       // if (message.type === 'training_update') {
       //   // Update UI state
@@ -115,15 +115,12 @@ class WebSocketClient {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       try {
         this.ws.send(JSON.stringify(message));
-        console.log("WebSocket message sent:", this.sanitizeLogValue(message));
+        console.log("WebSocket message sent.");
       } catch (error) {
         console.error("Failed to send WebSocket message:", error);
       }
     } else {
-      console.warn(
-        "WebSocket is not connected. Message not sent:",
-        this.sanitizeLogValue(message),
-      );
+      console.warn("WebSocket is not connected. Message not sent.");
       // TODO: Queue message or handle error?
     }
   }
@@ -135,7 +132,7 @@ class WebSocketClient {
     if (this.ws) {
       console.log(
         `Closing WebSocket connection with code ${code}: ${
-          this.sanitizeLogValue(reason)
+          sanitizeForLog(reason)
         }`,
       );
       // Prevent automatic reconnection when explicitly closing
@@ -149,22 +146,6 @@ class WebSocketClient {
 
   public getReadyState(): number | null {
     return this.ws ? this.ws.readyState : null;
-  }
-
-  private sanitizeLogValue(value: unknown): string {
-    const serialized = (() => {
-      if (typeof value === "string") {
-        return value;
-      }
-
-      try {
-        return JSON.stringify(value);
-      } catch (_error) {
-        return String(value);
-      }
-    })();
-
-    return (serialized ?? String(value)).replace(/[\r\n]/g, " ");
   }
 }
 

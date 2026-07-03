@@ -3,6 +3,8 @@
  * Loads .env files based on the current environment
  */
 
+import { sanitizeForLog } from "./sanitize-log.ts";
+
 // Load environment variables from .env file
 export async function loadEnv(environment = "development") {
   try {
@@ -21,22 +23,22 @@ export async function loadEnv(environment = "development") {
             // @ts-ignore - Deno types
             Deno.env.set(key, value);
           }
-          console.log(`Loaded environment variables from ${envFile}`);
+          console.log(
+            `Loaded environment variables from ${sanitizeForLog(envFile)}`,
+          );
         })
         .catch(() => {
           // Try to load .env file if specific environment file is not found
           return loadDefaultEnv();
         });
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error
-        ? error.message
-        : String(error);
-      console.error(`Error loading environment variables: ${errorMessage}`);
+      console.error(
+        `Error loading environment variables: ${sanitizeForLog(error)}`,
+      );
       await loadDefaultEnv();
     }
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`Environment setup error: ${errorMessage}`);
+    console.error(`Environment setup error: ${sanitizeForLog(error)}`);
   }
 }
 

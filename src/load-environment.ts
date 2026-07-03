@@ -8,8 +8,8 @@
  * deno run --allow-read --allow-env --allow-write load-environment.ts [environment]
  */
 
-// Using relative import without .ts extension for compatibility
-import { loadEnv } from "./lib/load-env";
+import { loadEnv } from "./lib/load-env.ts";
+import { sanitizeForLog } from "./lib/sanitize-log.ts";
 
 async function main() {
   try {
@@ -18,11 +18,11 @@ async function main() {
     const args = Deno.args;
     const environment = args[0] || "development";
 
-    console.log(`Loading environment: ${environment}`);
+    console.log(`Loading environment: ${sanitizeForLog(environment)}`);
     await loadEnv(environment);
     console.log("Environment loaded successfully");
-  } catch (_error) {
-    console.error("Failed to load environment:", error);
+  } catch (error) {
+    console.error("Failed to load environment:", sanitizeForLog(error));
   }
 }
 
@@ -30,7 +30,11 @@ async function main() {
 // This avoids top-level await and import.meta.main issues
 // @ts-ignore - Deno runtime check
 if (import.meta.main) {
-  main().catch(console.error);
+  main().catch((error) => {
+    console.error(
+      `Unhandled error while loading environment: ${sanitizeForLog(error)}`,
+    );
+  });
 }
 
 export { loadEnv };

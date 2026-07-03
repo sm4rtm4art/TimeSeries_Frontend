@@ -3,6 +3,8 @@
  * Loads appropriate environment variables based on current environment
  */
 
+import { sanitizeForLog } from "./sanitize-log.ts";
+
 // Define environment types
 export type Environment = "development" | "production" | "test" | "local";
 
@@ -64,6 +66,6 @@ export function logEnvironmentInfo() {
   const env = getEnvironment();
   const config = getConfig();
 
-  console.log(`Environment: ${env}`);
+  console.log(`Environment: ${sanitizeForLog(env)}`);
   console.log("Configuration:", config);
 }

@@ -22,7 +22,7 @@
   "importMap": "./import_map.json",
   "nodeModulesDir": "auto",
   "fmt": {
-    "exclude": ["src/public/"]
+    "exclude": ["src/public/", "src/pnpm-lock.yaml"]
   },
   "lint": {
     "exclude": ["src/public/"]

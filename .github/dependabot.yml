@@ -10,6 +10,11 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      # Tailwind v4 requires a PostCSS/config migration (@tailwindcss/postcss).
+      # Remove this once the project migrates off Tailwind v3.
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"

@@ -5,3 +5,7 @@ blockExoticSubdeps: true
 strictDepBuilds: true
 allowBuilds:
   sharp: true
+# Force patched nested deps that next still pins below advisory floors.
+overrides:
+  sharp: 0.35.3
+  postcss: 8.5.19

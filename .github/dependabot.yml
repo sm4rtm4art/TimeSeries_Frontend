@@ -4,6 +4,12 @@ updates:
     directory: "/src"
     schedule:
       interval: "weekly"
+    # Align with GitHub's default: delay direct version updates 3 days so
+    # brand-new releases are not proposed immediately. Transitive freshness
+    # is still enforced at install time by src/pnpm-workspace.yaml
+    # (minimumReleaseAge: 1440).
+    cooldown:
+      default-days: 3
     open-pull-requests-limit: 5
     groups:
       npm-minor-and-patch:

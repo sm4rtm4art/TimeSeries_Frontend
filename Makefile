@@ -1,4 +1,4 @@
-.PHONY: help setup dev dev-local build start fmt fmt-check lint test test-no-check verify-types pre-commit audit clean
+.PHONY: help setup dev dev-local build start fmt fmt-check lint test test-no-check verify-types pre-commit audit lockfile-sync clean
 
 help:
 	@echo "Available targets:"
@@ -15,6 +15,7 @@ help:
 	@echo "  make verify-types Run verify-types helper task"
 	@echo "  make pre-commit   Run pre-commit hooks on all files"
 	@echo "  make audit        Run production dependency audit"
+	@echo "  make lockfile-sync Re-resolve src/pnpm-lock.yaml under the age-gate policy"
 	@echo "  make clean        Remove local build and coverage artifacts"
 
 setup:
@@ -61,6 +62,20 @@ audit:
 	@command -v pnpm >/dev/null 2>&1 || { echo "pnpm 11+ is required for make audit."; exit 1; }
 	@version=$$(pnpm --version 2>/dev/null) && major=$${version%%.*} && [ "$$major" -ge 11 ] || { echo "pnpm 11+ is required for make audit. Install it with: corepack prepare pnpm@11 --activate"; exit 1; }
 	cd src && pnpm install --prod --frozen-lockfile && pnpm audit --prod --audit-level high
+
+# Re-resolve the lockfile under src/pnpm-workspace.yaml (minimumReleaseAge).
+# Use on Dependabot branches when frozen install fails with
+# ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION and an older version still satisfies the range.
+# If the existing lockfile already pins a too-new package, plain install may fail
+# verification before re-resolving — wait until the package is >=24h old, or pin an
+# aged transitive that still satisfies the range, then re-run this target.
+lockfile-sync:
+	@command -v pnpm >/dev/null 2>&1 || { echo "pnpm 11+ is required for make lockfile-sync."; exit 1; }
+	@version=$$(pnpm --version 2>/dev/null) && major=$${version%%.*} && [ "$$major" -ge 11 ] || { echo "pnpm 11+ is required for make lockfile-sync. Install it with: corepack prepare pnpm@11 --activate"; exit 1; }
+	cd src && pnpm install || { \
+		echo "lockfile-sync failed. If this is ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION, wait until the flagged package is >=24h old and re-run CI, or replace it in the lockfile with an aged version that still satisfies the range."; \
+		exit 1; \
+	}
 
 clean:
 	rm -rf coverage coverage.lcov dist src/.next src/out src/node_modules

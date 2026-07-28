@@ -49,7 +49,8 @@ complex models that might take significant time to complete.
 - Deno 2.0 or higher
 - Make
 - pre-commit
-- pnpm 11 or higher, only for local dependency audits with `make audit`
+- pnpm 11 or higher, for local dependency audits (`make audit`) and lockfile
+  refresh (`make lockfile-sync`)
 
 ## Installation
 
@@ -288,6 +289,34 @@ the Factory pattern:
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+### Dependabot and the pnpm age gate
+
+Installs use a 24-hour release-age gate (`minimumReleaseAge: 1440` in
+`src/pnpm-workspace.yaml`). CI and Vercel run `pnpm install --frozen-lockfile`,
+so a Dependabot PR fails when its lockfile pins a package (often a
+**transitive**) younger than 24 hours:
+
+`ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION`
+
+Fix options:
+
+1. **Wait** until the flagged package is at least 24 hours old, then re-run the
+   failed GitHub Action / Vercel deploy.
+2. **Re-resolve** under the age policy when an older version still satisfies the
+   range:
+
+```bash
+git checkout dependabot/<branch>
+make lockfile-sync
+# commit src/pnpm-lock.yaml if it changed, then push
+```
+
+If `make lockfile-sync` cannot find an aged version in range, waiting is the
+correct fix — do not lower the age gate or add one-off overrides.
+
+Prefer the grouped `npm-minor-and-patch` Dependabot PRs, and close superseded
+single-dependency PRs when you triage the queue.
 
 ## Development Notes
 

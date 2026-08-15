@@ -1,7 +1,7 @@
 # Deno Setup Guide
 
 This document provides detailed instructions for setting up and running the
-TimeSeries Frontend project with Deno 2.0.
+TimeSeries Frontend project with Deno 2.9.
 
 ## Installing Deno
 

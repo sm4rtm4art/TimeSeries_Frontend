@@ -2,7 +2,7 @@
 
 [![codecov](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend/graph/badge.svg?token=F3TO61yJUZ)](https://codecov.io/github/sm4rtm4art/TimeSeries_Frontend)
 [![GitHub license](https://img.shields.io/github/license/sm4rtm4art/TimeSeries_Frontend)](https://github.com/sm4rtm4art/TimeSeries_Frontend/blob/main/LICENSE)
-[![Deno](https://img.shields.io/badge/deno-v2.0-blue.svg)](https://deno.land)
+[![Deno](https://img.shields.io/badge/deno-v2.9-blue.svg)](https://deno.land)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
 ![Deno JS](https://img.shields.io/badge/deno%20js-000000?style=for-the-badge&logo=deno&logoColor=white)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
@@ -46,7 +46,7 @@ complex models that might take significant time to complete.
 
 ## Requirements
 
-- Deno 2.0 or higher
+- Deno 2.9 or higher (CI pins `v2.9.5`)
 - Make
 - pre-commit
 - pnpm 11 or higher, for local dependency audits (`make audit`) and lockfile
@@ -233,7 +233,7 @@ make test
 
 ## Technology Stack
 
-- Deno 2.0 as the runtime
+- Deno 2.9 as the runtime
 - Next.js 15
 - React 19
 - Tailwind CSS
